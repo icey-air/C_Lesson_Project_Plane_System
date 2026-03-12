@@ -25,6 +25,8 @@ struct tourist* Register_Tourist(struct tourist*head)
 	if(head!=NULL)//不是第一个注册账户//有bug
 	{
 		p1 = p2 = (struct tourist*)malloc(Tourist_LEN);//free问题
+		head->next=p1;
+		p1->next=NULL;
 		printf("请输入注册账户(1~10)");
 		scanf("%s",Account);
 		while(Find_Tourist_Account(head,Account)!=NULL)//游客结构体中有重复的账户
@@ -62,39 +64,6 @@ struct tourist* Register_Tourist(struct tourist*head)
  		strcpy(p1->name, name);
 		return head;
 	}
-
-	// printf("请输入手机号和名字//状态id 0退出");
-	// scanf("%s %s %d",phone_number, name, &id);//
-	// if (id != 0)
-	// {
-	// 	p1 = p2 = (struct tourist*)malloc(Tourist_LEN);
-	// 	p1->next = NULL;
-	// 	head = p1;
-	// 	while (id != 0)
-	// 	{
-	// 		strcpy(p1->phone_number,phone_number);
-	// 		strcpy(p1->name, name);
-
-	// 		printf("请输入手机号和名字//状态id 0退出");
-	// 		scanf("%s %s %d",phone_number, name, &id);
-	// 		if (id != 0)
-	// 		{
-	// 			p1 = (struct tourist*)malloc(Tourist_LEN);
-	// 			p2->next = p1;
-	// 			p2 = p1;
-	// 		}
-	// 		else
-	// 		{
-	// 			p2->next = NULL;
-	// 		}
-	// 	}
-
-	// 	return head;
-	// }
-	// else
-	// { 
-	// 	return NULL;
-	// }
 }
 
 /*@breif	列举游客
@@ -162,6 +131,8 @@ struct tourist* Remove_Tourist(struct tourist*head,int id)
 * @param	当前游客结构体地址
 * @return	无
 */
+
+//内容要改
 void Change_tourist(struct tourist*Now_Account)
 {
 	int mod;
@@ -224,3 +195,60 @@ struct tourist* Find_Tourist_Account(struct tourist* head,char Account[11])
 }
 
 
+/*@breif	查找游客手机号
+* @param	游客结构体头指针
+* @param	查找的手机号
+* @return	找到对应手机号的游客结构体指针或者NULL
+*/
+struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[12])
+{
+	struct tourist*p;
+	p=head;
+	printf("查找有无对应手机号");
+	while (p->next!=NULL)
+	{
+		if(strcmp(Phone_Number,p->phone_number)==0)
+		{
+			printf("有");
+			return p;
+		}
+		p=p->next;
+	} 
+	if(strcmp(Phone_Number,p->phone_number)==0)
+		{
+			printf("有");
+			return p;
+		}
+	else
+	{
+		printf("无");
+		return NULL;
+	}
+}	
+
+
+/*@breif	修改游客密码
+* @param	游客结构体头指针
+* @param	查找的手机号
+* @return	找到对应手机号的游客结构体指针或者NULL
+*/
+void Change_Password(struct tourist*Now_Account)
+{
+	char Password1[21];	
+	char Password2[21];
+	while(1)
+			{
+			printf("请输入密码");//没有写二次输入确定密码代码
+			scanf("%s",Password1);
+			printf("请再次确认密码");
+			scanf("%s",Password2);
+			if(strcmp(Password1,Password2)==0)
+			{
+				break;	
+			}
+			else
+			{
+				printf("两次密码不一致");
+			}
+			}
+}
