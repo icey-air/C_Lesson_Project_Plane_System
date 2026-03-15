@@ -6,19 +6,20 @@
 
 
 
-/*@breif	创造游客
-* @param	无
+/*@brief	创造游客
+* @param	windows句柄
+* @param	游客头指针
 * @return	头指针orNULL
 */
 struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 {
-	MessageBox(hwnd, "妈的终于搞定了", "提示", MB_OK);	
+	MessageBox(hwnd, "进入了注册代码", "提示", MB_OK);	
 	struct tourist* HEAD,* p1, * p2;
 	char name[20];
 	char Password1[21];
 	char Password2[21];
 	int id;
-	
+	int stage=0;//while状态，防止死机
 	char username[20] = "", Password[20] = "", phone[20] = "";
 	
 	
@@ -29,24 +30,25 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
     	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
 
-		p1 = p2 = (struct tourist*)malloc(Tourist_LEN);//free问题
-		head->next=p1;
+		p1=(struct tourist*)malloc(Tourist_LEN);//free问题
+		p2=head;
 		p1->next=NULL;
 
-		scanf("%s",username);
-			while(Find_Tourist_Account(head,username)!=NULL)//游客结构体中有重复的账户
-			{
-				MessageBox(hwnd, "账户已存在，请重新输入", "提示", MB_OK);			
-
-				GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
-				GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-    			GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);	
+			if(Find_Tourist_Account(head,username)!=NULL)//游客结构体中有重复的账户
+			{				
+				MessageBox(hwnd, "账户已存在，请重新输入", "提示", MB_OK);		
+				return head;					
 			}
 			//两次密码
+		
+		while(p2->next!=NULL)
+		{
+			p2=p2->next;
+		}
+		p2->next=p1;
 
 		strcpy(p1->Account,username);
 		strcpy(p1->password,Password);
-
 		strcpy(p1->phone_number,phone);
 	
 
@@ -57,7 +59,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 	}
 	
 	else//第一个注册账户
-	{
+	{	MessageBox(hwnd, "进入了第一个代码", "提示", MB_OK);	
 		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
 		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
     	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
@@ -76,41 +78,53 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 
 
 //这个还可以更进一步，与Find_tourist_Account合用，甚至可以考虑要不要和管理员登录合并
-/*@breif	登录账户
+/*@brief	登录账户
+* @param	windows句柄
 * @param	游客头指针
 * @return	登录账号的游客指针orNULL
 */
-struct tourist* Loging_Account(struct tourist*head)
+struct tourist* Loging_Account(HWND hwnd,struct tourist*head)
 {
 	char Account[11];
 	char Password[21];
+	GetDlgItemText(hwnd, ID_EDIT_USERNAME, Account, 20);
+	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+
 	struct tourist*p;
 	p=head;
-	printf("正在登录,请输入账户和密码\n");
-	scanf("%s %s",Account,Password);
+
+	if(head==NULL)//防止一个注册都没有就登陆了
+	{
+		MessageBox(hwnd, "登录失败", "提示", MB_OK);
+		return NULL;
+	}
+
+
 	while(p->next!=NULL)
 	{
 		if(strcmp(Account,p->Account)==0&&strcmp(Password,p->password)==0)
 		{
-			printf("登录成功\n");
-			return p;
+			MessageBox(hwnd, "登录成功", "提示", MB_OK);
+			ShowUserWindow(hwnd);
+			return p;//可以返回指针,不放心可以Printf测试
 		}
 		p=p->next;
 	}
 	if(strcmp(Account,p->Account)==0&&strcmp(Password,p->password)==0)
 	{
-		printf("登录成功\n");
+		MessageBox(hwnd, "登录成功", "提示", MB_OK);
+		ShowUserWindow(hwnd);
 		return p;
 	}
 	else
 	{
-		printf("登录失败\n");
+		MessageBox(hwnd, "登录失败", "提示", MB_OK);
 		return NULL;
 	}
 }
 
 
-/*@breif	列举游客
+/*@brief	列举游客
 * @param	游客头指针
 * @return	无
 */
@@ -132,7 +146,7 @@ void List_Tourist(struct tourist* head)
 }
 
 
-/*@breif	删除游客
+/*@brief	删除游客
 * @param	游客头指针
 *@param		id
 * @return	头指针
@@ -171,7 +185,7 @@ struct tourist* Remove_Tourist(struct tourist*head,int id)
 }
 
 
-/*@breif	修改游客信息 没写完
+/*@brief	修改游客信息 没写完
 * @param	当前游客结构体地址
 * @return	无
 */
@@ -205,7 +219,7 @@ void Change_tourist(struct tourist*Now_Account)
 }
 
 
-/*@breif	查找游客账户
+/*@brief	查找游客账户
 * @param	游客结构体头指针
 * @param	查找的账户
 * @return	找到对应账户的指针或者NULL
@@ -237,7 +251,7 @@ struct tourist* Find_Tourist_Account(struct tourist* head,char Account[11])
 }
 
 
-/*@breif	查找游客手机号
+/*@brief	查找游客手机号
 * @param	游客结构体头指针
 * @param	查找的手机号
 * @return	找到对应手机号的游客结构体指针或者NULL
@@ -269,7 +283,7 @@ struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[
 }	
 
 
-/*@breif	修改游客密码
+/*@brief	修改游客密码
 * @param	游客结构体头指针
 * @return	无
 */
@@ -294,7 +308,7 @@ void Change_Password(struct tourist*Now_Account)
 			}
 }
 
-/*@breif	修改游客手机号
+/*@brief	修改游客手机号
 * @param	游客结构体头指针
 * @return	无
 */

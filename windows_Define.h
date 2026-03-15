@@ -1,9 +1,13 @@
+#ifndef __WINDOWS_DEFINE_H
+#define __WINDOWS_DEFINE_H
 
 #define YES 1
 #define NO 0
 #define MAX_ACCOUNTS 100
 
 #include "windows.h"
+#include "plane.h"
+#include <stdio.h>
 // 控件ID定义
 #define ID_BUTTON_ADMIN_LOGIN     1001  // 管理员登录按钮ID
 #define ID_BUTTON_USER_LOGIN      1002  // 用户登录按钮ID
@@ -36,5 +40,11 @@
 
 #define ID_STATIC_INFO            4001  // 预定信息显示静态文本框ID
 
-HWND g_hMainWindow = NULL;
+void ShowAdminWindow(HWND hwnd);
+void ShowUserWindow(HWND hwnd);
+void RefreshPlaneList(HWND hwnd);
+extern HWND g_hMainWindow;  
+extern Plane_information* g_head;  // 航班信息链表头指针
+// HWND g_hMainWindow = NULL;重要的变量，暂时没有想好放哪里，就丢final_test.c了
 
+#endif

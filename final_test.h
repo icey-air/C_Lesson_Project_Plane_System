@@ -16,7 +16,7 @@ extern Plane_information* g_head;      // 航班链表头指针
 extern int g_planeCount;                // 航班数量
 extern tourist g_currentUser;           // 当前登录用户
 extern int g_userType;                  // 用户类型：0-未登录，1-管理员，2-普通用户
-extern HWND g_hMainWindow;              // 主窗口句柄
+
 
 
 /**

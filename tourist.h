@@ -3,11 +3,10 @@
 #include "plane.h"
 #include "windows_Define.h"
 #include "windef.h"
-#include "windows.h"
 #define Tourist_LEN sizeof(struct tourist)
 
 struct tourist* Register_Tourist(HWND hwnd,struct tourist*head);
-struct tourist* Loging_Account(struct tourist*head);
+struct tourist* Loging_Account(HWND hwnd,struct tourist*head);
 void List_Tourist(struct tourist* head);
 struct tourist* Remove_Tourist(struct tourist*head,int id);
 void Change_tourist(struct tourist*Now_Account);
