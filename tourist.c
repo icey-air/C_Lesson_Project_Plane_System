@@ -6,98 +6,70 @@
 
 
 
-
-
 /*@breif	创造游客
 * @param	无
 * @return	头指针orNULL
 */
-struct tourist* Register_Tourist(struct tourist*head)
+struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 {
+	MessageBox(hwnd, "妈的终于搞定了", "提示", MB_OK);	
 	struct tourist* HEAD,* p1, * p2;
-	char phone_number[12];
 	char name[20];
-	char Account[11];
 	char Password1[21];
 	char Password2[21];
 	int id;
-	//没有写中途跳出代码，同时还有中途跳出清空结构体成员或free的注意
+	
+	char username[20] = "", Password[20] = "", phone[20] = "";
+	
+	
 
-	if(head!=NULL)//不是第一个注册账户//有bug
+	if(head!=NULL)//不是第一个注册账户
 	{
+		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
+		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+    	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
+
 		p1 = p2 = (struct tourist*)malloc(Tourist_LEN);//free问题
 		head->next=p1;
 		p1->next=NULL;
-		printf("请输入注册账户(1~10)");
-		scanf("%s",Account);
-			while(Find_Tourist_Account(head,Account)!=NULL)//游客结构体中有重复的账户
-			{
-				printf("账户已存在，请重新输入(输入0退出)");//没有写跳出while代码
-				scanf("%s",Account);
-	
-			}
-			if(Account[0]=='0')
-				{
-					printf("已退出注册程序");
-					return head;
-				}
-			while(1)
-			{
-				printf("请输入密码");//没有写二次输入确定密码代码
-				scanf("%s",Password1);
-				printf("请再次确认密码");
-				scanf("%s",Password2);
-				if(strcmp(Password1,Password2)==0)
-				{
-					break;	
-				}
-				else
-				{
-					printf("两次密码不一致");
-				}
-			}
 
-		strcpy(p1->Account,Account);
-		strcpy(p1->password,Password2);
-		printf("请输入手机号");//有无手机号重复注册问题，没有写
-		scanf("%s",phone_number);
-		strcpy(p1->phone_number,phone_number);
-		printf("请输入名字");
-		scanf("%s",name);
-		strcpy(p1->name,name);
-		printf("注册成功");
+		scanf("%s",username);
+			while(Find_Tourist_Account(head,username)!=NULL)//游客结构体中有重复的账户
+			{
+				MessageBox(hwnd, "账户已存在，请重新输入", "提示", MB_OK);			
+
+				GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
+				GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+    			GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);	
+			}
+			//两次密码
+
+		strcpy(p1->Account,username);
+		strcpy(p1->password,Password);
+
+		strcpy(p1->phone_number,phone);
+	
+
+
+
+		MessageBox(hwnd, "注册成功", "提示", MB_OK);	
 		return head;
 	}
+	
 	else//第一个注册账户
 	{
-		printf("请输入注册账户(1~10)\n");
-		scanf("%s",Account);
+		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
+		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+    	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
 
-		while(1)
-		{
-			printf("请输入密码");//没有写二次输入确定密码代码
-			scanf("%s",Password1);
-			printf("请再次确认密码");
-			scanf("%s",Password2);
-			if(strcmp(Password1,Password2)==0)
-			{
-				break;	
-			}
-			else
-			{
-				printf("两次密码不一致");
-			}
-		}
-		
+		//两次密码
+
 		p1 = p2 = (struct tourist*)malloc(Tourist_LEN);
 		p1->next=NULL;
 		head=p1;
-		strcpy(p1->Account,Account);
-		strcpy(p1->password,Password2);
-		printf("请输入手机号和名字");
-		scanf("%s %s",phone_number, name);
-		strcpy(p1->phone_number,phone_number);
- 		strcpy(p1->name, name);
+		strcpy(p1->Account,username);
+		strcpy(p1->password,Password);
+		strcpy(p1->phone_number,phone);
 		return head;
 	}	
 }	
