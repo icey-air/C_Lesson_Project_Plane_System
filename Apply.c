@@ -1,45 +1,35 @@
-#include "tourist.h"
 #include "Apply.h"
-#include "plane.h"
 #include <stdio.h>
-#include "function.h"
 
 /*@breif    预定机票
+* @param	当前窗口句柄
 * @param	当前账户结构体地址
 * @param	航班信息结构体头指针
 * @return	无
-*/
-void Book_Ticket(struct tourist*Now_Account,struct Plane_information*head)
+*/         
+void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*head)//我要把找对应日期改为找id了
 {
     struct Plane_information* Book_Plane;
-    printf("预定机票\n");
-    Book_Plane=Find_Plane_Day(head);
+    Book_Plane=Find_Plane_ID(hwnd,head);
     if(Book_Plane!=NULL)
-    {
-        printf("是否要预定航班%s的机票(y/n)\n",Book_Plane->id);
-        int key;
-        key=Get_Key_YES_NO();
-
-        if(key==YES)
+    {  
+        if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDYES)//需要缓冲区字符串
         {
             Now_Account->plane=Book_Plane;
+            MessageBox(hwnd, "已预定id为:的航班", "提示", MB_OK);
             printf("已预定航班%s的机票\n",Book_Plane->id);
         }
-        else if(key==NO)
+        else if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDNO)
         {
-            printf("未预定航班%s的机票\n",Book_Plane->id);
-        }
-        else
-        {
-            printf("输入错误\n");
-        }
-        
-    }
-    else
-    {
-        printf("未查找到相应的航班\n");
+            MessageBox(hwnd, "未预定id为航班的机票", "提示", MB_OK);
+        }        
     }
 
+    else
+    {
+        MessageBox(hwnd, "未找到id为航班的机票", "提示", MB_OK);
+    }
+     RefreshPlaneList(hwnd);
 }
 
 /*@breif    取消预定机票

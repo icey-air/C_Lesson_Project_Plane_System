@@ -3,8 +3,8 @@
 #include "windows_Define.h"
 #include "Manager.h"
 /*======================== 全局变量定义 ========================*/
-
 Plane_information* g_head = NULL;
+
 int g_planeCount = 0;
 tourist g_currentUser;
 int g_userType = 0;  // 0-未登录，1-管理员，2-普通用户
@@ -221,19 +221,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             
             // 用户功能按钮
-            else if(wmId == ID_BUTTON_SEARCH_PLANE)
+            else if(wmId == ID_BUTTON_SEARCH_PLANE)//搜索航班id代码
             {
                 char id[20] = "";
                 GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
             }
-            else if(wmId == ID_BUTTON_BOOK_TICKET)
+            else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
             {
-                char id[20] = "";
-                GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
-                
-              
-            
-                RefreshPlaneList(hwnd);
+                    Book_Ticket(hwnd, Now_Account,g_head);
             }
             else if(wmId == ID_BUTTON_CANCEL_BOOK)
             {

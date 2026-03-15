@@ -1,6 +1,9 @@
 #ifndef __PLANE_H__
 #define __PLANE_H__
 #include "tourist.h"
+#include "windows_Define.h"
+
+
 typedef struct Plane_information
 {
 char id[20];//飞机编号
@@ -24,5 +27,9 @@ Plane_information* Delete_Plane(Plane_information*head);
 void update_Plane(Plane_information*head);
 Plane_information* Add_Plane(Plane_information *head);
 struct Plane_information* Find_Plane_Day(Plane_information*head);
+
+struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head);
+
+extern Plane_information* g_head;  // 航班信息链表头指针
 
 #endif

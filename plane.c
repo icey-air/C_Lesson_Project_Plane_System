@@ -5,6 +5,8 @@
 #include "function.h"
 #include "plane.h"
 
+
+
 /*@breif	打印航班信息
 * @param	航班信息结构体头指针
 * @return	无
@@ -64,7 +66,6 @@ Plane_information* Create_Plane_List(void)
     head=p1;
 
     printf("是否要继续录入航班信息(y/n)\n");
-    checkstatus=Get_Key_YES_NO();
     while(checkstatus==YES)
     {
         
@@ -82,8 +83,7 @@ Plane_information* Create_Plane_List(void)
         printf("请输入着陆时间(年 月 日 时 分):\n");
         scanf("%d %d %d %d %d", &p2->landing_time[0], &p2->landing_time[1], 
                 &p2->landing_time[2], &p2->landing_time[3], &p2->landing_time[4]);
-        printf("是否要继续录入航班信息(y/n)\n");
-        checkstatus=Get_Key_YES_NO();        
+        printf("是否要继续录入航班信息(y/n)\n");      
     }   
     printf("退出程序\n");
     p2->next=NULL;
@@ -335,3 +335,37 @@ struct Plane_information* Find_Plane_Day(Plane_information*head)
     }
 }
 
+
+
+struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head)
+{
+    Plane_information*p=head;
+    char id[20] = "";
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
+
+    if(head==NULL)
+    {
+        MessageBox(hwnd, "航班信息为空", "提示", MB_OK);	
+    }
+
+    while(p->next!=NULL)
+    {
+        if(strcmp(p->id,id)==0)
+        {
+            MessageBox(hwnd, "已找到相应航班", "提示", MB_OK);	
+            return p;
+        }
+        p=p->next;
+    }
+
+    if(strcmp(p->id,id)==0)
+    {
+        MessageBox(hwnd, "已找到相应航班", "提示", MB_OK);	
+        return p;
+    }
+    else
+    {
+        MessageBox(hwnd, "未找到相应航班", "提示", MB_OK);	
+        return NULL;
+    }
+}

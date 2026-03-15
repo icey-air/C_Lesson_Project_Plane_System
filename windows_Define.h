@@ -44,7 +44,8 @@ void ShowAdminWindow(HWND hwnd);
 void ShowUserWindow(HWND hwnd);
 void RefreshPlaneList(HWND hwnd);
 extern HWND g_hMainWindow;  
-extern Plane_information* g_head;  // 航班信息链表头指针
+
+
 // HWND g_hMainWindow = NULL;重要的变量，暂时没有想好放哪里，就丢final_test.c了
 
 #endif

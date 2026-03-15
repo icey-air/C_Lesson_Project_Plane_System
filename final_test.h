@@ -6,13 +6,13 @@
 #include <string.h>
 #include <windows.h>
 #include "tourist.h"
+#include "Apply.h"
 /*======================== 数据结构定义 ========================*/
 
 /*======================== 常量定义 ========================*/
 
 /*======================== 全局变量声明 ========================*/
 
-extern Plane_information* g_head;      // 航班链表头指针
 extern int g_planeCount;                // 航班数量
 extern tourist g_currentUser;           // 当前登录用户
 extern int g_userType;                  // 用户类型：0-未登录，1-管理员，2-普通用户
