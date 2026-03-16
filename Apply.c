@@ -10,24 +10,19 @@
 void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*head)//我要把找对应日期改为找id了
 {
     struct Plane_information* Book_Plane;
+    struct Ticket *Ticket1;
+    Ticket1=(struct Ticket*)malloc(Ticket_LEN);
+
     Book_Plane=Find_Plane_ID(hwnd,head);
     if(Book_Plane!=NULL)
     {  
         if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDYES)//需要缓冲区字符串
         {
-            Now_Account->plane=Book_Plane;
+
+            Add_Ticket(hwnd, Now_Account, Book_Plane);
             MessageBox(hwnd, "已预定id为:的航班", "提示", MB_OK);
             printf("已预定航班%s的机票\n",Book_Plane->id);
-        }
-        else if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDNO)
-        {
-            MessageBox(hwnd, "未预定id为航班的机票", "提示", MB_OK);
-        }        
-    }
-
-    else
-    {
-        MessageBox(hwnd, "未找到id为航班的机票", "提示", MB_OK);
+        }      
     }
      RefreshPlaneList(hwnd);
 }
@@ -35,50 +30,184 @@ void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*h
 /*@breif    取消预定机票
 * @param	当前账户结构体地址
 * @return	无
-*/
-void Cancel_Ticket_Reservation(struct tourist*Now_Account)
+*///要先做List函数
+void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 {
-    printf("正在为您查询已预定的机票");
-    List_Ticket_Reservation(Now_Account);
-    printf("是否要取消预定的机票(y/n)\n");
-    char key;
-    while(1)
+    
+    Ticket*Ticket_Delete=Now_Account->Ticket_List;
+    Ticket*Ticket_Forward=NULL;
+    char id[20]="";
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
+
+    if(Ticket_Delete==NULL)
     {
-        scanf("%c",&key);
-        if(key=='y')
-        {
-            Now_Account->plane=NULL;
-            printf("已取消预定的机票\n");
-            break;
-        }
-        else if(key=='n')
-        {
-            printf("未取消预定的机票\n");
-            break;
+        MessageBox(hwnd, "您还没有预定机票", "提示", MB_OK);
+        return;
+    }
+
+    while(Ticket_Delete->next!=NULL&&strcmp(Ticket_Delete->Plane_Ticket->id,id)!=0)
+    {
+        Ticket_Forward=Ticket_Delete;
+        Ticket_Delete=Ticket_Delete->next;
+    }
+
+    if(strcmp(Ticket_Delete->Plane_Ticket->id,id)==0)//是不是还要考虑头指针
+    {
+        if(MessageBox(hwnd, "是否要取消预定id为航班的机票呢", "确认", MB_YESNO) == IDYES)
+        {   
+
+            if(Ticket_Delete==Now_Account->Ticket_List)
+            {
+                Now_Account->Ticket_List=Now_Account->Ticket_List->next;
+                free(Now_Account->Ticket_List);
+            }
+            else
+            {
+                Ticket_Forward->next=Ticket_Delete->next;
+                free(Ticket_Delete);
+            }
+            MessageBox(hwnd, "已取消预定", "提示", MB_OK);
+
         }
         else
         {
-            printf("输入错误，请重新输入(y/n)\n");
+            MessageBox(hwnd, "未取消预定", "提示", MB_OK);
         }
     }
+    else
+    {
+        MessageBox(hwnd, "未找到预定的航班", "提示", MB_OK);
+    }
+
+
 }
 
 /*@breif    查找并例出已预定的机票
 * @param	当前账户结构体地址
 * @return	无
 */
-void List_Ticket_Reservation(struct tourist*Now_Account)
+void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 {
-    if(Now_Account->plane!=NULL)
+    int Ticket_Count=0;//用来改变宏值
+
+    Ticket*Ticket_List=Now_Account->Ticket_List;
+
+    if(Ticket_List==NULL)
     {
-        printf("您已预定的机票信息如下：\n");
-        printf("航班号：%s\n",Now_Account->plane->id);
-        printf("起飞时间：%d-%d-%d %d:%d\n",Now_Account->plane->take_off_time[0],Now_Account->plane->take_off_time[1],Now_Account->plane->take_off_time[2],Now_Account->plane->take_off_time[3],Now_Account->plane->take_off_time[4]);
-        printf("着陆时间：%d-%d-%d %d:%d\n",Now_Account->plane->landing_time[0],Now_Account->plane->landing_time[1],Now_Account->plane->landing_time[2],Now_Account->plane->landing_time[3],Now_Account->plane->landing_time[4]);
-        printf("价格：%d\n",Now_Account->plane->prize);
+        char info[500];
+        sprintf(info,"您当前没有预约任何航班。");
+        SetDlgItemText(hwnd, ID_STATIC_INFO, info);
+        MessageBox(hwnd, "您没有预约的飞机", "提示", MB_OK);
+
+    }
+
+    else//没有完善
+    {   
+        while(Ticket_List!=NULL)//由于都是在一个地方显示，所以会覆盖
+        {
+        char info[500];
+        sprintf(info, "您已预定的航班信息:\n航班号: %s\n起飞时间: %d/%d/%d %02d:%02d\n着陆时间: %d/%d/%d %02d:%02d\n价格: ￥%.0f",
+                Ticket_List->Plane_Ticket->id,
+                Ticket_List->Plane_Ticket->take_off_time[0], Ticket_List->Plane_Ticket->take_off_time[1], Ticket_List->Plane_Ticket->take_off_time[2],
+                Ticket_List->Plane_Ticket->take_off_time[3], Ticket_List->Plane_Ticket->take_off_time[4],
+                Ticket_List->Plane_Ticket->landing_time[0], Ticket_List->Plane_Ticket->landing_time[1], Ticket_List->Plane_Ticket->landing_time[2],
+                Ticket_List->Plane_Ticket->landing_time[3], Ticket_List->Plane_Ticket->landing_time[4],
+                Ticket_List->Plane_Ticket->prize);
+        SetDlgItemText(hwnd, ID_STATIC_INFO+Ticket_Count, info);//目前只有到加一的代码
+        Ticket_List=Ticket_List->next;
+        Ticket_Count++;
+        if(Ticket_Count>2)
+        {
+            Ticket_Count=0;
+        }
+        }
+    }
+}
+
+
+/*@breif    添加预定机票到用户账户
+* @param    当前窗口句柄
+* @param	当前账户结构体地址
+* @param	要预定的航班信息结构体指针
+* @return	无
+*/
+void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plane)
+{
+    struct Ticket *Ticket1;
+    Ticket1=(struct Ticket*)malloc(Ticket_LEN);
+
+    if(Now_Account->Ticket_List==NULL)//第一次预定机票
+    {
+        Now_Account->Ticket_List=Ticket1;
+        Now_Account->Ticket_List->Plane_Ticket=Book_Plane;
+        Now_Account->Ticket_List->next=NULL;
+        return;
     }
     else
     {
-        printf("您没有预定任何机票\n");
+        struct Ticket *p1;
+        p1=Now_Account->Ticket_List;
+        while(p1->next!=NULL)
+        {
+           if(Find_Ticket(Now_Account,Book_Plane)!=NULL)
+            {
+                MessageBox(hwnd, "您已预定过该航班的机票", "提示", MB_OK);
+                return;
+            }
+            p1=p1->next;
+        }
+
+        if(Find_Ticket(Now_Account,Book_Plane)!=NULL)
+            {
+                MessageBox(hwnd, "您已预定过该航班的机票", "提示", MB_OK);
+                return;
+            }
+        
+        
+        Ticket1->Plane_Ticket=Book_Plane;
+        Ticket1->next=NULL;
+        p1->next=Ticket1;
+        MessageBox(hwnd, "已添加预定", "提示", MB_OK);
+        return;
     }
+   
 }
+
+
+
+/*@breif    添加预定机票到用户账户
+* @param    当前窗口句柄
+* @param	当前账户结构体地址
+* @return	找到的机票结构体指针orNULL
+*/
+struct Ticket* Find_Ticket(struct tourist*Now_Account,Plane_information*Book_Plane)
+{
+    char id[20]="";
+    strcpy(id,Book_Plane->id);
+
+    struct Ticket *p1;
+    p1=Now_Account->Ticket_List;
+
+    if(p1==NULL)
+    {
+        return NULL;
+    }
+
+    while(p1->next!=NULL)
+    {
+        if(strcmp(p1->Plane_Ticket->id,id)==0)
+        {
+            return p1;
+        }
+        p1=p1->next;
+    }
+
+    if(strcmp(p1->Plane_Ticket->id,id)==0)
+    {
+        return p1;
+    }
+    else
+    {
+        return NULL;
+    }
+}   

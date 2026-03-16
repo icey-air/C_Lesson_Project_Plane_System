@@ -39,6 +39,7 @@
 #define ID_LIST_BOOKING           3002  // 预定列表框ID
 
 #define ID_STATIC_INFO            4001  // 预定信息显示静态文本框ID
+#define ID_STATIC_INFO_1          4002  //测试用，预定信息显示静态文本框ID
 
 void ShowAdminWindow(HWND hwnd);
 void ShowUserWindow(HWND hwnd);

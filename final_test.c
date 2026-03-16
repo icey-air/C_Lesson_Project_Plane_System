@@ -73,39 +73,6 @@ void Init_Test_Data(void)
 /*======================== 账户管理功能实现 ========================*/
 
 
-/**
- * @brief 用户登录
- */
-int Login_User(char username[], char password[], int type)
-{
-    if(type == 1)  // 管理员登录
-    {
-        if(strcmp(username, ADMIN_USERNAME) == 0 && strcmp(password, ADMIN_PASSWORD) == 0)
-        {
-            strcpy(g_currentUser.name, username);
-            strcpy(g_currentUser.password, password);
-        
-            g_currentUser.plane = NULL;
-            g_userType = 1;
-            return 1;
-        }
-    }
-    else if(type == 2)  // 普通用户登录
-    {
-        for(int i = 0; i < g_accountCount; i++)
-        {
-            if(strcmp(g_accounts[i].name, username) == 0 && 
-               strcmp(g_accounts[i].password, password) == 0)
-            {
-                g_currentUser = g_accounts[i];
-                g_userType = 2;
-                return 1;
-            }
-        }
-    }
-    
-    return 0;
-}
 
 /*======================== Windows界面实现 ========================*/
 
@@ -113,7 +80,6 @@ int Login_User(char username[], char password[], int type)
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void ShowLoginWindow(HWND hwnd);
 void ShowAddPlaneDialog(HWND hwnd);
-void ShowDeletePlaneDialog(HWND hwnd);
 void ShowUpdatePlaneDialog(HWND hwnd);
 
 
@@ -209,7 +175,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_DELETE_PLANE)
             {
-                ShowDeletePlaneDialog(hwnd);
+                g_head=Manager_Delete_Plane(hwnd,g_head);
             }
             else if(wmId == ID_BUTTON_UPDATE_PLANE)
             {
@@ -223,26 +189,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             // 用户功能按钮
             else if(wmId == ID_BUTTON_SEARCH_PLANE)//搜索航班id代码
             {
-                char id[20] = "";
-                GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
+                Find_Plane_ID(hwnd,g_head);//只是查找ID，没有显示信息的代码//可能要再封装一次
             }
             else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
             {
-                    Book_Ticket(hwnd, Now_Account,g_head);
+                    Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
             }
-            else if(wmId == ID_BUTTON_CANCEL_BOOK)
+            else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
             {
-               
-                
-                char info[500];
-           
-
-                SetDlgItemText(hwnd, ID_STATIC_INFO, info);
+                Cancel_Ticket_Reservation(hwnd,Now_Account);
             }
-            else if(wmId == ID_BUTTON_LIST_BOOK)
+            else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
             {
-                char info[500];
-                SetDlgItemText(hwnd, ID_STATIC_INFO, info);
+              List_Ticket_Reservation(hwnd, Now_Account);
             }
             
             break;
@@ -349,18 +308,7 @@ BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len)
     return TRUE;
 }
 
-/**
- * @brief 显示删除航班对话框
- */
-void ShowDeletePlaneDialog(HWND hwnd)
-{
-    char id[20] = "";
-    if(InputBox(hwnd, "请输入要删除的航班号:", id, 20))
-    {
 
-        RefreshPlaneList(hwnd);
-    }
-}
 
 /**
  * @brief 显示修改航班对话框

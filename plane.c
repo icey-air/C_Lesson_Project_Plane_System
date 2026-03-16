@@ -137,48 +137,52 @@ Plane_information* Add_Plane(Plane_information *head)
 * @param    航班编号
 * @return	航班信息结构体头指针
 */
-Plane_information* Delete_Plane(Plane_information*head)
+Plane_information* Delete_Plane(HWND hwnd,Plane_information*head)
 {
-    char id[20];
-    printf("请输入要删除的航班号\n");
-    scanf("%s",id);
+    char id[20] = "";
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
     struct Plane_information*p1=head;
     struct Plane_information*p2=NULL;
 
     if(head==NULL)
     {
-        printf("航班列表为空\n");
+       MessageBox(hwnd, "航班列表为空", "提示", MB_OK);
         return head;
     }
+
     while(p1->next!=NULL&&strcmp(p1->id,id)!=0)
     {
         p2=p1;
         p1=p1->next;
     }
+
     if(strcmp(p1->id,id)==0)
     {
         if(p1==head)
         {
             head=p1->next;
             free(p1);
-            printf("已删除航班号为%s的航班\n",id);
+            MessageBox(hwnd, "已删除", "提示", MB_OK);
             return head;
+            
         }
         else
         {
             p2->next=p1->next;
             free(p1);
-            printf("已删除航班号为%s的航班\n",id);
+            MessageBox(hwnd, "已删除", "提示", MB_OK);         
             return head;
+           
         }
     }
     else
     {
-        printf("未查找到相应的航班号\n");
+        MessageBox(hwnd, "未查找到相应的航班号", "提示", MB_OK);
         return head;
     }
- 
+     
 }
+
 
 
 /*@breif	修改航班信息
@@ -337,6 +341,11 @@ struct Plane_information* Find_Plane_Day(Plane_information*head)
 
 
 
+/*@breif	根据ID查找航班
+* @param    windows窗口句柄
+* @param	航班信息结构体头指针
+* @return	找到的航班结构体指针orNULL
+*/
 struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head)
 {
     Plane_information*p=head;

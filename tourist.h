@@ -3,6 +3,8 @@
 #include "plane.h"
 #include "windows_Define.h"
 #include "windef.h"
+
+#define Ticket_LEN	sizeof(struct Ticket)
 #define Tourist_LEN sizeof(struct tourist)
 
 struct tourist* Register_Tourist(HWND hwnd,struct tourist*head);
@@ -24,8 +26,9 @@ typedef struct tourist
 	char identity_card[19];
 	int Count;
 	int Airfare_Cost;//开销
-	struct Plane_information*plane;//飞机
-	struct tourist *passenger;//一个人买多张票
+
+	struct Ticket*Ticket_List;
+	
 	struct tourist *next;
 }tourist;
 
@@ -39,5 +42,13 @@ struct passenger
 	struct passenger*next;
 };
 
+
+typedef struct Ticket
+{
+	Plane_information*Plane_Ticket;
+	struct passenger*Passsenger_List;
+	struct Ticket*next;
+
+}Ticket;
 
 #endif

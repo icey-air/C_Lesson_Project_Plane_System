@@ -11,10 +11,10 @@
 * @param	游客头指针
 * @return	头指针orNULL
 */
-struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
+struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//有bug,空的也能注册登录
 {
-	MessageBox(hwnd, "进入了注册代码", "提示", MB_OK);	
-	struct tourist* HEAD,* p1, * p2;
+		
+	struct tourist* HEAD,* p1, * p2;//小心，这个指针是野指针
 	char name[20];
 	char Password1[21];
 	char Password2[21];
@@ -51,6 +51,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 		strcpy(p1->password,Password);
 		strcpy(p1->phone_number,phone);
 	
+		p1->Ticket_List=NULL;
 
 
 
@@ -59,7 +60,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 	}
 	
 	else//第一个注册账户
-	{	MessageBox(hwnd, "进入了第一个代码", "提示", MB_OK);	
+	{		
 		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
 		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
     	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
@@ -72,6 +73,8 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)
 		strcpy(p1->Account,username);
 		strcpy(p1->password,Password);
 		strcpy(p1->phone_number,phone);
+		p1->Ticket_List=NULL;
+		MessageBox(hwnd, "注册成功", "提示", MB_OK);
 		return head;
 	}	
 }	
@@ -100,27 +103,23 @@ struct tourist* Loging_Account(HWND hwnd,struct tourist*head)
 	}
 
 
-	while(p->next!=NULL)
+	while(p!=NULL)
 	{
 		if(strcmp(Account,p->Account)==0&&strcmp(Password,p->password)==0)
 		{
 			MessageBox(hwnd, "登录成功", "提示", MB_OK);
+
 			ShowUserWindow(hwnd);
+			char info[500];
+    	    sprintf(info,"按“我的预约”按钮看已预约的机票。");
+			
+    	    SetDlgItemText(hwnd, ID_STATIC_INFO, info);
 			return p;//可以返回指针,不放心可以Printf测试
 		}
 		p=p->next;
 	}
-	if(strcmp(Account,p->Account)==0&&strcmp(Password,p->password)==0)
-	{
-		MessageBox(hwnd, "登录成功", "提示", MB_OK);
-		ShowUserWindow(hwnd);
-		return p;
-	}
-	else
-	{
 		MessageBox(hwnd, "登录失败", "提示", MB_OK);
 		return NULL;
-	}
 }
 
 

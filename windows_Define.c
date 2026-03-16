@@ -32,11 +32,17 @@ void ShowAdminWindow(HWND hwnd)
     CreateWindow("BUTTON", "退出登录", WS_CHILD | WS_VISIBLE,
                  650, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_LOGOUT, NULL, NULL);
     
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 460, 20, 100, 30, hwnd, (HMENU)ID_EDIT_SEARCH_ID, NULL, NULL);
+
+
     // 创建列表框显示航班信息
     CreateWindow("LISTBOX", NULL,
                  WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,
                  20, 70, 740, 450, hwnd, (HMENU)ID_LIST_PLANE, NULL, NULL);
-    
+
+
+
     // 显示当前航班列表
     RefreshPlaneList(hwnd);
 }
@@ -91,8 +97,16 @@ void ShowUserWindow(HWND hwnd)
                  500, 60, 100, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 500, 90, 260, 170, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
-    
+                 500, 200, 260, 170, hwnd, (HMENU)ID_STATIC_INFO_1, NULL, NULL);
+
+    CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 500, 90, 260, 350, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
+                 
+ 
+
+
+
+
     // 显示所有航班
     RefreshPlaneList(hwnd);
 }
@@ -127,7 +141,7 @@ void RefreshPlaneList(HWND hwnd)
                 p->take_off_time[0], p->take_off_time[1], p->take_off_time[2],
                 p->take_off_time[3], p->take_off_time[4]);
         
-        SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);
+        SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);// 添加航班信息到列表框
         p = p->next;
     }
 }
