@@ -6,7 +6,7 @@
 #include <string.h>
 #include <windows.h>
 #include "tourist.h"
-#include "Apply.h"
+#include "Ticket.h"
 #include "Manager.h"
 /*======================== 数据结构定义 ========================*/
 

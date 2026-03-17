@@ -1,4 +1,4 @@
-#include "Apply.h"
+#include "Ticket.h"
 #include <stdio.h>
 
 /*@breif    预定机票
@@ -51,7 +51,7 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
         Ticket_Delete=Ticket_Delete->next;
     }
 
-    if(strcmp(Ticket_Delete->Plane_Ticket->id,id)==0)//是不是还要考虑头指针
+    if(strcmp(Ticket_Delete->Plane_Ticket->id,id)==0)
     {
         if(MessageBox(hwnd, "是否要取消预定id为航班的机票呢", "确认", MB_YESNO) == IDYES)
         {   
@@ -83,7 +83,8 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 }
 
 /*@breif    查找并例出已预定的机票
-* @param	当前账户结构体地址
+* @param	windows窗口句柄
+* @param    当前账户结构体地址
 * @return	无
 */
 void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
@@ -128,7 +129,7 @@ void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 /*@breif    添加预定机票到用户账户
 * @param    当前窗口句柄
 * @param	当前账户结构体地址
-* @param	要预定的航班信息结构体指针
+* @param	要预定的航班结构体指针
 * @return	无
 */
 void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plane)
@@ -176,8 +177,8 @@ void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plan
 
 
 /*@breif    添加预定机票到用户账户
-* @param    当前窗口句柄
-* @param	当前账户结构体地址
+* @param    当前账户结构体地址
+* @param	要查找的飞机结构体指针
 * @return	找到的机票结构体指针orNULL
 */
 struct Ticket* Find_Ticket(struct tourist*Now_Account,Plane_information*Book_Plane)

@@ -3,7 +3,7 @@
 #include "plane.h"
 #include "windows_Define.h"
 #include "windef.h"
-
+#include "Tourist_File.h"
 #define Ticket_LEN	sizeof(struct Ticket)
 #define Tourist_LEN sizeof(struct tourist)
 

@@ -56,6 +56,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);	
+		Tourist_File_Save(head);
 		return head;
 	}
 	
@@ -75,6 +76,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 		strcpy(p1->phone_number,phone);
 		p1->Ticket_List=NULL;
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);
+		Tourist_File_Save(head);
 		return head;
 	}	
 }	
@@ -187,7 +189,7 @@ struct tourist* Remove_Tourist(struct tourist*head,int id)
 /*@brief	ĞŞ¸ÄÓÎ¿ÍĞÅÏ¢ Ã»Ğ´Íê
 * @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
 * @return	ÎŞ
-*/
+*
 
 //ÄÚÈİÒª¸Ä
 void Change_tourist(struct tourist*Now_Account)

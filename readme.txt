@@ -10,7 +10,7 @@
 
 ---------------------------------------------------------------------------------------
 目前已经把注册，登录函数实现，还没优化  --3.16
-gcc -g final_test.c plane.c windows_Define.c  tourist.c manager.c  Apply.c -o final_test     编译用
+gcc -g Tourist_File.c final_test.c plane.c windows_Define.c  tourist.c manager.c  Ticket.c  -o final_test      编译用
 终于搞定BOOK_TICKET函数
 
 
@@ -24,3 +24,4 @@ gcc -g final_test.c plane.c windows_Define.c  tourist.c manager.c  Apply.c -o fi
 6.预定已经预定的飞机的问题                                            --由于一个人可能买很多票，这个得后期优化
 7.想到一个亮点：设置中英文切换，国际化这一块                            --日后再说吧
 8.有一个比较麻烦的问题，用户预定飞机票，飞机指针放到了游客结构体下，本意是为了一个人买多张票好查找，结果飞机那边是一个链表导致这边即使游客买了第一张票也会根据链表查询到最后一个飞机            ---大bug---多写一个购票链表来解决，不要游客结构体的飞机链表了
+9.取消预约有乱码
