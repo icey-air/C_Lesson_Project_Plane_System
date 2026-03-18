@@ -202,10 +202,10 @@ void Change_tourist(struct tourist*Now_Account)
 	switch (mod)
 	{
 		case 1:
-			char name[10];
+			//char name[10];
 			printf("ÇëÊäÈëÃû×Ö");
-			scanf("%s",name);
-			strcpy(Now_Account->name,name);
+			//scanf("%s",name);
+			//strcpy(Now_Account->name,name);
 			break;
 		case 2:
 			Change_Phone_Number(Now_Account);

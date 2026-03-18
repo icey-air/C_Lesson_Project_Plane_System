@@ -68,7 +68,7 @@ void ShowUserWindow(HWND hwnd)
     // 创建用户界面控件
     CreateWindow("STATIC", "航班号:", WS_CHILD | WS_VISIBLE,
                  20, 20, 50, 25, hwnd, NULL, NULL, NULL);
-    
+    //输入类
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  80, 20, 120, 25, hwnd, (HMENU)ID_EDIT_SEARCH_ID, NULL, NULL);
     

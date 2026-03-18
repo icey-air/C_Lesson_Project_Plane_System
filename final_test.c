@@ -2,6 +2,9 @@
 #include "tourist.h"
 #include "windows_Define.h"
 #include "Manager.h"
+
+#include "Ticket.h"
+
 /*======================== 全局变量定义 ========================*/
 Plane_information* g_head = NULL;
 
@@ -14,9 +17,9 @@ tourist g_accounts[MAX_ACCOUNTS];
 int g_accountCount = 0;
 tourist *Now_Account=NULL;
 tourist *tourist_head=NULL;
-// 管理员账户（硬编码）
+/*管理员账户（硬编码）
 const char* ADMIN_USERNAME = "admin";
-const char* ADMIN_PASSWORD = "admin123";
+const char* ADMIN_PASSWORD = "admin123";*/
 
 /*======================== 工具函数 ========================*/
 
@@ -169,10 +172,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             
             // 管理员功能按钮
+            // 在 final_test.c 的 WindowProc 函数中，找到管理员功能按钮的处理部分
+// 在 ID_BUTTON_DELETE_PLANE 的处理之前添加以下代码
+
             else if(wmId == ID_BUTTON_ADD_PLANE)
             {
-                ShowAddPlaneDialog(hwnd);
+              ShowAddPlaneDialog(hwnd);
             }
+
+            
             else if(wmId == ID_BUTTON_DELETE_PLANE)
             {
                 g_head=Manager_Delete_Plane(hwnd,g_head);
@@ -273,53 +281,3 @@ void ShowLoginWindow(HWND hwnd)
 }
 
 
-/**
- * @brief 显示添加航班对话框
- */
-void ShowAddPlaneDialog(HWND hwnd)
-{
-    // 简化版：使用DialogBox，这里用输入框演示
-    char id[20] = "", whole_seat[10] = "", rest_seat[10] = "", prize[10] = "";
-    char takeoff[50] = "", landing[50] = "";
-    
-    // 在实际应用中，这里应该创建一个对话框
-    // 为简化，我们使用一个输入对话框
-    id[0] = '\0';
-    if(InputBox(hwnd, "请输入航班号:", id, 20))
-    {
-        // 这里简化处理，实际应该获取所有信息
-        int w_seat = 200, r_seat = 200;
-        float pr = 800.0;
-        int takeoff_time[5] = {2024, 3, 15, 8, 0};
-        int landing_time[5] = {2024, 3, 15, 10, 30};
-        
-      
-        RefreshPlaneList(hwnd);
-    }
-}
-
-// 简单的输入框函数
-BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len)
-{
-    // 这是一个简化函数，实际应用中应该创建对话框
-    // 这里用MessageBox演示概念
-    MessageBox(hwnd, "在实际应用中，这里会弹出输入对话框", "提示", MB_OK);
-    strcpy(result, "CA1003");
-    return TRUE;
-}
-
-
-
-/**
- * @brief 显示修改航班对话框
- */
-void ShowUpdatePlaneDialog(HWND hwnd)
-{
-    char id[20] = "";
-    if(InputBox(hwnd, "请输入要修改的航班号:", id, 20))
-    {
-        // 简化处理
-      
-        RefreshPlaneList(hwnd);
-    }
-}

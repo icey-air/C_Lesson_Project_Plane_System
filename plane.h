@@ -14,6 +14,8 @@ int take_off_time[5];//起飞时间
 int landing_time[5];//着陆时间
 float prize;//价格
 int num;//索引序号
+char starting_point[20];//新增起点终点
+char destination[20];
 
 struct tourist  *passenger;//乘客
 struct Plane_information*next;
