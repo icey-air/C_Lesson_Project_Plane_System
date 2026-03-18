@@ -2,8 +2,9 @@
 #include "tourist.h"
 #include "windows_Define.h"
 #include "Manager.h"
-#include "dialog.h"
+
 #include "Ticket.h"
+
 /*======================== 全局变量定义 ========================*/
 Plane_information* g_head = NULL;
 
@@ -171,18 +172,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             
             // 管理员功能按钮
- 
-         else if(wmId == ID_BUTTON_ADD_PLANE)
-         {
-            // 弹出添加航班对话框
-            DialogBoxParam(GetModuleHandle(NULL), 
-                          MAKEINTRESOURCE(IDD_ADD_PLANE_DIALOG),
-                          hwnd, 
-                          AddPlaneDialogProc, 
-                          0);
-            // 刷新列表显示
-            RefreshPlaneList(hwnd);
-            break;
+            // 在 final_test.c 的 WindowProc 函数中，找到管理员功能按钮的处理部分
+// 在 ID_BUTTON_DELETE_PLANE 的处理之前添加以下代码
+
+            else if(wmId == ID_BUTTON_ADD_PLANE)
+            {
+              ShowAddPlaneDialog(hwnd);
             }
 
             

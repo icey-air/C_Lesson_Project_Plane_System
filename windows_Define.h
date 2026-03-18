@@ -41,6 +41,37 @@
 #define ID_STATIC_INFO            4001  // 预定信息显示静态文本框ID
 #define ID_STATIC_INFO_1          4002  //测试用，预定信息显示静态文本框ID
 
+
+/////////白轩宇的添加////////////
+// 在 windows_Define.h 的控件ID定义部分添加以下内容
+
+#define ID_DIALOG_ADD_PLANE        5001  // 添加航班对话框ID
+#define ID_EDIT_PLANE_ID_ADD       5002  // 添加航班-航班号输入框
+#define ID_EDIT_WHOLE_SEAT_ADD     5003  // 添加航班-总座位数输入框
+#define ID_EDIT_REST_SEAT_ADD      5004  // 添加航班-剩余座位数输入框
+#define ID_EDIT_PRIZE_ADD          5005  // 添加航班-价格输入框
+#define ID_EDIT_DEPARTURE_ADD       5006  // 添加航班-起点输入框
+#define ID_EDIT_DESTINATION_ADD     5007  // 添加航班-终点输入框
+
+// 起飞时间输入框
+#define ID_EDIT_TAKEOFF_YEAR       5008
+#define ID_EDIT_TAKEOFF_MONTH      5009
+#define ID_EDIT_TAKEOFF_DAY        5010
+#define ID_EDIT_TAKEOFF_HOUR       5011
+#define ID_EDIT_TAKEOFF_MINUTE     5012
+
+// 着陆时间输入框
+#define ID_EDIT_LANDING_YEAR       5013
+#define ID_EDIT_LANDING_MONTH      5014
+#define ID_EDIT_LANDING_DAY        5015
+#define ID_EDIT_LANDING_HOUR       5016
+#define ID_EDIT_LANDING_MINUTE     5017
+
+#define ID_BUTTON_CONFIRM_ADD_PLANE 5018  // 确认添加按钮
+#define ID_BUTTON_CANCEL_ADD_PLANE  5019  // 取消添加按钮
+
+///白轩宇的添加结束/////////
+/// @param hwnd 
 void ShowAdminWindow(HWND hwnd);
 void ShowUserWindow(HWND hwnd);
 void RefreshPlaneList(HWND hwnd);
