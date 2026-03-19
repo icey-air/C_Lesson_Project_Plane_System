@@ -41,6 +41,7 @@
 #define ID_STATIC_INFO            4001  // 预定信息显示静态文本框ID
 #define ID_STATIC_INFO_1          4002  //测试用，预定信息显示静态文本框ID
 
+                    
 
 /////////白轩宇的添加////////////
 // 在 windows_Define.h 的控件ID定义部分添加以下内容
@@ -71,6 +72,9 @@
 #define ID_BUTTON_CANCEL_ADD_PLANE  5019  // 取消添加按钮
 
 ///白轩宇的添加结束/////////
+
+
+
 /// @param hwnd 
 void ShowAdminWindow(HWND hwnd);
 void ShowUserWindow(HWND hwnd);

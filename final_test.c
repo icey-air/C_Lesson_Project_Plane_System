@@ -34,6 +34,8 @@ void Init_Test_Data(void)
     p1->whole_seat = 200;
     p1->rest_seat = 150;
     p1->prize = 800.0;
+    strcpy(p1->starting_point,"沈阳");
+    strcpy(p1->destination,"北京");
     p1->take_off_time[0] = 2024;
     p1->take_off_time[1] = 3;
     p1->take_off_time[2] = 15;
@@ -55,6 +57,8 @@ void Init_Test_Data(void)
     p2->whole_seat = 180;
     p2->rest_seat = 180;
     p2->prize = 650.0;
+    strcpy(p2->starting_point,"沈阳");
+    strcpy(p2->destination,"广州");
     p2->take_off_time[0] = 2024;
     p2->take_off_time[1] = 3;
     p2->take_off_time[2] = 16;
