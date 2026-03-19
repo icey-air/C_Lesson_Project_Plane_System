@@ -25,9 +25,15 @@
 #define ID_BUTTON_CONFIRM_DELETE  1014  // 确认删除按钮ID
 #define ID_BUTTON_CONFIRM_UPDATE  1015  // 确认更新按钮ID
 #define ID_BUTTON_SEARCH_PLANE    1016  // 搜索航班按钮ID
-#define ID_BUTTON_CHANGE_ACCOUNT  1017  // 更改用户信息ID
+#define ID_BUTTON_CHANGE_INFO     1017  // 用户信息修改按钮ID
 #define ID_BUTTON_REGISTER_COMFIRM 1018  // 注册确认按钮
 #define ID_BUTTON_REGISTER_CANCLE 1019  // 注册取消按钮
+#define ID_BUTTON_CHANGE_INFO_COMFIRM 1020    //用户修改信息确认ID
+#define ID_BUTTON_CHANGE_INFO_CANCLE  1021    //用户修改信息取消ID
+ #define ID_BUTTON_CHANGE_Account      1022    
+#define ID_BUTTON_CHANGE_Password     1023
+#define ID_BUTTON_CHANGE_Phone        1024
+
 
 #define ID_EDIT_ACCOUNT          2001  // 账户输入框ID
 #define ID_EDIT_PASSWORD          2002  // 密码输入框ID
@@ -39,9 +45,10 @@
 #define ID_EDIT_SEARCH_ID         2008  // 搜索航班号输入框ID
 #define ID_EDIT_IDENTIEY_CARD     2009  // 用户身份证输入框ID
 #define ID_EDIT_NAME              2010  // 用户姓名输入框ID
-#define ID_EDIT_CHANGE_INFO       2011  // 用户信息修改ID
-#define ID_EDIT_CHANGE_INFO_COMFIRM 2012    //用户修改信息确认ID
-#define ID_EDIT_CHANGE_INFO_CANCLE  2013    //用户修改信息取消ID
+
+
+
+
 
 #define ID_LIST_PLANE             3001  // 航班列表框ID
 #define ID_LIST_BOOKING           3002  // 预定列表框ID

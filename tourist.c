@@ -27,7 +27,16 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//”–bug,ø’µƒ“≤ƒ‹◊
 	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
 	GetDlgItemText(hwnd, ID_EDIT_NAME, name, 20);
 	GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
+	
+	if(strlen(Account)==0||strlen(Password)==0||strlen(name)==0||strlen(Identity_Card)==0)
+	{
+		MessageBox(hwnd, " ‰»ÎøÚ≤ªø…Œ™ø’", "Ã· æ", MB_OK);
+		return NULL;
+	}
+	else
+	{
 
+	}
 
 	if(head!=NULL)//≤ª «µ⁄“ª∏ˆ◊¢≤·’Àªß
 	{
@@ -193,11 +202,107 @@ struct tourist* Remove_Tourist(struct tourist*head,int id)
 /*@brief	–ﬁ∏ƒ”ŒøÕ–≈œ¢ √ª–¥ÕÍ
 * @param	µ±«∞”ŒøÕΩ·ππÃÂµÿ÷∑
 * @return	Œﬁ
-*
-void Change_tourist(HWND hwnd,struct tourist*Now_Account)
+*/
+int Change_tourist(HWND hwnd,int wmId,struct tourist*Now_Account)
 {
+	
+	
+
+	switch (wmId)
+	{
+		case ID_BUTTON_CHANGE_Account:
+		    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
+
+			return 1;	
+		case ID_BUTTON_CHANGE_Password:
+			CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 240, 150, 25, hwnd, (HMENU)ID_EDIT_PASSWORD, NULL, NULL);
+
+			return 3;
+		case ID_BUTTON_CHANGE_Phone:
+			CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 280, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
+
+			return 5;
+		
+		default:
+			return 0;
+	}
+
+
+
+	
+	// GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+    // GetDlgItemText(hwnd, ID_EDIT_PHONE, Account, 20);
+	// GetDlgItemText(hwnd, ID_EDIT_NAME, Password, 20);
+	// GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
 
 }
+
+void Change_Information_Comfirm(HWND hwnd,int Change_What,struct tourist* Now_Account)
+{
+	char Account[20]="",Password[20]="",Phone[20]="";
+	switch (Change_What)
+	{
+	case 1:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			Show_Account_Information_Change_Window(hwnd);
+		break;
+	case 3:
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 5:
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 4:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 6:	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 8:
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 9:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	default:
+		printf("bug");
+		break;
+	}
+}
+
+
+
+
+
 
 
 /*@brief	≤È’“”ŒøÕ’Àªß

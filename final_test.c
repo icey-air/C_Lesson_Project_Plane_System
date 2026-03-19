@@ -12,8 +12,10 @@ int g_planeCount = 0;
 tourist g_currentUser;
 int g_userType = 0;  // 0-未登录，1-管理员，2-普通用户
 HWND g_hMainWindow = NULL;
-// 账户数组
-tourist g_accounts[MAX_ACCOUNTS];
+
+int Change_What=0;//修改账户信息用，别动
+
+
 int g_accountCount = 0;
 tourist *Now_Account=NULL;
 tourist *tourist_head=NULL;
@@ -154,6 +156,45 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             int wmId = LOWORD(wParam);
             
+//---------------------------------修改账户信息的，写得贼烂别动----- ---------------------------------------------------------------
+            if(wmId == ID_BUTTON_CHANGE_INFO)//修改信息
+            {
+                Show_Account_Information_Change_Window(hwnd);
+            }  
+            else if(wmId==ID_BUTTON_CHANGE_Account)
+            {   if(Change_What==0||Change_What==3||Change_What==5||Change_What==8)
+                {
+                 Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Password)
+            {
+                if(Change_What==0||Change_What==1||Change_What==5||Change_What==6)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Phone)
+            {  
+                 if(Change_What==0||Change_What==1||Change_What==3||Change_What==4)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_COMFIRM)//确认修改
+            {
+                Change_Information_Comfirm(hwnd,Change_What,Now_Account);
+                Change_What=0;
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_CANCLE)//取消修改
+            {
+              ShowUserWindow(hwnd);
+              Change_What=0;
+            }
+//---------------------------------------留着，我要封装------------------------------------------//
+
+
+            
             // 登录相关按钮
             if(wmId == ID_BUTTON_ADMIN_LOGIN)
             {
@@ -223,18 +264,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 List_Ticket_Reservation(hwnd, Now_Account);
             }
-             else if(wmId == ID_EDIT_CHANGE_INFO)//修改信息
-            {
-                Show_Account_Information_Change_Window(hwnd);
-            }
-             else if(wmId == ID_EDIT_CHANGE_INFO_COMFIRM)//确认修改
-            {
-              
-            }
-            else if(wmId == ID_EDIT_CHANGE_INFO_CANCLE)//取消修改
-            {
-              ShowUserWindow(hwnd);
-            }
+
+  
+
             break;
         }
         

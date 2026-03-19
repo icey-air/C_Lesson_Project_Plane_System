@@ -88,7 +88,7 @@ void ShowUserWindow(HWND hwnd)
                  480, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_LIST_BOOK, NULL, NULL);
 
     CreateWindow("BUTTON", "修改信息", WS_CHILD | WS_VISIBLE,
-                 570, 20, 80, 25, hwnd, (HMENU)ID_EDIT_CHANGE_INFO, NULL, NULL);
+                 570, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO, NULL, NULL);
     
     CreateWindow("BUTTON", "退出登录", WS_CHILD | WS_VISIBLE,
                  670, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_LOGOUT, NULL, NULL);
@@ -283,16 +283,18 @@ void Show_Account_Information_Change_Window(HWND hwnd)
     CreateWindow("STATIC", Now_Account->Account, WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 200, 150, 25, hwnd, NULL, NULL, NULL);
     
-    // CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-    //              360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
+    CreateWindow("BUTTON", "修改", WS_CHILD | WS_VISIBLE,
+                 520, 200, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Account, NULL, NULL);
+
     
     CreateWindow("STATIC", "密码:", WS_CHILD | WS_VISIBLE,
                  300, 240, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", (Now_Account->password), WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 240, 150, 25, hwnd, NULL, NULL, NULL);
-    // CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
-    //              360, 240, 150, 25, hwnd, (HMENU)ID_EDIT_PASSWORD, NULL, NULL);
+
+    CreateWindow("BUTTON", "修改", WS_CHILD | WS_VISIBLE,
+                 520, 240, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Password, NULL, NULL);
     
     CreateWindow("STATIC", "电话:", WS_CHILD | WS_VISIBLE,
                  300, 280, 50, 25, hwnd, NULL, NULL, NULL);
@@ -300,8 +302,8 @@ void Show_Account_Information_Change_Window(HWND hwnd)
     CreateWindow("STATIC", Now_Account->phone_number, WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 280, 150, 25, hwnd, NULL, NULL, NULL);
 
-    //  CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-    //               360, 280, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
+    CreateWindow("BUTTON", "修改", WS_CHILD | WS_VISIBLE,
+                 520, 280, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Phone, NULL, NULL);
 
     CreateWindow("STATIC", "姓名:", WS_CHILD | WS_VISIBLE,
                  300, 320, 50, 25, hwnd, NULL, NULL, NULL);
@@ -323,10 +325,10 @@ void Show_Account_Information_Change_Window(HWND hwnd)
 
 
     CreateWindow("BUTTON", "确认修改", WS_CHILD | WS_VISIBLE,
-                 360, 400, 80, 30, hwnd, (HMENU)ID_EDIT_CHANGE_INFO_COMFIRM, NULL, NULL);
+                 360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO_COMFIRM, NULL, NULL);
 
-    CreateWindow("BUTTON", "取消修改", WS_CHILD | WS_VISIBLE,
-                 670, 40, 80, 30, hwnd, (HMENU)ID_EDIT_CHANGE_INFO_CANCLE, NULL, NULL);
+    CreateWindow("BUTTON", "退出", WS_CHILD | WS_VISIBLE,
+                 670, 55, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO_CANCLE, NULL, NULL);
 
 }
 
