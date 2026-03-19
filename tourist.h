@@ -11,7 +11,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head);
 struct tourist* Loging_Account(HWND hwnd,struct tourist*head);
 void List_Tourist(struct tourist* head);
 struct tourist* Remove_Tourist(struct tourist*head,int id);
-void Change_tourist(struct tourist*Now_Account);
+
 struct tourist* Find_Tourist_Account(struct tourist* head,char Account[11]);
 struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[12]);
 void Change_Password(struct tourist*Now_Account);

@@ -167,11 +167,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 Show_Rejister_Window(hwnd);                
             }
-            else if(wmId == ID_BUtTON_REGISTER_COMFIRM)
+            else if(wmId == ID_BUTTON_REGISTER_COMFIRM)
             {
                 tourist_head=Register_Tourist(hwnd,tourist_head);
             }
-            else if(wmId == ID_BUtTON_REGISTER_CANCLE)
+            else if(wmId == ID_BUTTON_REGISTER_CANCLE)
             {
                 ShowLoginWindow(hwnd);
             }
@@ -213,7 +213,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
             {
-                    Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
+                Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
             }
             else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
             {
@@ -221,9 +221,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
             {
-              List_Ticket_Reservation(hwnd, Now_Account);
+                List_Ticket_Reservation(hwnd, Now_Account);
             }
-            
+             else if(wmId == ID_EDIT_CHANGE_INFO)//修改信息
+            {
+                Show_Account_Information_Change_Window(hwnd);
+            }
+             else if(wmId == ID_EDIT_CHANGE_INFO_COMFIRM)//确认修改
+            {
+              
+            }
+            else if(wmId == ID_EDIT_CHANGE_INFO_CANCLE)//取消修改
+            {
+              ShowUserWindow(hwnd);
+            }
             break;
         }
         

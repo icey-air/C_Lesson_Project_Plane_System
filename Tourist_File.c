@@ -1,8 +1,11 @@
 #include"Tourist_File.h"
 
+//有空写哈希加密
 
-
-
+/*@brief	存储游客信息
+* @param	windows句柄
+* @return	无
+*/
 FILE*Tourist_File_Save(struct tourist *Tourist_head)
 {
 
