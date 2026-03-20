@@ -117,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     HWND hwnd = CreateWindowEx(
         0, CLASS_NAME, "航班管理系统 - 请登录",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+        CW_USEDEFAULT, CW_USEDEFAULT, 900, 600,
         NULL, NULL, hInstance, NULL
     );
     
@@ -203,6 +203,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             else if(wmId == ID_BUTTON_USER_LOGIN)
             {
                 Now_Account=Loging_Account(hwnd, tourist_head);
+                if(Now_Account!=NULL)
+                {
+                List_Ticket_Reservation(hwnd, Now_Account);
+                }
             }
             else if(wmId == ID_BUTTON_REGISTER)
             {
@@ -255,10 +259,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
             {
                 Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
+                List_Ticket_Reservation(hwnd, Now_Account);
             }
             else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
             {
                 Cancel_Ticket_Reservation(hwnd,Now_Account);
+                List_Ticket_Reservation(hwnd, Now_Account);
             }
             else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
             {
