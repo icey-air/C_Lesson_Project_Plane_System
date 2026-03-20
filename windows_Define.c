@@ -100,14 +100,13 @@ void ShowUserWindow(HWND hwnd)
     
     // 创建静态文本框显示预定信息
     CreateWindow("STATIC", "我的预定信息:", WS_CHILD | WS_VISIBLE,
-                 500, 60, 100, 20, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 500, 200, 260, 170, hwnd, (HMENU)ID_STATIC_INFO_1, NULL, NULL);
+                 500, 60, 200, 20, hwnd, NULL, NULL, NULL);
 
-    CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 500, 90, 260, 350, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
-                 
+    // 创建列表框显示预定信息
+    CreateWindow("LISTBOX", NULL,
+                 WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,
+                 500, 80, 360, 470, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
+
  
     CreateWindow("STATIC", "起点:", WS_CHILD | WS_VISIBLE,
                  20, 475, 50, 25, hwnd, NULL, NULL, NULL);
@@ -190,7 +189,7 @@ void RefreshPlaneList(HWND hwnd)
         SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);// 
 
 
-        sprintf(buffer,"\n起飞时间:%d/%d/%d %02d:%02d 到达时间:%d/%d/%d %02d:%02d", 
+        sprintf(buffer,"起飞时间:%d/%d/%d %02d:%02d 到达时间:%d/%d/%d %02d:%02d", 
                 p->take_off_time[0], p->take_off_time[1], p->take_off_time[2],
                 p->take_off_time[3], p->take_off_time[4],
                 p->landing_time[0], p->landing_time[1], p->landing_time[2],
@@ -198,7 +197,14 @@ void RefreshPlaneList(HWND hwnd)
                 
         SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);
 
+        sprintf(buffer,"");
+        SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);
+        
         p = p->next;
+    }
+    {
+
+
     }
 }
 

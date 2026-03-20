@@ -36,6 +36,7 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
     
     Ticket*Ticket_Delete=Now_Account->Ticket_List;
     Ticket*Ticket_Forward=NULL;
+    Ticket*Ticket_p=NULL;
     char id[20]="";
     GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
 
@@ -57,9 +58,9 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
         {   
 
             if(Ticket_Delete==Now_Account->Ticket_List)
-            {
+            {   Ticket_p=Now_Account->Ticket_List;
                 Now_Account->Ticket_List=Now_Account->Ticket_List->next;
-                free(Now_Account->Ticket_List);
+                free(Ticket_p);
             }
             else
             {
@@ -89,38 +90,42 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 */
 void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 {
-    int Ticket_Count=0;//用来改变宏值
+    HWND hList = GetDlgItem(hwnd, ID_STATIC_INFO);
 
     Ticket*Ticket_List=Now_Account->Ticket_List;
-
+    SendMessage(hList, LB_RESETCONTENT, 0, 0);
     if(Ticket_List==NULL)
     {
         char info[500];
         sprintf(info,"您当前没有预约任何航班。");
-        SetDlgItemText(hwnd, ID_STATIC_INFO, info);
-        MessageBox(hwnd, "您没有预约的飞机", "提示", MB_OK);
-
+        SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+        return;
     }
 
     else//没有完善
     {   
         while(Ticket_List!=NULL)//由于都是在一个地方显示，所以会覆盖
         {
-        char info[500];
-        sprintf(info, "您已预定的航班信息:\n航班号: %s\n起飞时间: %d/%d/%d %02d:%02d\n着陆时间: %d/%d/%d %02d:%02d\n价格: ￥%.0f",
-                Ticket_List->Plane_Ticket->id,
+            char info[250];
+
+        sprintf(info, "id: %s,￥%.0f,起点:%s 终点:%s",
+                Ticket_List->Plane_Ticket->id,Ticket_List->Plane_Ticket->prize,Ticket_List->Plane_Ticket->starting_point,Ticket_List->Plane_Ticket->destination);
+     
+               SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+
+
+
+        sprintf(info, "起飞时间: %d/%d/%d %02d:%02d 着陆时间: %d/%d/%d %02d:%02d",
                 Ticket_List->Plane_Ticket->take_off_time[0], Ticket_List->Plane_Ticket->take_off_time[1], Ticket_List->Plane_Ticket->take_off_time[2],
                 Ticket_List->Plane_Ticket->take_off_time[3], Ticket_List->Plane_Ticket->take_off_time[4],
                 Ticket_List->Plane_Ticket->landing_time[0], Ticket_List->Plane_Ticket->landing_time[1], Ticket_List->Plane_Ticket->landing_time[2],
-                Ticket_List->Plane_Ticket->landing_time[3], Ticket_List->Plane_Ticket->landing_time[4],
-                Ticket_List->Plane_Ticket->prize);
-        SetDlgItemText(hwnd, ID_STATIC_INFO+Ticket_Count, info);//目前只有到加一的代码
+                Ticket_List->Plane_Ticket->landing_time[3], Ticket_List->Plane_Ticket->landing_time[4]
+            );
+              SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+
+        sprintf(info,"");
+        SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
         Ticket_List=Ticket_List->next;
-        Ticket_Count++;
-        if(Ticket_Count>2)
-        {
-            Ticket_Count=0;
-        }
         }
     }
 }
