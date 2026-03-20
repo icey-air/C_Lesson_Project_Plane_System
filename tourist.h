@@ -28,7 +28,7 @@ typedef struct tourist
 	int Airfare_Cost;//¿ªÏú
 
 	struct Ticket*Ticket_List;
-	
+	struct passenger*Passenger_List;
 	struct tourist *next;
 }tourist;
 
