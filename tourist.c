@@ -4,7 +4,7 @@
 #include <string.h>
 #include "tourist.h"
 
-
+void ShowLoginWindow(HWND hwnd);
 
 /*@brief	´´ÔìÓÎ¿Í
 * @param	windows¾ä±ú
@@ -20,21 +20,32 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 	char Password2[21];
 	int id;
 	int stage=0;//while×´Ì¬£¬·ÀÖ¹ËÀ»ú
-	char username[20] = "", Password[20] = "", phone[20] = "";
+	char Account[20] = "", Password[20] = "", phone[20] = "",Identity_Card[20]="";
 	
+	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
+	GetDlgItemText(hwnd, ID_EDIT_NAME, name, 20);
+	GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
 	
+	if(strlen(Account)==0||strlen(Password)==0||strlen(name)==0||strlen(Identity_Card)==0)
+	{
+		MessageBox(hwnd, "ÊäÈë¿ò²»¿ÉÎª¿Õ", "ÌáÊ¾", MB_OK);
+		return NULL;
+	}
+	else
+	{
+
+	}
 
 	if(head!=NULL)//²»ÊÇµÚÒ»¸ö×¢²áÕË»§
 	{
-		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
-		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-    	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
 
 		p1=(struct tourist*)malloc(Tourist_LEN);//freeÎÊÌâ
 		p2=head;
 		p1->next=NULL;
 
-			if(Find_Tourist_Account(head,username)!=NULL)//ÓÎ¿Í½á¹¹ÌåÖÐÓÐÖØ¸´µÄÕË»§
+			if(Find_Tourist_Account(head,Account)!=NULL)//ÓÎ¿Í½á¹¹ÌåÖÐÓÐÖØ¸´µÄÕË»§
 			{				
 				MessageBox(hwnd, "ÕË»§ÒÑ´æÔÚ£¬ÇëÖØÐÂÊäÈë", "ÌáÊ¾", MB_OK);		
 				return head;					
@@ -47,36 +58,40 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 		}
 		p2->next=p1;
 
-		strcpy(p1->Account,username);
+		strcpy(p1->Account,Account);
 		strcpy(p1->password,Password);
 		strcpy(p1->phone_number,phone);
-	
+		strcpy(p1->name,name);
+		strcpy(p1->identity_card,Identity_Card);
+
 		p1->Ticket_List=NULL;
 
 
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);	
 		Tourist_File_Save(head);
+		ShowLoginWindow(hwnd);
 		return head;
 	}
 	
 	else//µÚÒ»¸ö×¢²áÕË»§
 	{		
-		GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
-		GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-    	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
-
 		//Á½´ÎÃÜÂë
 
 		p1 = p2 = (struct tourist*)malloc(Tourist_LEN);
 		p1->next=NULL;
 		head=p1;
-		strcpy(p1->Account,username);
+
+		strcpy(p1->Account,Account);
 		strcpy(p1->password,Password);
 		strcpy(p1->phone_number,phone);
+		strcpy(p1->name,name);
+		strcpy(p1->identity_card,Identity_Card);
 		p1->Ticket_List=NULL;
+
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);
 		Tourist_File_Save(head);
+		ShowLoginWindow(hwnd);
 		return head;
 	}	
 }	
@@ -92,7 +107,7 @@ struct tourist* Loging_Account(HWND hwnd,struct tourist*head)
 {
 	char Account[11];
 	char Password[21];
-	GetDlgItemText(hwnd, ID_EDIT_USERNAME, Account, 20);
+	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
 	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
 
 	struct tourist*p;
@@ -108,9 +123,7 @@ struct tourist* Loging_Account(HWND hwnd,struct tourist*head)
 	while(p!=NULL)
 	{
 		if(strcmp(Account,p->Account)==0&&strcmp(Password,p->password)==0)
-		{
-			MessageBox(hwnd, "µÇÂ¼³É¹¦", "ÌáÊ¾", MB_OK);
-
+		{			
 			ShowUserWindow(hwnd);
 			char info[500];
     	    sprintf(info,"°´¡°ÎÒµÄÔ¤Ô¼¡±°´Å¥¿´ÒÑÔ¤Ô¼µÄ»úÆ±¡£");
@@ -189,35 +202,107 @@ struct tourist* Remove_Tourist(struct tourist*head,int id)
 /*@brief	ÐÞ¸ÄÓÎ¿ÍÐÅÏ¢ Ã»Ð´Íê
 * @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
 * @return	ÎÞ
-*
-
-//ÄÚÈÝÒª¸Ä
-void Change_tourist(struct tourist*Now_Account)
+*/
+int Change_tourist(HWND hwnd,int wmId,struct tourist*Now_Account)
 {
-	int mod;
-	printf("ÇëÊäÈëÄúÏëÐÞ¸ÄµÄÐÅÏ¢\n");
-	printf("1:name\n2:Phone_number\n3:password\n");
-	scanf("%d",mod);
+	
+	
 
-	switch (mod)
+	switch (wmId)
 	{
-		case 1:
-			char name[10];
-			printf("ÇëÊäÈëÃû×Ö");
-			scanf("%s",name);
-			strcpy(Now_Account->name,name);
-			break;
-		case 2:
-			Change_Phone_Number(Now_Account);
-			break;
-		case 3:
-			Change_Password(Now_Account);
-			break;
-		default:
-			break;
+		case ID_BUTTON_CHANGE_Account:
+		    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
 
+			return 1;	
+		case ID_BUTTON_CHANGE_Password:
+			CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 240, 150, 25, hwnd, (HMENU)ID_EDIT_PASSWORD, NULL, NULL);
+
+			return 3;
+		case ID_BUTTON_CHANGE_Phone:
+			CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 360, 280, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
+
+			return 5;
+		
+		default:
+			return 0;
+	}
+
+
+
+	
+	// GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+    // GetDlgItemText(hwnd, ID_EDIT_PHONE, Account, 20);
+	// GetDlgItemText(hwnd, ID_EDIT_NAME, Password, 20);
+	// GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
+
+}
+
+void Change_Information_Comfirm(HWND hwnd,int Change_What,struct tourist* Now_Account)
+{
+	char Account[20]="",Password[20]="",Phone[20]="";
+	switch (Change_What)
+	{
+	case 1:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			Show_Account_Information_Change_Window(hwnd);
+		break;
+	case 3:
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 5:
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 4:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 6:	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 8:
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	case 9:
+			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+			strcpy(Now_Account->Account,Account);
+			
+			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+			strcpy(Now_Account->password,Password);
+			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+			strcpy(Now_Account->phone_number,Phone);
+			Show_Account_Information_Change_Window(hwnd);
+			break;
+	default:
+		printf("bug");
+		break;
 	}
 }
+
+
+
+
+
 
 
 /*@brief	²éÕÒÓÎ¿ÍÕË»§
@@ -284,40 +369,4 @@ struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[
 }	
 
 
-/*@brief	ÐÞ¸ÄÓÎ¿ÍÃÜÂë
-* @param	ÓÎ¿Í½á¹¹ÌåÍ·Ö¸Õë
-* @return	ÎÞ
-*/
-void Change_Password(struct tourist*Now_Account)
-{
-	char Password1[21];	
-	char Password2[21];
-	while(1)
-			{
-			printf("ÇëÊäÈëÃÜÂë");//Ã»ÓÐÐ´¶þ´ÎÊäÈëÈ·¶¨ÃÜÂë´úÂë
-			scanf("%s",Password1);
-			printf("ÇëÔÙ´ÎÈ·ÈÏÃÜÂë");
-			scanf("%s",Password2);
-			if(strcmp(Password1,Password2)==0)
-			{
-				break;	
-			}
-			else
-			{
-				printf("Á½´ÎÃÜÂë²»Ò»ÖÂ");
-			}
-			}
-}
-
-/*@brief	ÐÞ¸ÄÓÎ¿ÍÊÖ»úºÅ
-* @param	ÓÎ¿Í½á¹¹ÌåÍ·Ö¸Õë
-* @return	ÎÞ
-*/
-void Change_Phone_Number(struct tourist*Now_Account)
-{
-	char phone_number[12];
-	printf("ÇëÊäÈëÊÖ»úºÅ");
-	scanf("%s",phone_number);
-	strcpy(Now_Account->phone_number,phone_number);
-}
 

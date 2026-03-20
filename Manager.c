@@ -4,10 +4,14 @@
 * @param	windows¾ä±ú
 * @return	ÎÞ
 */
+// Ìí¼ÓÕâÐÐ - ÉùÃ÷Íâ²¿±äÁ¿
+extern int g_planeCount;
+extern Plane_information* g_head;
+
 void Manager_Login(HWND hwnd)
 {
     char username[20], password[20];
-    GetDlgItemText(hwnd, ID_EDIT_USERNAME, username, 20);
+    GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, username, 20);
     GetDlgItemText(hwnd, ID_EDIT_PASSWORD, password, 20);
     
     if(strcmp(username, MANAGER_ACCOUNT) == 0 && strcmp(password, MANAGER_PASSWORD) == 0)
@@ -27,8 +31,392 @@ Plane_information* Manager_Delete_Plane(HWND hwnd,Plane_information*head)//¶à´ÎÒ
     head=Delete_Plane(hwnd,head);
     g_head=head;//¸üÐÂÈ«¾ÖÍ·Ö¸Õë,²»È»É¾³ýÁËµ«ÊÇÈ«¾ÖÍ·Ö¸ÕëÃ»±ä£¬Ë¢ÐÂ½çÃæ»¹ÊÇ»áÏÔÊ¾±»É¾³ýµÄº½°à£¬Í¬Ê±ÕâÐÐ´úÂë¿ÉÒÔ¼õÉÙRefreshPlaneµÄ´«²Î
     //ÕâÃ´Ò»Ïë£¬Èç¹ûÓÐµØ·½ÐèÒªË¢ÐÂ¶¼µÃ¶àÐ´ÕâÒ»ÐÐ´úÂë£¬¸Ð¾õ²»ÊÇºÜºÃ
-    //»òÕßÄØ£¬ÏÂ·½¶à´«Ò»¸ö²ÎÊý
+    //»òÕßÄØ£¬ÏÂ·½¶à´«Ò»¸ö²ÎÊý      ---ÏÖÔÚ»ØÍ·¿´Õâ¸ö¾õµÃÕâÑùÐ´ÃãÇ¿»¹¿ÉÒÔ½ÓÊÜ
     RefreshPlaneList(hwnd);
     return head;
 }
 
+/**
+ * @brief ÏÔÊ¾Ìí¼Óº½°à¶Ô»°¿ò
+
+
+void ShowAddPlaneDialog(HWND hwnd)
+{
+    // ¼ò»¯°æ£ºÊ¹ÓÃDialogBox£¬ÕâÀïÓÃÊäÈë¿òÑÝÊ¾
+    char id[20] = "", whole_seat[10] = "", rest_seat[10] = "", prize[10] = "";
+    char takeoff[50] = "", landing[50] = "";
+    
+    // ÔÚÊµ¼ÊÓ¦ÓÃÖÐ£¬ÕâÀïÓ¦¸Ã´´½¨Ò»¸ö¶Ô»°¿ò
+    // Îª¼ò»¯£¬ÎÒÃÇÊ¹ÓÃÒ»¸öÊäÈë¶Ô»°¿ò
+    id[0] = '\0';
+    if(InputBox(hwnd, "ÇëÊäÈëº½°àºÅ:", id, 20))
+    {
+        // ÕâÀï¼ò»¯´¦Àí£¬Êµ¼ÊÓ¦¸Ã»ñÈ¡ËùÓÐÐÅÏ¢
+        int w_seat = 200, r_seat = 200;
+        float pr = 800.0;
+        int takeoff_time[5] = {2024, 3, 15, 8, 0};
+        int landing_time[5] = {2024, 3, 15, 10, 30};
+        
+      
+        RefreshPlaneList(hwnd);
+    }
+    else//ÕâÀï×öÁËÒ»¸öÊäÈëÊ§°ÜµÄ¸Ä¶¯
+        //¼´Ã»ÓÐÊäÈëÐÅÏ¢¾Í½áÊø»òÊäÈë²»ÕýÈ·
+        //ÔÝÊ±»¹Ã»Ïëµ½ÆäËübug
+    {
+        MessageBox(hwnd,"Ã»ÓÐÊäÈë£¬ÇëÖØÐÂÌí¼Ó","ÌáÊ¾",MB_OK);
+
+    }
+}
+*/
+// ¼òµ¥µÄÊäÈë¿òº¯Êý
+BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len)
+{
+    //ÕâÀï´òËãÔÙÐ´Ò»¸öboolÀàÐÍº¯ÊýÅÐ¶ÏÊäÈë ÕâÑù·½±ãºóÐøtouristÒ²Ò»Æð¸Ä¶¯
+    /*if(){
+
+        return FALSE;
+    }*/
+    MessageBox(hwnd, "ÔÚÊµ¼ÊÓ¦ÓÃÖÐ£¬ÕâÀï»áµ¯³öÊäÈë¶Ô»°¿ò", "ÌáÊ¾", MB_OK);
+    strcpy(result, "CA1003");
+    return TRUE;
+}
+
+/**
+ * @brief ÅÐ¶ÏÊäÈëÊÇ·ñÈ«ÊäÈëÍê³É»òÊäÈë²»ÕýÈ·
+ */
+BOOL InputError(HWND hwnd, char* prompt, char* result, int max_len)
+{
+    
+}
+
+/**
+ * @brief ÏÔÊ¾ÐÞ¸Äº½°à¶Ô»°¿ò
+ */
+void ShowUpdatePlaneDialog(HWND hwnd)
+{
+    char id[20] = "";
+    if(InputBox(hwnd, "ÇëÊäÈëÒªÐÞ¸ÄµÄº½°àºÅ:", id, 20))
+    {
+        // ¼ò»¯´¦Àí
+      
+        RefreshPlaneList(hwnd);
+    }
+}
+
+
+/////°×ÐùÓîµÄÌí¼Ó/////
+// ÔÚ Manager.c ÖÐÌí¼ÓÒÔÏÂ´úÂë
+
+/* Ìí¼Óº½°à¶Ô»°¿òµÄ´°¿Ú¹ý³Ìº¯Êý */
+LRESULT CALLBACK AddPlaneDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+        case WM_INITDIALOG:
+        {
+            // ÉèÖÃÄ¬ÈÏÖµ£¨¿ÉÑ¡£©
+            SetDlgItemText(hDlg, ID_EDIT_TAKEOFF_YEAR, "2024");
+            SetDlgItemText(hDlg, ID_EDIT_TAKEOFF_MONTH, "1");
+            SetDlgItemText(hDlg, ID_EDIT_TAKEOFF_DAY, "1");
+            SetDlgItemText(hDlg, ID_EDIT_TAKEOFF_HOUR, "0");
+            SetDlgItemText(hDlg, ID_EDIT_TAKEOFF_MINUTE, "0");
+            
+            SetDlgItemText(hDlg, ID_EDIT_LANDING_YEAR, "2024");
+            SetDlgItemText(hDlg, ID_EDIT_LANDING_MONTH, "1");
+            SetDlgItemText(hDlg, ID_EDIT_LANDING_DAY, "1");
+            SetDlgItemText(hDlg, ID_EDIT_LANDING_HOUR, "2");
+            SetDlgItemText(hDlg, ID_EDIT_LANDING_MINUTE, "0");
+            
+            SetDlgItemText(hDlg, ID_EDIT_WHOLE_SEAT_ADD, "200");
+            SetDlgItemText(hDlg, ID_EDIT_REST_SEAT_ADD, "200");
+            SetDlgItemText(hDlg, ID_EDIT_PRIZE_ADD, "800");
+            SetDlgItemText(hDlg, ID_EDIT_DEPARTURE_ADD, "±±¾©");
+            SetDlgItemText(hDlg, ID_EDIT_DESTINATION_ADD, "ÉÏº£");
+            
+            return TRUE;
+        }
+        
+       case WM_COMMAND:
+        {
+           int wmId = LOWORD(wParam);
+    
+          if (wmId == ID_BUTTON_CONFIRM_ADD_PLANE)  // ÊäÈëÍê³É°´Å¥
+       {
+        // »ñÈ¡ÊäÈëµÄËùÓÐÊý¾Ý
+        char id[20], whole_seat[10], rest_seat[10], prize[10];
+        char takeoff_year[5], takeoff_month[3], takeoff_day[3], takeoff_hour[3], takeoff_minute[3];
+        char landing_year[5], landing_month[3], landing_day[3], landing_hour[3], landing_minute[3];
+        char departure[20], destination[20];
+        
+        GetDlgItemText(hDlg, ID_EDIT_PLANE_ID_ADD, id, 20);
+        GetDlgItemText(hDlg, ID_EDIT_WHOLE_SEAT_ADD, whole_seat, 10);
+        GetDlgItemText(hDlg, ID_EDIT_REST_SEAT_ADD, rest_seat, 10);
+        GetDlgItemText(hDlg, ID_EDIT_PRIZE_ADD, prize, 10);
+        GetDlgItemText(hDlg, ID_EDIT_DEPARTURE_ADD, departure, 20);
+        GetDlgItemText(hDlg, ID_EDIT_DESTINATION_ADD, destination, 20);
+        
+        GetDlgItemText(hDlg, ID_EDIT_TAKEOFF_YEAR, takeoff_year, 5);
+        GetDlgItemText(hDlg, ID_EDIT_TAKEOFF_MONTH, takeoff_month, 3);
+        GetDlgItemText(hDlg, ID_EDIT_TAKEOFF_DAY, takeoff_day, 3);
+        GetDlgItemText(hDlg, ID_EDIT_TAKEOFF_HOUR, takeoff_hour, 3);
+        GetDlgItemText(hDlg, ID_EDIT_TAKEOFF_MINUTE, takeoff_minute, 3);
+        
+        GetDlgItemText(hDlg, ID_EDIT_LANDING_YEAR, landing_year, 5);
+        GetDlgItemText(hDlg, ID_EDIT_LANDING_MONTH, landing_month, 3);
+        GetDlgItemText(hDlg, ID_EDIT_LANDING_DAY, landing_day, 3);
+        GetDlgItemText(hDlg, ID_EDIT_LANDING_HOUR, landing_hour, 3);
+        GetDlgItemText(hDlg, ID_EDIT_LANDING_MINUTE, landing_minute, 3);
+        
+        // ¼ì²é±ØÌîÏîÊÇ·ñÎª¿Õ
+        if (strlen(id) == 0 || strlen(whole_seat) == 0 || strlen(prize) == 0)
+        {
+            MessageBox(hDlg, "º½°àºÅ¡¢×Ü×ùÎ»ÊýºÍ¼Û¸ñÎª±ØÌîÏî£¡", "ÌáÊ¾", MB_OK | MB_ICONWARNING);
+            return TRUE;
+        }
+        
+        // ´´½¨ÐÂµÄº½°à½Úµã
+        Plane_information* new_plane = (Plane_information*)malloc(sizeof(Plane_information));
+        if (new_plane == NULL)
+        {
+            MessageBox(hDlg, "ÄÚ´æ·ÖÅäÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
+            return TRUE;
+        }
+        
+        // Ìî³äÊý¾Ý
+        strcpy(new_plane->id, id);
+        new_plane->whole_seat = atoi(whole_seat);
+        new_plane->rest_seat = (strlen(rest_seat) > 0) ? atoi(rest_seat) : new_plane->whole_seat;
+        new_plane->prize = atof(prize);
+        
+        // ¸´ÖÆÆðµãºÍÖÕµã
+        strcpy(new_plane->starting_point, departure);
+        strcpy(new_plane->destination, destination);
+        
+        // Æð·ÉÊ±¼ä
+        new_plane->take_off_time[0] = atoi(takeoff_year);
+        new_plane->take_off_time[1] = atoi(takeoff_month);
+        new_plane->take_off_time[2] = atoi(takeoff_day);
+        new_plane->take_off_time[3] = atoi(takeoff_hour);
+        new_plane->take_off_time[4] = atoi(takeoff_minute);
+        
+        // ×ÅÂ½Ê±¼ä
+        new_plane->landing_time[0] = atoi(landing_year);
+        new_plane->landing_time[1] = atoi(landing_month);
+        new_plane->landing_time[2] = atoi(landing_day);
+        new_plane->landing_time[3] = atoi(landing_hour);
+        new_plane->landing_time[4] = atoi(landing_minute);
+        
+        // ÉèÖÃÐòºÅºÍnextÖ¸Õë
+        new_plane->num = ++g_planeCount;
+        new_plane->next = NULL;
+        
+        // Ìí¼Óµ½Á´±íÄ©Î²
+        if (g_head == NULL)
+        {
+            g_head = new_plane;
+        }
+        else
+        {
+            Plane_information* p = g_head;
+            while (p->next != NULL)
+            {
+                p = p->next;
+            }
+            p->next = new_plane;
+        }
+        
+        // Ë¢ÐÂÖ÷´°¿ÚµÄº½°àÁÐ±í
+        RefreshPlaneList(GetParent(hDlg));
+        
+        MessageBox(hDlg, "º½°àÌí¼Ó³É¹¦£¡", "ÌáÊ¾", MB_OK);
+        
+        // ¹Ø±Õ¶Ô»°¿ò
+        DestroyWindow(hDlg);
+        return TRUE;
+    }
+    else if (wmId == ID_BUTTON_CANCEL_ADD_PLANE)  // È¡Ïû°´Å¥
+    {
+        // ²»±£´æÈÎºÎÊý¾Ý£¬Ö±½Ó¹Ø±Õ¶Ô»°¿ò
+        if (MessageBox(hDlg, "È·¶¨ÒªÈ¡ÏûÌí¼ÓÂð£¿ÊäÈëµÄÊý¾Ý½«²»»á±£´æ¡£", "È·ÈÏÈ¡Ïû", MB_YESNO | MB_ICONQUESTION) == IDYES)
+        {
+            DestroyWindow(hDlg);
+        }
+        return TRUE;
+    }
+    else if (wmId == IDCANCEL)  // µã»÷ÓÒÉÏ½ÇX°´Å¥
+    {
+        // Í¬Ñù´¦ÀíÎªÈ¡Ïû
+        if (MessageBox(hDlg, "È·¶¨ÒªÈ¡ÏûÌí¼ÓÂð£¿ÊäÈëµÄÊý¾Ý½«²»»á±£´æ¡£", "È·ÈÏÈ¡Ïû", MB_YESNO | MB_ICONQUESTION) == IDYES)
+        {
+            DestroyWindow(hDlg);
+        }
+        return TRUE;
+    }
+    break;
+}
+        
+        case WM_CLOSE:
+{
+    if (MessageBox(hDlg, "È·¶¨ÒªÈ¡ÏûÌí¼ÓÂð£¿ÊäÈëµÄÊý¾Ý½«²»»á±£´æ¡£", "È·ÈÏÈ¡Ïû", MB_YESNO | MB_ICONQUESTION) == IDYES)
+    {
+        DestroyWindow(hDlg);
+    }
+    return TRUE;
+}
+        
+        case WM_DESTROY:
+        {
+            return TRUE;
+        }
+    }
+    
+    return DefWindowProc(hDlg, uMsg, wParam, lParam);
+}
+
+/**
+ * @brief ÏÔÊ¾Ìí¼Óº½°à¶Ô»°¿ò
+ * @param hwnd ¸¸´°¿Ú¾ä±ú
+ */
+void ShowAddPlaneDialog(HWND hwnd)
+{
+    // ´´½¨¶Ô»°¿ò - Ôö¼Ó¸ß¶ÈÈ·±£ËùÓÐ¿Ø¼þ¿É¼û
+    HWND hDlg = CreateWindow(
+     "STATIC",  // Ê¹ÓÃ¾²Ì¬´°¿ÚÀà×÷Îª»ù´¡
+     "Ìí¼Óº½°à",
+     WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_VISIBLE,
+     CW_USEDEFAULT, CW_USEDEFAULT, 500, 550,  // Ôö¼Ó¿í¶ÈºÍ¸ß¶È
+     hwnd,
+     NULL,
+     GetModuleHandle(NULL),
+     NULL
+    );
+    
+    if (hDlg == NULL)
+    {
+        MessageBox(hwnd, "´´½¨¶Ô»°¿òÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
+        return;
+    }
+    
+    // ÉèÖÃ¶Ô»°¿ò´°¿Ú¹ý³Ì
+    SetWindowLongPtr(hDlg, GWLP_WNDPROC, (LONG_PTR)AddPlaneDlgProc);
+    
+    // ´´½¨¶Ô»°¿òÉÏµÄ¿Ø¼þ
+    int y = 20;
+    int label_width = 80;
+    int edit_width = 150;
+    int spacing = 30;
+    
+    // º½°àºÅ
+    CreateWindow("STATIC", "º½°àºÅ:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_PLANE_ID_ADD, NULL, NULL);
+    
+    // Æðµã
+    y += spacing;
+    CreateWindow("STATIC", "Æðµã:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_DEPARTURE_ADD, NULL, NULL);
+    
+    // ÖÕµã
+    y += spacing;
+    CreateWindow("STATIC", "ÖÕµã:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_DESTINATION_ADD, NULL, NULL);
+    
+    // ×Ü×ùÎ»
+    y += spacing;
+    CreateWindow("STATIC", "×Ü×ùÎ»:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_WHOLE_SEAT_ADD, NULL, NULL);
+    
+    // Ê£Óà×ùÎ»
+    y += spacing;
+    CreateWindow("STATIC", "Ê£Óà×ùÎ»:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_REST_SEAT_ADD, NULL, NULL);
+    
+    // ¼Û¸ñ
+    y += spacing;
+    CreateWindow("STATIC", "¼Û¸ñ:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+                 110, y, edit_width, 20, hDlg, (HMENU)ID_EDIT_PRIZE_ADD, NULL, NULL);
+    
+    // Æð·ÉÊ±¼ä
+    y += spacing;
+    CreateWindow("STATIC", "Æð·ÉÊ±¼ä:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    
+    // Æð·ÉÊ±¼äÊäÈë¿ò£¨Ò»ÐÐÏÔÊ¾£©
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, 45, 20, hDlg, (HMENU)ID_EDIT_TAKEOFF_YEAR, NULL, NULL);
+    CreateWindow("STATIC", "Äê", WS_CHILD | WS_VISIBLE,
+                 160, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 180, y, 35, 20, hDlg, (HMENU)ID_EDIT_TAKEOFF_MONTH, NULL, NULL);
+    CreateWindow("STATIC", "ÔÂ", WS_CHILD | WS_VISIBLE,
+                 220, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 240, y, 35, 20, hDlg, (HMENU)ID_EDIT_TAKEOFF_DAY, NULL, NULL);
+    CreateWindow("STATIC", "ÈÕ", WS_CHILD | WS_VISIBLE,
+                 280, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    y += spacing;
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, 35, 20, hDlg, (HMENU)ID_EDIT_TAKEOFF_HOUR, NULL, NULL);
+    CreateWindow("STATIC", "Ê±", WS_CHILD | WS_VISIBLE,
+                 150, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 170, y, 35, 20, hDlg, (HMENU)ID_EDIT_TAKEOFF_MINUTE, NULL, NULL);
+    CreateWindow("STATIC", "·Ö", WS_CHILD | WS_VISIBLE,
+                 210, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    // ×ÅÂ½Ê±¼ä
+    y += spacing * 2;
+    CreateWindow("STATIC", "×ÅÂ½Ê±¼ä:", WS_CHILD | WS_VISIBLE,
+                 20, y, label_width, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, 45, 20, hDlg, (HMENU)ID_EDIT_LANDING_YEAR, NULL, NULL);
+    CreateWindow("STATIC", "Äê", WS_CHILD | WS_VISIBLE,
+                 160, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 180, y, 35, 20, hDlg, (HMENU)ID_EDIT_LANDING_MONTH, NULL, NULL);
+    CreateWindow("STATIC", "ÔÂ", WS_CHILD | WS_VISIBLE,
+                 220, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 240, y, 35, 20, hDlg, (HMENU)ID_EDIT_LANDING_DAY, NULL, NULL);
+    CreateWindow("STATIC", "ÈÕ", WS_CHILD | WS_VISIBLE,
+                 280, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    y += spacing;
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 110, y, 35, 20, hDlg, (HMENU)ID_EDIT_LANDING_HOUR, NULL, NULL);
+    CreateWindow("STATIC", "Ê±", WS_CHILD | WS_VISIBLE,
+                 150, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
+                 170, y, 35, 20, hDlg, (HMENU)ID_EDIT_LANDING_MINUTE, NULL, NULL);
+    CreateWindow("STATIC", "·Ö", WS_CHILD | WS_VISIBLE,
+                 210, y, 20, 20, hDlg, NULL, NULL, NULL);
+    
+    // °´Å¥
+y += spacing * 2;
+CreateWindow("BUTTON", "ÊäÈëÍê³É", WS_CHILD | WS_VISIBLE,
+         110, y, 100, 30, hDlg, (HMENU)ID_BUTTON_CONFIRM_ADD_PLANE, NULL, NULL);
+
+CreateWindow("BUTTON", "È¡Ïû", WS_CHILD | WS_VISIBLE,
+         220, y, 100, 30, hDlg, (HMENU)ID_BUTTON_CANCEL_ADD_PLANE, NULL, NULL);
+}
+///°×ÐùÓîµÄÌí¼Ó½áÊø/////

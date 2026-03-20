@@ -2,6 +2,9 @@
 #include "tourist.h"
 #include "windows_Define.h"
 #include "Manager.h"
+
+#include "Ticket.h"
+
 /*======================== 全局变量定义 ========================*/
 Plane_information* g_head = NULL;
 
@@ -9,14 +12,16 @@ int g_planeCount = 0;
 tourist g_currentUser;
 int g_userType = 0;  // 0-未登录，1-管理员，2-普通用户
 HWND g_hMainWindow = NULL;
-// 账户数组
-tourist g_accounts[MAX_ACCOUNTS];
+
+int Change_What=0;//修改账户信息用，别动
+
+
 int g_accountCount = 0;
 tourist *Now_Account=NULL;
 tourist *tourist_head=NULL;
-// 管理员账户（硬编码）
+/*管理员账户（硬编码）
 const char* ADMIN_USERNAME = "admin";
-const char* ADMIN_PASSWORD = "admin123";
+const char* ADMIN_PASSWORD = "admin123";*/
 
 /*======================== 工具函数 ========================*/
 
@@ -31,6 +36,8 @@ void Init_Test_Data(void)
     p1->whole_seat = 200;
     p1->rest_seat = 150;
     p1->prize = 800.0;
+    strcpy(p1->starting_point,"沈阳");
+    strcpy(p1->destination,"北京");
     p1->take_off_time[0] = 2024;
     p1->take_off_time[1] = 3;
     p1->take_off_time[2] = 15;
@@ -52,6 +59,8 @@ void Init_Test_Data(void)
     p2->whole_seat = 180;
     p2->rest_seat = 180;
     p2->prize = 650.0;
+    strcpy(p2->starting_point,"沈阳");
+    strcpy(p2->destination,"广州");
     p2->take_off_time[0] = 2024;
     p2->take_off_time[1] = 3;
     p2->take_off_time[2] = 16;
@@ -147,6 +156,45 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             int wmId = LOWORD(wParam);
             
+//---------------------------------修改账户信息的，写得贼烂别动----- ---------------------------------------------------------------
+            if(wmId == ID_BUTTON_CHANGE_INFO)//修改信息
+            {
+                Show_Account_Information_Change_Window(hwnd);
+            }  
+            else if(wmId==ID_BUTTON_CHANGE_Account)
+            {   if(Change_What==0||Change_What==3||Change_What==5||Change_What==8)
+                {
+                 Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Password)
+            {
+                if(Change_What==0||Change_What==1||Change_What==5||Change_What==6)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Phone)
+            {  
+                 if(Change_What==0||Change_What==1||Change_What==3||Change_What==4)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_COMFIRM)//确认修改
+            {
+                Change_Information_Comfirm(hwnd,Change_What,Now_Account);
+                Change_What=0;
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_CANCLE)//取消修改
+            {
+              ShowUserWindow(hwnd);
+              Change_What=0;
+            }
+//---------------------------------------留着，我要封装------------------------------------------//
+
+
+            
             // 登录相关按钮
             if(wmId == ID_BUTTON_ADMIN_LOGIN)
             {
@@ -158,7 +206,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_REGISTER)
             {
+                Show_Rejister_Window(hwnd);                
+            }
+            else if(wmId == ID_BUTTON_REGISTER_COMFIRM)
+            {
                 tourist_head=Register_Tourist(hwnd,tourist_head);
+            }
+            else if(wmId == ID_BUTTON_REGISTER_CANCLE)
+            {
+                ShowLoginWindow(hwnd);
             }
             else if(wmId == ID_BUTTON_LOGOUT)
             {
@@ -169,10 +225,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             
             // 管理员功能按钮
+            // 在 final_test.c 的 WindowProc 函数中，找到管理员功能按钮的处理部分
+// 在 ID_BUTTON_DELETE_PLANE 的处理之前添加以下代码
+
             else if(wmId == ID_BUTTON_ADD_PLANE)
             {
-                ShowAddPlaneDialog(hwnd);
+              ShowAddPlaneDialog(hwnd);
             }
+
+            
             else if(wmId == ID_BUTTON_DELETE_PLANE)
             {
                 g_head=Manager_Delete_Plane(hwnd,g_head);
@@ -193,7 +254,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
             {
-                    Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
+                Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
             }
             else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
             {
@@ -201,9 +262,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
             {
-              List_Ticket_Reservation(hwnd, Now_Account);
+                List_Ticket_Reservation(hwnd, Now_Account);
             }
-            
+
+  
+
             break;
         }
         
@@ -245,7 +308,7 @@ void ShowLoginWindow(HWND hwnd)
                  300, 200, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_USERNAME, NULL, NULL);
+                 360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
     
     CreateWindow("STATIC", "密码:", WS_CHILD | WS_VISIBLE,
                  300, 240, 50, 25, hwnd, NULL, NULL, NULL);
@@ -259,67 +322,17 @@ void ShowLoginWindow(HWND hwnd)
     CreateWindow("BUTTON", "用户登录", WS_CHILD | WS_VISIBLE,
                  410, 280, 100, 30, hwnd, (HMENU)ID_BUTTON_USER_LOGIN, NULL, NULL);
     
-    CreateWindow("STATIC", "新用户注册:", WS_CHILD | WS_VISIBLE,
-                 300, 330, 80, 25, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("STATIC", "电话:", WS_CHILD | WS_VISIBLE,
-                 300, 360, 50, 25, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
-    
-    CreateWindow("BUTTON", "注册", WS_CHILD | WS_VISIBLE,
-                 360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER, NULL, NULL);
-}
-
-
-/**
- * @brief 显示添加航班对话框
- */
-void ShowAddPlaneDialog(HWND hwnd)
-{
-    // 简化版：使用DialogBox，这里用输入框演示
-    char id[20] = "", whole_seat[10] = "", rest_seat[10] = "", prize[10] = "";
-    char takeoff[50] = "", landing[50] = "";
-    
-    // 在实际应用中，这里应该创建一个对话框
-    // 为简化，我们使用一个输入对话框
-    id[0] = '\0';
-    if(InputBox(hwnd, "请输入航班号:", id, 20))
-    {
-        // 这里简化处理，实际应该获取所有信息
-        int w_seat = 200, r_seat = 200;
-        float pr = 800.0;
-        int takeoff_time[5] = {2024, 3, 15, 8, 0};
-        int landing_time[5] = {2024, 3, 15, 10, 30};
+    CreateWindow("BUTTON", "设置", WS_CHILD | WS_VISIBLE,
+                 360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_SETTING, NULL, NULL);
         
-      
-        RefreshPlaneList(hwnd);
-    }
-}
+    CreateWindow("BUTTON", "注册", WS_CHILD | WS_VISIBLE,
+                 360, 330, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER, NULL, NULL);
 
-// 简单的输入框函数
-BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len)
-{
-    // 这是一个简化函数，实际应用中应该创建对话框
-    // 这里用MessageBox演示概念
-    MessageBox(hwnd, "在实际应用中，这里会弹出输入对话框", "提示", MB_OK);
-    strcpy(result, "CA1003");
-    return TRUE;
+    // CreateWindow("STATIC", "电话:", WS_CHILD | WS_VISIBLE,
+    //              300, 360, 50, 25, hwnd, NULL, NULL, NULL);
+
+    // CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
+    //              360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
 }
 
 
-
-/**
- * @brief 显示修改航班对话框
- */
-void ShowUpdatePlaneDialog(HWND hwnd)
-{
-    char id[20] = "";
-    if(InputBox(hwnd, "请输入要修改的航班号:", id, 20))
-    {
-        // 简化处理
-      
-        RefreshPlaneList(hwnd);
-    }
-}

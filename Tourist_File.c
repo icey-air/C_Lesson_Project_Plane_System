@@ -1,8 +1,11 @@
 #include"Tourist_File.h"
 
+//有空写哈希加密
 
-
-
+/*@brief	存储游客信息
+* @param	windows句柄
+* @return	无
+*/
 FILE*Tourist_File_Save(struct tourist *Tourist_head)
 {
 
@@ -14,7 +17,7 @@ FILE*Tourist_File_Save(struct tourist *Tourist_head)
 
     while(Tourist!=NULL)
     {
-    sprintf(buffer, "Account:%s Password:%s\n", Tourist->Account, Tourist->password);
+    sprintf(buffer, "%s:%s\n", Tourist->Account, Tourist->password);
 
     fputs(buffer,Tourist_File);
     Tourist=Tourist->next;
