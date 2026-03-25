@@ -264,8 +264,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 List_Ticket_Reservation(hwnd, Now_Account);
             }
-
-  
+             else if(wmId == ID_BUTTON_FILTER_PLANE)
+            {
+                Plane_information* result=Find_Plane(hwnd,wmId,g_head);
+                if(result!=NULL){
+                Refresh_FindPlaneList(hwnd,result);
+                }
+                else
+                {
+                    RefreshPlaneList(hwnd);
+                }        
+            }
+            
 
             break;
         }

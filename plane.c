@@ -377,3 +377,242 @@ struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head)
         return NULL;
     }
 }
+
+/*@breif	根据起始点查找航班
+* @param    windows窗口句柄
+* @param	航班信息结构体头指针
+* @return	找到的航班结构体指针orNULL
+*/
+struct Plane_information* Find_Plane_Starting_Point(HWND hwnd,Plane_information*head)
+{
+    if (head == NULL)
+    {
+        return NULL;
+        
+    }
+
+    char Starting_Point[20] = "";
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_STARTING_POINT, Starting_Point, 20);
+    if (Starting_Point[0] == '\0')
+    {
+        return NULL;
+    }
+
+    Plane_information* p = head;
+    Plane_information* result_head = NULL; // 结果链表头指针
+    Plane_information* result_tail = NULL; // 结果链表尾指针
+     while(p!=NULL)
+    {
+        if(strcmp(p->starting_point, Starting_Point) == 0)
+        {
+           Plane_information*new_code=(Plane_information*)malloc(sizeof(Plane_information));
+           *new_code=*p;
+            new_code->next=NULL;
+            if(result_head==NULL)
+              {
+                  result_head=new_code;
+                  result_tail=new_code;
+              }
+            else
+              {
+                  result_tail->next=new_code;
+                  result_tail=new_code;
+              }
+        }
+        p=p->next;
+    }
+  
+    return result_head;
+
+}
+
+
+
+/*@breif	根据目的地查找航班
+* @param    windows窗口句柄
+* @param	航班信息结构体头指针
+* @return	找到的航班结构体指针orNULL
+*/
+struct Plane_information* Find_Plane_Destination(HWND hwnd,Plane_information*head)
+{
+    if (head == NULL)
+    {
+        return NULL;
+    }
+
+    char Destination[20] = "";
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_DESTINATION, Destination, 20);
+    if (Destination[0] == '\0')
+    {
+       return NULL;
+    }
+
+    Plane_information* p = head;
+    Plane_information* result_head = NULL; // 结果链表头指针
+    Plane_information* result_tail = NULL; // 结果链表尾指针
+    while(p!=NULL)
+    {
+        if(strcmp(p->destination, Destination) == 0)
+        {
+           Plane_information*new_code=(Plane_information*)malloc(sizeof(Plane_information));
+           *new_code=*p;
+            new_code->next=NULL;
+            if(result_head==NULL)
+              {
+                  result_head=new_code;
+                  result_tail=new_code;
+              }
+            else
+              {
+                  result_tail->next=new_code;
+                  result_tail=new_code;
+              }
+        }
+        p=p->next;
+
+    }
+
+    return result_head;
+
+}
+
+
+
+
+/*@breif	根据起飞日期查找航班
+* @param    windows窗口句柄
+* @param	航班信息结构体头指针
+* @return	找到的航班结构体指针orNULL
+*/
+struct Plane_information* Find_Plane_Takeoff_Date(HWND hwnd,Plane_information*head)
+{
+    if (head == NULL)
+    {
+       return NULL;
+        
+    }
+
+    char Take_Off_Year[5] = "";
+    char Take_Off_Month[3] = "";
+    char Take_Off_Day[3] = "";
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_YEAR, Take_Off_Year, 5);
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_MONTH, Take_Off_Month, 3);
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_DAY, Take_Off_Day, 3);
+    if (Take_Off_Year[0] == '\0' || Take_Off_Month[0] == '\0' || Take_Off_Day[0] == '\0')
+    {
+        return NULL;
+    }
+
+    Plane_information* p = head;
+    Plane_information* result_head = NULL; // 结果链表头指针
+    Plane_information* result_tail = NULL; // 结果链表尾指针
+     while(p!=NULL)
+    {
+        if(p->take_off_time[0] == atoi(Take_Off_Year) && p->take_off_time[1] == atoi(Take_Off_Month) && p->take_off_time[2] == atoi(Take_Off_Day))
+        {
+           Plane_information*new_code=(Plane_information*)malloc(sizeof(Plane_information));
+           *new_code=*p;
+            new_code->next=NULL;
+            if(result_head==NULL)
+              {
+                  result_head=new_code;
+                  result_tail=new_code;
+              }
+            else
+              {
+                  result_tail->next=new_code;
+                  result_tail=new_code;
+              }
+        }
+        p=p->next;
+    }
+    return result_head;
+}
+
+
+
+
+struct Plane_information* Find_Plane(HWND hwnd,int wmId,Plane_information*head)
+{
+     // 首先检查输入是否完整
+    char starting_point[20] = "";
+    char destination[20] = "";
+    char takeoff_year[5] = "", takeoff_month[3] = "", takeoff_day[3] = "";
+    char landing_year[5] = "", landing_month[3] = "", landing_day[3] = "";
+    
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_STARTING_POINT, starting_point, 20);
+    GetDlgItemText(hwnd, ID_EDIT_SEARCH_DESTINATION, destination, 20);
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_YEAR, takeoff_year, 5);
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_MONTH, takeoff_month, 3);
+    GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_DAY, takeoff_day, 3);
+    if(strlen(starting_point) == 0 || strlen(destination) == 0 ||
+        strlen(takeoff_year) == 0 || strlen(takeoff_month) == 0 || strlen(takeoff_day) == 0)
+    {
+        MessageBox(hwnd,"请完整输入起点、终点和起飞日期后再进行筛选！","提示",MB_OK);
+        return NULL;
+    }
+
+
+    Plane_information* result_head= Find_Plane_Starting_Point(hwnd,head);
+    if(result_head == NULL)
+    {
+        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+        return NULL;
+    }
+     Plane_information* result_head1 = Find_Plane_Destination(hwnd,result_head);
+    if(result_head1==NULL)
+    {
+        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+        return NULL;
+    }
+    Plane_information* result_head2 = Find_Plane_Takeoff_Date(hwnd,result_head1);
+    if(result_head2==NULL)
+    {
+        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+        return NULL;
+    }
+    // 成功找到，弹窗一次
+    MessageBox(hwnd, "已找到符合条件的航班", "提示", MB_OK);
+    return result_head2;
+}
+//这个更新函数有问题 没起作用
+void Refresh_FindPlaneList(HWND hwnd,Plane_information*p)
+{
+    // 首先获取列表框句柄
+    HWND hlist = GetDlgItem(hwnd, ID_LIST_PLANE);
+    
+    // 清空列表框，避免显示旧数据
+    SendMessage(hlist, LB_RESETCONTENT, 0, 0);
+
+    
+    char buffer[300];
+    int index = 1;
+    Plane_information* temp = p;  // ← 用临时变量遍历
+    
+    while(temp != NULL)
+    {
+        sprintf(buffer, "%d. %s 总:%d 剩余:%d ￥%.0f 起点:%s 终点:%s",
+                index++, temp->id, temp->whole_seat, temp->rest_seat, temp->prize,
+                temp->starting_point, temp->destination);
+        
+        SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
+
+        sprintf(buffer,"\n起飞时间:%d/%d/%d %02d:%02d 到达时间:%d/%d/%d %02d:%02d", 
+                temp->take_off_time[0], temp->take_off_time[1], temp->take_off_time[2],
+                temp->take_off_time[3], temp->take_off_time[4],
+                temp->landing_time[0], temp->landing_time[1], temp->landing_time[2],
+                temp->landing_time[3], temp->landing_time[4]);
+                
+        SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
+
+        temp = temp->next;
+    }
+}
+
+     //   210, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_SEARCH_PLANE, NULL, NULL);
+
+
+
+//1.写查询数据
+//2.按下查询按键
+//刷新查询到的数据

@@ -105,22 +105,28 @@ void ShowUserWindow(HWND hwnd)
     CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  500, 200, 260, 170, hwnd, (HMENU)ID_STATIC_INFO_1, NULL, NULL);
 
+    // 筛选航班按钮，放在起飞时间控件上方
+    CreateWindow("BUTTON", "筛选航班", WS_CHILD | WS_VISIBLE,
+                 20, 360, 80, 25, hwnd, (HMENU)ID_BUTTON_FILTER_PLANE, NULL, NULL);
+
     CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  500, 90, 260, 350, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
                  
+ ///////////////////////////////////////////////////////////////////////////////
+
  
     CreateWindow("STATIC", "起点:", WS_CHILD | WS_VISIBLE,
                  20, 475, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 70, 475, 50, 20, hwnd, (HMENU)ID_EDIT_DEPARTURE_ADD, NULL, NULL);
+                 70, 475, 50, 20, hwnd, (HMENU)ID_EDIT_SEARCH_STARTING_POINT, NULL, NULL);
 
 
     CreateWindow("STATIC", "终点:", WS_CHILD | WS_VISIBLE,
                  20, 500, 50, 25, hwnd, NULL, NULL, NULL);
     
      CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 70, 500, 50, 20, hwnd, (HMENU)ID_EDIT_DESTINATION_ADD, NULL, NULL);
+                 70, 500, 50, 20, hwnd, (HMENU)ID_EDIT_SEARCH_DESTINATION, NULL, NULL);
     
     
        // 起飞时间
@@ -142,17 +148,6 @@ void ShowUserWindow(HWND hwnd)
                  240, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_DAY, NULL, NULL);
     CreateWindow("STATIC", "日", WS_CHILD | WS_VISIBLE,
                  280, y, 20, 20, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
-                 300, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_HOUR, NULL, NULL);
-    CreateWindow("STATIC", "时", WS_CHILD | WS_VISIBLE,
-                 340, y, 20, 20, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
-                 360, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_MINUTE, NULL, NULL);
-    CreateWindow("STATIC", "分", WS_CHILD | WS_VISIBLE,
-                 400, y, 20, 20, hwnd, NULL, NULL, NULL);
-
     // 显示所有航班
     RefreshPlaneList(hwnd);
 }

@@ -85,7 +85,9 @@
 
 #define ID_BUTTON_CONFIRM_ADD_PLANE 5018  // 确认添加按钮
 #define ID_BUTTON_CANCEL_ADD_PLANE  5019  // 取消添加按钮
-
+#define ID_EDIT_SEARCH_STARTING_POINT 5020  // 搜索起点输入框ID
+#define ID_EDIT_SEARCH_DESTINATION 5021  // 搜索终点输入框ID
+#define ID_BUTTON_FILTER_PLANE         5022
 ///白轩宇的添加结束/////////
 
 #define ID_BUTTON_SETTING           6001    //设置按钮
