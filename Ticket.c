@@ -20,6 +20,7 @@ void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*h
         {
 
             Add_Ticket(hwnd, Now_Account, Book_Plane);
+            Now_Account->Airfare_Cost+=Book_Plane->prize;//价格在这加的
             MessageBox(hwnd, "已预定id为:的航班", "提示", MB_OK);
             printf("已预定航班%s的机票\n",Book_Plane->id);
         }      
@@ -36,6 +37,7 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
     
     Ticket*Ticket_Delete=Now_Account->Ticket_List;
     Ticket*Ticket_Forward=NULL;
+
     char id[20]="";
     GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
 
@@ -56,14 +58,16 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
         if(MessageBox(hwnd, "是否要取消预定id为航班的机票呢", "确认", MB_YESNO) == IDYES)
         {   
 
-            if(Ticket_Delete==Now_Account->Ticket_List)
-            {
+            if(Ticket_Delete==Now_Account->Ticket_List)//如果要删的是头指针
+            {   
                 Now_Account->Ticket_List=Now_Account->Ticket_List->next;
-                free(Now_Account->Ticket_List);
+                Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
+                free(Ticket_Delete);
             }
-            else
+            else//否则是中间
             {
                 Ticket_Forward->next=Ticket_Delete->next;
+                Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
                 free(Ticket_Delete);
             }
             MessageBox(hwnd, "已取消预定", "提示", MB_OK);
@@ -89,38 +93,42 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 */
 void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 {
-    int Ticket_Count=0;//用来改变宏值
+    HWND hList = GetDlgItem(hwnd, ID_STATIC_INFO);
 
     Ticket*Ticket_List=Now_Account->Ticket_List;
-
+    SendMessage(hList, LB_RESETCONTENT, 0, 0);
     if(Ticket_List==NULL)
     {
         char info[500];
         sprintf(info,"您当前没有预约任何航班。");
-        SetDlgItemText(hwnd, ID_STATIC_INFO, info);
-        MessageBox(hwnd, "您没有预约的飞机", "提示", MB_OK);
-
+        SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+        return;
     }
 
     else//没有完善
     {   
         while(Ticket_List!=NULL)//由于都是在一个地方显示，所以会覆盖
         {
-        char info[500];
-        sprintf(info, "您已预定的航班信息:\n航班号: %s\n起飞时间: %d/%d/%d %02d:%02d\n着陆时间: %d/%d/%d %02d:%02d\n价格: ￥%.0f",
-                Ticket_List->Plane_Ticket->id,
+            char info[250];
+
+        sprintf(info, "id: %s,￥%.0f,起点:%s 终点:%s",
+                Ticket_List->Plane_Ticket->id,Ticket_List->Plane_Ticket->prize,Ticket_List->Plane_Ticket->starting_point,Ticket_List->Plane_Ticket->destination);
+     
+               SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+
+
+
+        sprintf(info, "起飞时间: %d/%d/%d %02d:%02d 着陆时间: %d/%d/%d %02d:%02d",
                 Ticket_List->Plane_Ticket->take_off_time[0], Ticket_List->Plane_Ticket->take_off_time[1], Ticket_List->Plane_Ticket->take_off_time[2],
                 Ticket_List->Plane_Ticket->take_off_time[3], Ticket_List->Plane_Ticket->take_off_time[4],
                 Ticket_List->Plane_Ticket->landing_time[0], Ticket_List->Plane_Ticket->landing_time[1], Ticket_List->Plane_Ticket->landing_time[2],
-                Ticket_List->Plane_Ticket->landing_time[3], Ticket_List->Plane_Ticket->landing_time[4],
-                Ticket_List->Plane_Ticket->prize);
-        SetDlgItemText(hwnd, ID_STATIC_INFO+Ticket_Count, info);//目前只有到加一的代码
+                Ticket_List->Plane_Ticket->landing_time[3], Ticket_List->Plane_Ticket->landing_time[4]
+            );
+              SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
+
+        sprintf(info,"");
+        SendMessage(hList, LB_ADDSTRING , 0, (LPARAM)info);
         Ticket_List=Ticket_List->next;
-        Ticket_Count++;
-        if(Ticket_Count>2)
-        {
-            Ticket_Count=0;
-        }
         }
     }
 }

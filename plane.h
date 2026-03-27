@@ -19,7 +19,7 @@ char destination[20];
 
 struct tourist  *passenger;//乘客
 struct Plane_information*next;
-}Plane_information;
+}   Plane_information;
 
 
 
@@ -31,7 +31,12 @@ Plane_information* Add_Plane(Plane_information *head);
 struct Plane_information* Find_Plane_Day(Plane_information*head);
 
 struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head);
-
+struct Plane_information* Find_Plane_Starting_Point(HWND hwnd,Plane_information*head);
+struct Plane_information* Find_Plane_Langding_Date(HWND hwnd,Plane_information*head);
+struct Plane_information* Find_Plane_Destination(HWND hwnd,Plane_information*head);
+struct Plane_information* Find_Plane_Takeoff_Date(HWND hwnd,Plane_information*head);
 extern Plane_information* g_head;  // 航班信息链表头指针
+void Refresh_FindPlaneList(HWND hwnd,Plane_information*p);
+struct Plane_information* Find_Plane(HWND hwnd,int wmId,Plane_information*head);
 #include "tourist.h"
 #endif

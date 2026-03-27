@@ -3,6 +3,7 @@
 
 #include "plane.h"
 
+
 void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*head);
 void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account);
 void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account);

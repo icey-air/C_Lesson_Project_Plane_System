@@ -5,9 +5,12 @@
 #define NO 0
 #define MAX_ACCOUNTS 100
 
+
 #include <windows.h>
 #include "plane.h"
 #include <stdio.h>
+#include "Sound.h"
+
 // 控件ID定义
 #define ID_BUTTON_ADMIN_LOGIN     1001  // 管理员登录按钮ID
 #define ID_BUTTON_USER_LOGIN      1002  // 用户登录按钮ID
@@ -62,12 +65,6 @@
 #define ID_LIST_BOOKING           3002  // 预定列表框ID
 
 #define ID_STATIC_INFO            4001  // 预定信息显示静态文本框ID
-#define ID_STATIC_INFO_1          4002  //测试用，预定信息显示静态文本框ID
-
-                    
-
-/////////白轩宇的添加////////////
-// 在 windows_Define.h 的控件ID定义部分添加以下内容
 
 #define ID_DIALOG_ADD_PLANE        5001  // 添加航班对话框ID
 #define ID_EDIT_PLANE_ID_ADD       5002  // 添加航班-航班号输入框
@@ -93,7 +90,9 @@
 
 #define ID_BUTTON_CONFIRM_ADD_PLANE 5018  // 确认添加按钮
 #define ID_BUTTON_CANCEL_ADD_PLANE  5019  // 取消添加按钮
-
+#define ID_EDIT_SEARCH_STARTING_POINT 5020  // 搜索起点输入框ID
+#define ID_EDIT_SEARCH_DESTINATION 5021  // 搜索终点输入框ID
+#define ID_BUTTON_FILTER_PLANE         5022
 ///白轩宇的添加结束/////////
 #define ID_BUTTON_ADD_PASSENGERS 6002    //添加同行乘客按钮ID
 
@@ -110,9 +109,8 @@ void RefreshPlaneList(HWND hwnd);
 extern HWND g_hMainWindow;  
 void Show_Rejister_Window(HWND hwnd);
 void Show_Account_Information_Change_Window(HWND hwnd);
-void Add_New_Passengers_Window(HWND hwnd);
+void Add_New_Passengers_Window(HWND hwnd);void ShowLoginWindow(HWND hwnd);
+void ShowLoginWindow(HWND hwnd);
 extern struct tourist*Now_Account;
-
-// HWND g_hMainWindow = NULL;重要的变量，暂时没有想好放哪里，就丢final_test.c了     --这玩意是啥来着？
 
 #endif
