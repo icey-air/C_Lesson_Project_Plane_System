@@ -9,7 +9,7 @@
 #include "Ticket.h"
 #include "Manager.h"
 #include "Sound.h"
-#pragma comment(lib, "winmm.lib")//链接外部库,gcc编译无法正常运行
+
 
 /*======================== 数据结构定义 ========================*/
 

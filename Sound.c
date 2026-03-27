@@ -8,6 +8,6 @@
 */
 void Play_Button_Sound()
 {
-    // PlaySound(TEXT("Sound\\Button.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    PlaySound(TEXT("Sound\\Button.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
