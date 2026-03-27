@@ -63,7 +63,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 		strcpy(p1->phone_number,phone);
 		strcpy(p1->name,name);
 		strcpy(p1->identity_card,Identity_Card);
-
+		p1->Airfare_Cost=0;
 		p1->Ticket_List=NULL;
 
 
@@ -88,6 +88,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 		strcpy(p1->name,name);
 		strcpy(p1->identity_card,Identity_Card);
 		p1->Ticket_List=NULL;
+		p1->Airfare_Cost=0;
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);
 		Tourist_File_Save(head);
