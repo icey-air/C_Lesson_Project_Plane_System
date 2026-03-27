@@ -3,7 +3,6 @@
 #include "windows_Define.h"
 #include "Manager.h"
 
-#include "Ticket.h"
 
 /*======================== 全局变量定义 ========================*/
 Plane_information* g_head = NULL;
@@ -77,17 +76,10 @@ void Init_Test_Data(void)
     p1->next = p2;
 }
 
-
-
-/*======================== 账户管理功能实现 ========================*/
-
-
-
 /*======================== Windows界面实现 ========================*/
 
 // 函数声明
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-void ShowLoginWindow(HWND hwnd);
 void ShowAddPlaneDialog(HWND hwnd);
 void ShowUpdatePlaneDialog(HWND hwnd);
 
@@ -98,9 +90,9 @@ void ShowUpdatePlaneDialog(HWND hwnd);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                    LPSTR lpCmdLine, int nCmdShow)
 {
+    
     // 初始化测试数据（实际使用时可以注释掉）
     Init_Test_Data();
-    
     const char CLASS_NAME[] = "FlightManagementSystem";
     
     // 注册窗口类
@@ -126,7 +118,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     g_hMainWindow = hwnd;
     
     ShowWindow(hwnd, nCmdShow);
-    
+    Play_Button_Sound();
     // 消息循环
     MSG msg = {0};
     while(GetMessage(&msg, NULL, 0, 0))
@@ -147,61 +139,27 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_CREATE:
         {
+            
             // 显示登录界面
             ShowLoginWindow(hwnd);
+            
             return 0;
         }
         
         case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
-            
-//---------------------------------修改账户信息的，写得贼烂别动----- ---------------------------------------------------------------
-            if(wmId == ID_BUTTON_CHANGE_INFO)//修改信息
-            {
-                Show_Account_Information_Change_Window(hwnd);
-            }  
-            else if(wmId==ID_BUTTON_CHANGE_Account)
-            {   if(Change_What==0||Change_What==3||Change_What==5||Change_What==8)
-                {
-                 Change_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-            else if(wmId==ID_BUTTON_CHANGE_Password)
-            {
-                if(Change_What==0||Change_What==1||Change_What==5||Change_What==6)
-                {
-                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-            else if(wmId==ID_BUTTON_CHANGE_Phone)
-            {  
-                 if(Change_What==0||Change_What==1||Change_What==3||Change_What==4)
-                {
-                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-            else if(wmId == ID_BUTTON_CHANGE_INFO_COMFIRM)//确认修改
-            {
-                Change_Information_Comfirm(hwnd,Change_What,Now_Account);
-                Change_What=0;
-            }
-            else if(wmId == ID_BUTTON_CHANGE_INFO_CANCLE)//取消修改
-            {
-              ShowUserWindow(hwnd);
-              Change_What=0;
-            }
-//---------------------------------------留着，我要封装------------------------------------------//
-
-
+            Chang_Account_Function(wmId,hwnd);
             
             // 登录相关按钮
             if(wmId == ID_BUTTON_ADMIN_LOGIN)
             {
+                Play_Button_Sound();
                 Manager_Login(hwnd);
             }
             else if(wmId == ID_BUTTON_USER_LOGIN)
             {
+                Play_Button_Sound();
                 Now_Account=Loging_Account(hwnd, tourist_head);
                 if(Now_Account!=NULL)
                 {
@@ -210,23 +168,28 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             else if(wmId == ID_BUTTON_REGISTER)
             {
+                Play_Button_Sound();
                 Show_Rejister_Window(hwnd);                
             }
             else if(wmId == ID_BUTTON_REGISTER_COMFIRM)
             {
+                Play_Button_Sound();
                 tourist_head=Register_Tourist(hwnd,tourist_head);
             }
             else if(wmId == ID_BUTTON_REGISTER_CANCLE)
             {
+                Play_Button_Sound();
                 ShowLoginWindow(hwnd);
             }
             else if(wmId == ID_BUTTON_LOGOUT)
             {
+                Play_Button_Sound();
                 g_userType = 0;
                 memset(&g_currentUser, 0, sizeof(tourist));
                 SetWindowText(hwnd, "航班管理系统 - 请登录");
                 ShowLoginWindow(hwnd);
             }
+               
             
             // 管理员功能按钮
             // 在 final_test.c 的 WindowProc 函数中，找到管理员功能按钮的处理部分
@@ -234,45 +197,30 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             else if(wmId == ID_BUTTON_ADD_PLANE)
             {
-              ShowAddPlaneDialog(hwnd);
+                Play_Button_Sound();
+                ShowAddPlaneDialog(hwnd);
             }
 
             
             else if(wmId == ID_BUTTON_DELETE_PLANE)
             {
+                Play_Button_Sound();
                 g_head=Manager_Delete_Plane(hwnd,g_head);
             }
             else if(wmId == ID_BUTTON_UPDATE_PLANE)
             {
+                Play_Button_Sound();
                 ShowUpdatePlaneDialog(hwnd);
             }
             else if(wmId == ID_BUTTON_SHOW_PLANE)
             {
+                Play_Button_Sound();
                 RefreshPlaneList(hwnd);
             }
             
-            // 用户功能按钮
-            else if(wmId == ID_BUTTON_SEARCH_PLANE)//搜索航班id代码
-            {
-                Find_Plane_ID(hwnd,g_head);//只是查找ID，没有显示信息的代码//可能要再封装一次
-            }
-            else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
-            {
-                Book_Ticket(hwnd, Now_Account,g_head);//里面有一个刷新函数我应该用错了--后记：现在我已经不知道之前注释是什么意思什么了
-                List_Ticket_Reservation(hwnd, Now_Account);
-            }
-            else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
-            {
-                Cancel_Ticket_Reservation(hwnd,Now_Account);
-                List_Ticket_Reservation(hwnd, Now_Account);
-            }
-            else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
-            {
-                List_Ticket_Reservation(hwnd, Now_Account);
-            }
 
-  
-
+            //用户界面按钮功能封装
+            User_Button_Function(wmId,hwnd);
             break;
         }
         
@@ -280,6 +228,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             if(MessageBox(hwnd, "确定要退出吗？", "确认", MB_YESNO) == IDYES)
             {
+                Play_Button_Sound();
                 DestroyWindow(hwnd);
             }
             return 0;
@@ -290,55 +239,97 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(0);
             return 0;
         }
+
+
+        
     }
     
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-/**
- * @brief 显示登录界面
- */
-void ShowLoginWindow(HWND hwnd)
+
+
+/*@brief	修改账户信息功能封装
+* @param	windows句柄
+* @return	无
+*/
+void Chang_Account_Function(int wmId,HWND hwnd)
 {
-    // 清除所有现有控件
-    HWND hChild = GetWindow(hwnd, GW_CHILD);
-    while(hChild != NULL)
-    {
-        HWND hNext = GetWindow(hChild, GW_HWNDNEXT);
-        DestroyWindow(hChild);
-        hChild = hNext;
-    }
-    
-    // 创建登录界面控件
-    CreateWindow("STATIC", "用户名:", WS_CHILD | WS_VISIBLE,
-                 300, 200, 50, 25, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-                 360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
-    
-    CreateWindow("STATIC", "密码:", WS_CHILD | WS_VISIBLE,
-                 300, 240, 50, 25, hwnd, NULL, NULL, NULL);
-    
-    CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
-                 360, 240, 150, 25, hwnd, (HMENU)ID_EDIT_PASSWORD, NULL, NULL);
-    
-    CreateWindow("BUTTON", "管理员登录", WS_CHILD | WS_VISIBLE,
-                 300, 280, 100, 30, hwnd, (HMENU)ID_BUTTON_ADMIN_LOGIN, NULL, NULL);
-    
-    CreateWindow("BUTTON", "用户登录", WS_CHILD | WS_VISIBLE,
-                 410, 280, 100, 30, hwnd, (HMENU)ID_BUTTON_USER_LOGIN, NULL, NULL);
-    
-    CreateWindow("BUTTON", "设置", WS_CHILD | WS_VISIBLE,
-                 360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_SETTING, NULL, NULL);
-        
-    CreateWindow("BUTTON", "注册", WS_CHILD | WS_VISIBLE,
-                 360, 330, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER, NULL, NULL);
-
-    // CreateWindow("STATIC", "电话:", WS_CHILD | WS_VISIBLE,
-    //              300, 360, 50, 25, hwnd, NULL, NULL, NULL);
-
-    // CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
-    //              360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
+       if(wmId == ID_BUTTON_CHANGE_INFO)//修改信息
+            {
+                Play_Button_Sound();
+                Show_Account_Information_Change_Window(hwnd);
+            }  
+            else if(wmId==ID_BUTTON_CHANGE_Account)
+            {   
+                Play_Button_Sound();
+                if(Change_What==0||Change_What==3||Change_What==5||Change_What==8)
+                {
+                 Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Password)
+            {
+                Play_Button_Sound();
+                if(Change_What==0||Change_What==1||Change_What==5||Change_What==6)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId==ID_BUTTON_CHANGE_Phone)
+            {  
+                Play_Button_Sound();
+                 if(Change_What==0||Change_What==1||Change_What==3||Change_What==4)
+                {
+                Change_What+=Change_tourist(hwnd,wmId,Now_Account);
+                }
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_COMFIRM)//确认修改
+            {
+                Play_Button_Sound();
+                Change_Information_Comfirm(hwnd,Change_What,Now_Account);
+                Change_What=0;
+            }
+            else if(wmId == ID_BUTTON_CHANGE_INFO_CANCLE)//取消修改
+            {
+                Play_Button_Sound();
+                ShowUserWindow(hwnd);
+                Change_What=0;
+            }
 }
 
 
+
+/*@brief	用户界面按钮功能封装
+* @param	windows句柄
+* @return	无
+*/
+void User_Button_Function(int wmId,HWND hwnd)
+{
+               
+            // 用户功能按钮
+            if(wmId == ID_BUTTON_SEARCH_PLANE)//搜索航班id代码
+            {
+                Play_Button_Sound();
+                Find_Plane_ID(hwnd,g_head);
+            }
+            else if(wmId == ID_BUTTON_BOOK_TICKET)//预定机票代码BOOK_TICKET
+            {
+                Play_Button_Sound();
+                Book_Ticket(hwnd, Now_Account,g_head);
+                List_Ticket_Reservation(hwnd, Now_Account);
+            }
+            else if(wmId == ID_BUTTON_CANCEL_BOOK)//取消预定
+            {
+                Play_Button_Sound();
+                Cancel_Ticket_Reservation(hwnd,Now_Account);
+                List_Ticket_Reservation(hwnd, Now_Account);
+            }
+            else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
+            {
+                Play_Button_Sound();
+                List_Ticket_Reservation(hwnd, Now_Account);
+            }
+
+  
+}

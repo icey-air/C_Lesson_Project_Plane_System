@@ -20,6 +20,7 @@ void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*h
         {
 
             Add_Ticket(hwnd, Now_Account, Book_Plane);
+            Now_Account->Airfare_Cost+=Book_Plane->prize;//价格在这加的
             MessageBox(hwnd, "已预定id为:的航班", "提示", MB_OK);
             printf("已预定航班%s的机票\n",Book_Plane->id);
         }      
@@ -36,7 +37,7 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
     
     Ticket*Ticket_Delete=Now_Account->Ticket_List;
     Ticket*Ticket_Forward=NULL;
-    Ticket*Ticket_p=NULL;
+
     char id[20]="";
     GetDlgItemText(hwnd, ID_EDIT_SEARCH_ID, id, 20);
 
@@ -57,14 +58,16 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
         if(MessageBox(hwnd, "是否要取消预定id为航班的机票呢", "确认", MB_YESNO) == IDYES)
         {   
 
-            if(Ticket_Delete==Now_Account->Ticket_List)
-            {   Ticket_p=Now_Account->Ticket_List;
+            if(Ticket_Delete==Now_Account->Ticket_List)//如果要删的是头指针
+            {   
                 Now_Account->Ticket_List=Now_Account->Ticket_List->next;
-                free(Ticket_p);
+                Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
+                free(Ticket_Delete);
             }
-            else
+            else//否则是中间
             {
                 Ticket_Forward->next=Ticket_Delete->next;
+                Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
                 free(Ticket_Delete);
             }
             MessageBox(hwnd, "已取消预定", "提示", MB_OK);
