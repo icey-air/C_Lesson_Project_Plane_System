@@ -1,13 +1,13 @@
  #include "windows_Define.h"
 
 /** 
-* @brief	œ‘ æπ‹¿Ì‘±ΩÁ√Ê
-* @param	windowsæ‰±˙
-* @return	Œﬁ
+* @brief	ÊòæÁ§∫ÁÆ°ÁêÜÂëòÁïåÈù¢
+* @param	windowsÂè•ÊüÑ
+* @return	Êó†
 */
 void ShowAdminWindow(HWND hwnd)
 {
-    // «Â≥˝À˘”–œ÷”–øÿº˛
+    // Ê∏ÖÈô§ÊâÄÊúâÁé∞ÊúâÊéß‰ª∂
     HWND hChild = GetWindow(hwnd, GW_CHILD);
     while(hChild != NULL)
     {
@@ -16,50 +16,50 @@ void ShowAdminWindow(HWND hwnd)
         hChild = hNext;
     }
     
-    // ¥¥Ω®π‹¿Ì‘±ΩÁ√Êøÿº˛
-    CreateWindow("BUTTON", "ÃÌº”∫Ω∞‡", WS_CHILD | WS_VISIBLE,
+    // ÂàõÂª∫ÁÆ°ÁêÜÂëòÁïåÈù¢Êéß‰ª∂
+    CreateWindow("BUTTON", "Ê∑ªÂä†Ëà™Áè≠", WS_CHILD | WS_VISIBLE,
                  20, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_ADD_PLANE, NULL, NULL);
     
-    CreateWindow("BUTTON", "…æ≥˝∫Ω∞‡", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Âà†Èô§Ëà™Áè≠", WS_CHILD | WS_VISIBLE,
                  130, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_DELETE_PLANE, NULL, NULL);
     
-    CreateWindow("BUTTON", "–ﬁ∏ƒ∫Ω∞‡", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "‰øÆÊîπËà™Áè≠", WS_CHILD | WS_VISIBLE,
                  240, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_UPDATE_PLANE, NULL, NULL);
     
-    CreateWindow("BUTTON", "œ‘ æÀ˘”–", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÊòæÁ§∫ÊâÄÊúâ", WS_CHILD | WS_VISIBLE,
                  350, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_SHOW_PLANE, NULL, NULL);
     
-    CreateWindow("BUTTON", "ÕÀ≥ˆµ«¬º", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÈÄÄÂá∫ÁôªÂΩï", WS_CHILD | WS_VISIBLE,
                  650, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_LOGOUT, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  460, 20, 100, 30, hwnd, (HMENU)ID_EDIT_SEARCH_ID, NULL, NULL);
 
 
-    // ¥¥Ω®¡–±ÌøÚœ‘ æ∫Ω∞‡–≈œ¢
+    // ÂàõÂª∫ÂàóË°®Ê°ÜÊòæÁ§∫Ëà™Áè≠‰ø°ÊÅØ
     CreateWindow("LISTBOX", NULL,
                  WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,
                  20, 70, 740, 450, hwnd, (HMENU)ID_LIST_PLANE, NULL, NULL);
 
 
 
-    // œ‘ æµ±«∞∫Ω∞‡¡–±Ì
+    // ÊòæÁ§∫ÂΩìÂâçËà™Áè≠ÂàóË°®
     RefreshPlaneList(hwnd);
 }
 
 
 
 /** 
-* @brief	œ‘ æ”√ªßΩÁ√Ê
-* @param	windowsæ‰±˙
-* @return	Œﬁ
+* @brief	ÊòæÁ§∫Áî®Êà∑ÁïåÈù¢
+* @param	windowsÂè•ÊüÑ
+* @return	Êó†
 */
 void ShowUserWindow(HWND hwnd)
 {
     int label_width = 80;
     int y=400;
 
-    // «Â≥˝À˘”–œ÷”–øÿº˛
+    // Ê∏ÖÈô§ÊâÄÊúâÁé∞ÊúâÊéß‰ª∂
     HWND hChild = GetWindow(hwnd, GW_CHILD);
     while(hChild != NULL)
     {
@@ -68,41 +68,41 @@ void ShowUserWindow(HWND hwnd)
         hChild = hNext;
     }
     
-    // ¥¥Ω®”√ªßΩÁ√Êøÿº˛
-    CreateWindow("STATIC", "∫Ω∞‡∫≈:", WS_CHILD | WS_VISIBLE,
+    // ÂàõÂª∫Áî®Êà∑ÁïåÈù¢Êéß‰ª∂
+    CreateWindow("STATIC", "Ëà™Áè≠Âè∑:", WS_CHILD | WS_VISIBLE,
                  20, 20, 50, 25, hwnd, NULL, NULL, NULL);
-    // ‰»Î¿‡
+    //ËæìÂÖ•Á±ª
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  80, 20, 120, 25, hwnd, (HMENU)ID_EDIT_SEARCH_ID, NULL, NULL);
     
-    CreateWindow("BUTTON", "≤È—Ø∫Ω∞‡", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Êü•ËØ¢Ëà™Áè≠", WS_CHILD | WS_VISIBLE,
                  210, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_SEARCH_PLANE, NULL, NULL);
     
-    CreateWindow("BUTTON", "‘§∂®ª˙∆±", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "È¢ÑÂÆöÊú∫Á•®", WS_CHILD | WS_VISIBLE,
                  300, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_BOOK_TICKET, NULL, NULL);
     
-    CreateWindow("BUTTON", "»°œ˚‘§∂®", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÂèñÊ∂àÈ¢ÑÂÆö", WS_CHILD | WS_VISIBLE,
                  390, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_CANCEL_BOOK, NULL, NULL);
     
-    CreateWindow("BUTTON", "Œ“µƒ‘§∂®", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÊàëÁöÑÈ¢ÑÂÆö", WS_CHILD | WS_VISIBLE,
                  480, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_LIST_BOOK, NULL, NULL);
 
-    CreateWindow("BUTTON", "–ﬁ∏ƒ–≈œ¢", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "‰øÆÊîπ‰ø°ÊÅØ", WS_CHILD | WS_VISIBLE,
                  570, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO, NULL, NULL);
     
-    CreateWindow("BUTTON", "ÕÀ≥ˆµ«¬º", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÈÄÄÂá∫ÁôªÂΩï", WS_CHILD | WS_VISIBLE,
                  670, 20, 100, 30, hwnd, (HMENU)ID_BUTTON_LOGOUT, NULL, NULL);
 
-    CreateWindow("BUTTON", "ÃÌº”Õ¨––≥ÀøÕ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Ê∑ªÂä†ÂêåË°å‰πòÂÆ¢", WS_CHILD | WS_VISIBLE,
                  20, 280, 100, 30, hwnd, (HMENU)ID_BUTTON_ADD_PASSENGERS, NULL, NULL);
     
-    // ¥¥Ω®¡–±ÌøÚœ‘ æÀ˘”–∫Ω∞‡
+    // ÂàõÂª∫ÂàóË°®Ê°ÜÊòæÁ§∫ÊâÄÊúâËà™Áè≠
     CreateWindow("LISTBOX", NULL,
                  WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL,
                  20, 60, 450, 200, hwnd, (HMENU)ID_LIST_PLANE, NULL, NULL);
     
-    // ¥¥Ω®æ≤Ã¨Œƒ±æøÚœ‘ æ‘§∂®–≈œ¢
-    CreateWindow("STATIC", "Œ“µƒ‘§∂®–≈œ¢:", WS_CHILD | WS_VISIBLE,
+    // ÂàõÂª∫ÈùôÊÄÅÊñáÊú¨Ê°ÜÊòæÁ§∫È¢ÑÂÆö‰ø°ÊÅØ
+    CreateWindow("STATIC", "ÊàëÁöÑÈ¢ÑÂÆö‰ø°ÊÅØ:", WS_CHILD | WS_VISIBLE,
                  500, 60, 100, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
@@ -112,59 +112,59 @@ void ShowUserWindow(HWND hwnd)
                  500, 90, 260, 350, hwnd, (HMENU)ID_STATIC_INFO, NULL, NULL);
                  
  
-    CreateWindow("STATIC", "∆µ„:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Ëµ∑ÁÇπ:", WS_CHILD | WS_VISIBLE,
                  20, 475, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  70, 475, 50, 20, hwnd, (HMENU)ID_EDIT_DEPARTURE_ADD, NULL, NULL);
 
 
-    CreateWindow("STATIC", "÷’µ„:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÁªàÁÇπ:", WS_CHILD | WS_VISIBLE,
                  20, 500, 50, 25, hwnd, NULL, NULL, NULL);
     
      CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  70, 500, 50, 20, hwnd, (HMENU)ID_EDIT_DESTINATION_ADD, NULL, NULL);
     
     
-       // ∆∑… ±º‰
-    CreateWindow("STATIC", "∆∑… ±º‰:", WS_CHILD | WS_VISIBLE,
+       // Ëµ∑È£ûÊó∂Èó¥
+    CreateWindow("STATIC", "Ëµ∑È£ûÊó∂Èó¥:", WS_CHILD | WS_VISIBLE,
                  20, y, label_width, 20, hwnd, NULL, NULL, NULL);
     
-    // ∆∑… ±º‰ ‰»ÎøÚ£®“ª––œ‘ æ£©
+    // Ëµ∑È£ûÊó∂Èó¥ËæìÂÖ•Ê°ÜÔºà‰∏ÄË°åÊòæÁ§∫Ôºâ
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
                  110, y, 45, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_YEAR, NULL, NULL);
-    CreateWindow("STATIC", "ƒÍ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Âπ¥", WS_CHILD | WS_VISIBLE,
                  160, y, 20, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
                  180, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_MONTH, NULL, NULL);
-    CreateWindow("STATIC", "‘¬", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Êúà", WS_CHILD | WS_VISIBLE,
                  220, y, 20, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
                  240, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_DAY, NULL, NULL);
-    CreateWindow("STATIC", "»’", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Êó•", WS_CHILD | WS_VISIBLE,
                  280, y, 20, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
                  300, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_HOUR, NULL, NULL);
-    CreateWindow("STATIC", " ±", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Êó∂", WS_CHILD | WS_VISIBLE,
                  340, y, 20, 20, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER,
                  360, y, 35, 20, hwnd, (HMENU)ID_EDIT_TAKEOFF_MINUTE, NULL, NULL);
-    CreateWindow("STATIC", "∑÷", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂàÜ", WS_CHILD | WS_VISIBLE,
                  400, y, 20, 20, hwnd, NULL, NULL, NULL);
-    // œ‘ æÀ˘”–∫Ω∞‡
+    // ÊòæÁ§∫ÊâÄÊúâËà™Áè≠
     RefreshPlaneList(hwnd);
 }
 
 
 
 
-/*@brief	À¢–¬∑…ª˙œ‘ æ
-* @param	windowsæ‰±˙
-* @return	Œﬁ
+/*@brief	Âà∑Êñ∞È£ûÊú∫ÊòæÁ§∫
+* @param	windowsÂè•ÊüÑ
+* @return	Êó†
 */
 void RefreshPlaneList(HWND hwnd)
 {
@@ -175,7 +175,7 @@ void RefreshPlaneList(HWND hwnd)
     
     if(g_head == NULL)
     {
-        SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)"µ±«∞√ª”–∫Ω∞‡–≈œ¢");
+        SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)"ÂΩìÂâçÊ≤°ÊúâËà™Áè≠‰ø°ÊÅØ");
         return;
     }
     
@@ -185,14 +185,14 @@ void RefreshPlaneList(HWND hwnd)
     
     while(p != NULL)
     {
-        sprintf(buffer, "%d. %s ◊‹:%d  £”‡:%d £§%.0f ∆µ„:%s ÷’µ„:%s",
+        sprintf(buffer, "%d. %s ÊÄª:%d Ââ©‰Ωô:%d Ôø•%.0f Ëµ∑ÁÇπ:%s ÁªàÁÇπ:%s",
                 index++, p->id, p->whole_seat, p->rest_seat, p->prize,
                 p->starting_point,p->destination);
         
         SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)buffer);// 
 
 
-        sprintf(buffer,"\n∆∑… ±º‰:%d/%d/%d %02d:%02d µΩ¥Ô ±º‰:%d/%d/%d %02d:%02d", 
+        sprintf(buffer,"\nËµ∑È£ûÊó∂Èó¥:%d/%d/%d %02d:%02d Âà∞ËææÊó∂Èó¥:%d/%d/%d %02d:%02d", 
                 p->take_off_time[0], p->take_off_time[1], p->take_off_time[2],
                 p->take_off_time[3], p->take_off_time[4],
                 p->landing_time[0], p->landing_time[1], p->landing_time[2],
@@ -207,13 +207,13 @@ void RefreshPlaneList(HWND hwnd)
 
 
 
-/*@brief	’π æ◊¢≤·¥∞ø⁄
-* @param	windowsæ‰±˙
-* @return	Œﬁ
+/*@brief	Â±ïÁ§∫Ê≥®ÂÜåÁ™óÂè£
+* @param	windowsÂè•ÊüÑ
+* @return	Êó†
 */
 void Show_Rejister_Window(HWND hwnd)
 {
-    // «Â≥˝À˘”–œ÷”–øÿº˛
+    // Ê∏ÖÈô§ÊâÄÊúâÁé∞ÊúâÊéß‰ª∂
     HWND hChild = GetWindow(hwnd, GW_CHILD);
     while(hChild != NULL)
     {
@@ -222,54 +222,54 @@ void Show_Rejister_Window(HWND hwnd)
         hChild = hNext;
     }
     
-    // ¥¥Ω®◊¢≤·ΩÁ√Êøÿº˛
-    CreateWindow("STATIC", "’Àªß:", WS_CHILD | WS_VISIBLE,
+    // ÂàõÂª∫Ê≥®ÂÜåÁïåÈù¢Êéß‰ª∂
+    CreateWindow("STATIC", "Ë¥¶Êà∑:", WS_CHILD | WS_VISIBLE,
                  300, 200, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                  360, 200, 150, 25, hwnd, (HMENU)ID_EDIT_ACCOUNT, NULL, NULL);
     
-    CreateWindow("STATIC", "√‹¬Î:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂØÜÁ†Å:", WS_CHILD | WS_VISIBLE,
                  300, 240, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
                  360, 240, 150, 25, hwnd, (HMENU)ID_EDIT_PASSWORD, NULL, NULL);
     
-    CreateWindow("STATIC", "µÁª∞:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÁîµËØù:", WS_CHILD | WS_VISIBLE,
                  300, 280, 50, 25, hwnd, NULL, NULL, NULL);
 
      CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 280, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
 
-    CreateWindow("STATIC", "–’√˚:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂßìÂêç:", WS_CHILD | WS_VISIBLE,
                  300, 320, 50, 25, hwnd, NULL, NULL, NULL);
 
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 320, 150, 25, hwnd, (HMENU)ID_EDIT_NAME, NULL, NULL);
     
-    CreateWindow("STATIC", "…Ì∑›÷§:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Ë∫´‰ªΩËØÅ:", WS_CHILD | WS_VISIBLE,
                  300, 360, 50, 25, hwnd, NULL, NULL, NULL);
 
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_IDENTIEY_CARD, NULL, NULL);
 
 
-    CreateWindow("BUTTON", "»∑»œ◊¢≤·", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Á°ÆËÆ§Ê≥®ÂÜå", WS_CHILD | WS_VISIBLE,
                  360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER_COMFIRM, NULL, NULL);
 
-    CreateWindow("BUTTON", "»°œ˚◊¢≤·", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÂèñÊ∂àÊ≥®ÂÜå", WS_CHILD | WS_VISIBLE,
                  360, 440, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER_CANCLE, NULL, NULL);
 
 }
 
 
-/*@brief	’π æ’Àªß–≈œ¢–ﬁ∏ƒ¥∞ø⁄
-* @param	windowsæ‰±˙
-* @return	Œﬁ
+/*@brief	Â±ïÁ§∫Ë¥¶Êà∑‰ø°ÊÅØ‰øÆÊîπÁ™óÂè£
+* @param	windowsÂè•ÊüÑ
+* @return	Êó†
 */
 void Show_Account_Information_Change_Window(HWND hwnd)
 {
-    // «Â≥˝À˘”–œ÷”–øÿº˛
+    // Ê∏ÖÈô§ÊâÄÊúâÁé∞ÊúâÊéß‰ª∂
     HWND hChild = GetWindow(hwnd, GW_CHILD);
     while(hChild != NULL)
     {
@@ -278,36 +278,36 @@ void Show_Account_Information_Change_Window(HWND hwnd)
         hChild = hNext;
     }
     
-    // ¥¥Ω®◊¢≤·ΩÁ√Êøÿº˛
-    CreateWindow("STATIC", "’Àªß:", WS_CHILD | WS_VISIBLE,
+    // ÂàõÂª∫Ê≥®ÂÜåÁïåÈù¢Êéß‰ª∂
+    CreateWindow("STATIC", "Ë¥¶Êà∑:", WS_CHILD | WS_VISIBLE,
                  300, 200, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", Now_Account->Account, WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 200, 150, 25, hwnd, NULL, NULL, NULL);
     
-    CreateWindow("BUTTON", "–ﬁ∏ƒ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "‰øÆÊîπ", WS_CHILD | WS_VISIBLE,
                  520, 200, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Account, NULL, NULL);
 
     
-    CreateWindow("STATIC", "√‹¬Î:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂØÜÁ†Å:", WS_CHILD | WS_VISIBLE,
                  300, 240, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", (Now_Account->password), WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 240, 150, 25, hwnd, NULL, NULL, NULL);
 
-    CreateWindow("BUTTON", "–ﬁ∏ƒ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "‰øÆÊîπ", WS_CHILD | WS_VISIBLE,
                  520, 240, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Password, NULL, NULL);
     
-    CreateWindow("STATIC", "µÁª∞:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÁîµËØù:", WS_CHILD | WS_VISIBLE,
                  300, 280, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", Now_Account->phone_number, WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 280, 150, 25, hwnd, NULL, NULL, NULL);
 
-    CreateWindow("BUTTON", "–ﬁ∏ƒ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "‰øÆÊîπ", WS_CHILD | WS_VISIBLE,
                  520, 280, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_Phone, NULL, NULL);
 
-    CreateWindow("STATIC", "–’√˚:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂßìÂêç:", WS_CHILD | WS_VISIBLE,
                  300, 320, 50, 25, hwnd, NULL, NULL, NULL);
     
     CreateWindow("STATIC", Now_Account->name, WS_CHILD | WS_VISIBLE | WS_BORDER,
@@ -316,7 +316,7 @@ void Show_Account_Information_Change_Window(HWND hwnd)
     // CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
     //               360, 320, 150, 25, hwnd, (HMENU)ID_EDIT_NAME, NULL, NULL);
     
-    CreateWindow("STATIC", "…Ì∑›÷§:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Ë∫´‰ªΩËØÅ:", WS_CHILD | WS_VISIBLE,
                  300, 360, 50, 25, hwnd, NULL, NULL, NULL);
 
     CreateWindow("STATIC", Now_Account->identity_card, WS_CHILD | WS_VISIBLE | WS_BORDER,
@@ -326,17 +326,17 @@ void Show_Account_Information_Change_Window(HWND hwnd)
     //               360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_IDENTIEY_CARD, NULL, NULL);
 
 
-    CreateWindow("BUTTON", "»∑»œ–ﬁ∏ƒ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Á°ÆËÆ§‰øÆÊîπ", WS_CHILD | WS_VISIBLE,
                  360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO_COMFIRM, NULL, NULL);
 
-    CreateWindow("BUTTON", "ÕÀ≥ˆ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÈÄÄÂá∫", WS_CHILD | WS_VISIBLE,
                  670, 55, 80, 30, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO_CANCLE, NULL, NULL);
 
 }
 
 void Add_New_Passengers_Window(HWND hwnd)
 {
-    // «Â≥˝À˘”–œ÷”–øÿº˛
+    // Ê∏ÖÈô§ÊâÄÊúâÁé∞ÊúâÊéß‰ª∂
     HWND hChild = GetWindow(hwnd, GW_CHILD);
     while(hChild != NULL)
     {
@@ -345,31 +345,31 @@ void Add_New_Passengers_Window(HWND hwnd)
         hChild = hNext;
     }
     
-    CreateWindow("STATIC", "µÁª∞:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÁîµËØù:", WS_CHILD | WS_VISIBLE,
                  300, 280, 50, 25, hwnd, NULL, NULL, NULL);
 
      CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 280, 150, 25, hwnd, (HMENU)ID_EDIT_PHONE, NULL, NULL);
 
-    CreateWindow("STATIC", "–’√˚:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "ÂßìÂêç:", WS_CHILD | WS_VISIBLE,
                  300, 320, 50, 25, hwnd, NULL, NULL, NULL);
 
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 320, 150, 25, hwnd, (HMENU)ID_EDIT_NAME, NULL, NULL);
     
-    CreateWindow("STATIC", "…Ì∑›÷§:", WS_CHILD | WS_VISIBLE,
+    CreateWindow("STATIC", "Ë∫´‰ªΩËØÅ:", WS_CHILD | WS_VISIBLE,
                  300, 360, 50, 25, hwnd, NULL, NULL, NULL);
 
     CreateWindow("EDIT", "", WS_CHILD | WS_VISIBLE | WS_BORDER,
                   360, 360, 150, 25, hwnd, (HMENU)ID_EDIT_IDENTIEY_CARD, NULL, NULL);
 
-    CreateWindow("BUTTON", "»∑»œÃÌº”", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "Á°ÆËÆ§Ê∑ªÂä†", WS_CHILD | WS_VISIBLE,
                  360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_ADD_CONFIRM, NULL, NULL);
 
-    CreateWindow("BUTTON", "»°œ˚ÃÌº”", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÂèñÊ∂àÊ∑ªÂä†", WS_CHILD | WS_VISIBLE,
                  360, 440, 80, 30, hwnd, (HMENU)ID_BUTTON_ADD_CANCLE, NULL, NULL);
 
-    CreateWindow("BUTTON", "ÕÀ≥ˆ", WS_CHILD | WS_VISIBLE,
+    CreateWindow("BUTTON", "ÈÄÄÂá∫", WS_CHILD | WS_VISIBLE,
                  670, 55, 80, 30, hwnd, (HMENU)ID_BUTTON_ADD_CANCLE, NULL, NULL);
 
 
