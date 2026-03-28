@@ -14,7 +14,7 @@ void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*h
     Ticket1=(struct Ticket*)malloc(Ticket_LEN);
 
     Book_Plane=Find_Plane_ID(hwnd,head);
-    if(Book_Plane!=NULL)
+    if(Book_Plane!=NULL)//重复订购同一飞机的飞机票代码没写，这样的更改要等同行乘客的代码编写完毕才方便修改
     {  
         if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDYES)//需要缓冲区字符串
         {

@@ -534,6 +534,7 @@ struct Plane_information* Find_Plane_Takeoff_Date(HWND hwnd,Plane_information*he
 
 struct Plane_information* Find_Plane(HWND hwnd,int wmId,Plane_information*head)
 {
+    Plane_information* result_head,*result_head1,*result_head2;
      // 首先检查输入是否完整
     char starting_point[20] = "";
     char destination[20] = "";
@@ -545,71 +546,109 @@ struct Plane_information* Find_Plane(HWND hwnd,int wmId,Plane_information*head)
     GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_YEAR, takeoff_year, 5);
     GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_MONTH, takeoff_month, 3);
     GetDlgItemText(hwnd, ID_EDIT_TAKEOFF_DAY, takeoff_day, 3);
-    if(strlen(starting_point) == 0 || strlen(destination) == 0 ||
-        strlen(takeoff_year) == 0 || strlen(takeoff_month) == 0 || strlen(takeoff_day) == 0)
+
+    if(strlen(starting_point) != 0 || strlen(destination) != 0,strlen(takeoff_year) == 0 || strlen(takeoff_month) == 0 || strlen(takeoff_day) == 0)
     {
-        MessageBox(hwnd,"请完整输入起点、终点和起飞日期后再进行筛选！","提示",MB_OK);
-        return NULL;
+        
+        result_head= Find_Plane_Starting_Point(hwnd,head);
+        if(result_head == NULL)
+        {
+            MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+            return NULL;
+        }
+
+        result_head1 = Find_Plane_Destination(hwnd,result_head);
+        if(result_head1==NULL)
+        {
+            MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+            return NULL;
+        }
+
+        return result_head1;
+    }
+    else if  (strlen(takeoff_year) != 0 || strlen(takeoff_month) != 0 || strlen(takeoff_day) != 0)
+    {
+        
+        result_head2 = Find_Plane_Takeoff_Date(hwnd,head);
+        if(result_head2==NULL)
+        {
+            {
+                MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+                return NULL;
+            }
+        }
+        return result_head2;
+    }
+    else if(strlen(starting_point) != 0 || strlen(destination) != 0 ||
+            strlen(takeoff_year) != 0 || strlen(takeoff_month) != 0 || strlen(takeoff_day) != 0)
+    {
+        
+        result_head= Find_Plane_Starting_Point(hwnd,head);
+        if(result_head == NULL)
+        {
+            MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+            return NULL;
+        }
+
+        result_head1 = Find_Plane_Destination(hwnd,result_head);
+        if(result_head1==NULL)
+        {
+            MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+            return NULL;
+        }
+
+        result_head2 = Find_Plane_Takeoff_Date(hwnd,result_head2);
+        if(result_head2==NULL)
+        {
+            {
+                MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
+                return NULL;
+            }
+        }
+        return result_head2;
+    }
+    else
+    {
+        MessageBox(hwnd,"暂不支持这样的查找","提示",MB_OK);
     }
 
 
-    Plane_information* result_head= Find_Plane_Starting_Point(hwnd,head);
-    if(result_head == NULL)
-    {
-        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
-        return NULL;
-    }
-     Plane_information* result_head1 = Find_Plane_Destination(hwnd,result_head);
-    if(result_head1==NULL)
-    {
-        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
-        return NULL;
-    }
-    Plane_information* result_head2 = Find_Plane_Takeoff_Date(hwnd,result_head1);
-    if(result_head2==NULL)
-    {
-        MessageBox(hwnd, "未找到符合条件的航班", "提示", MB_OK);
-        return NULL;
-    }
-    // 成功找到，弹窗一次
-    MessageBox(hwnd, "已找到符合条件的航班", "提示", MB_OK);
-    return result_head2;
 }
 //这个更新函数有问题 没起作用
-void Refresh_FindPlaneList(HWND hwnd,Plane_information*p)
-{
-    // 首先获取列表框句柄
-    HWND hlist = GetDlgItem(hwnd, ID_LIST_PLANE);
-    
-    // 清空列表框，避免显示旧数据
-    SendMessage(hlist, LB_RESETCONTENT, 0, 0);
-
-    
-    char buffer[300];
-    int index = 1;
-    Plane_information* temp = p;  // ← 用临时变量遍历
-    
-    while(temp != NULL)
+    void Refresh_FindPlaneList(HWND hwnd,Plane_information*p)
     {
-        sprintf(buffer, "%d. %s 总:%d 剩余:%d ￥%.0f 起点:%s 终点:%s",
-                index++, temp->id, temp->whole_seat, temp->rest_seat, temp->prize,
-                temp->starting_point, temp->destination);
+        // 首先获取列表框句柄
+        HWND hlist = GetDlgItem(hwnd, ID_LIST_PLANE);
         
-        SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
+        // 清空列表框，避免显示旧数据
+        SendMessage(hlist, LB_RESETCONTENT, 0, 0);
 
-        sprintf(buffer,"\n起飞时间:%d/%d/%d %02d:%02d 到达时间:%d/%d/%d %02d:%02d", 
-                temp->take_off_time[0], temp->take_off_time[1], temp->take_off_time[2],
-                temp->take_off_time[3], temp->take_off_time[4],
-                temp->landing_time[0], temp->landing_time[1], temp->landing_time[2],
-                temp->landing_time[3], temp->landing_time[4]);
-                
-        SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
+        
+        char buffer[300];
+        int index = 1;
+        Plane_information* temp = p;  // ← 用临时变量遍历
+        
+        while(temp != NULL)
+        {
+            sprintf(buffer, "%d. %s 总:%d 剩余:%d ￥%.0f 起点:%s 终点:%s",
+                    index++, temp->id, temp->whole_seat, temp->rest_seat, temp->prize,
+                    temp->starting_point, temp->destination);
+            
+            SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
 
-        temp = temp->next;
+            sprintf(buffer,"\n起飞时间:%d/%d/%d %02d:%02d 到达时间:%d/%d/%d %02d:%02d", 
+                    temp->take_off_time[0], temp->take_off_time[1], temp->take_off_time[2],
+                    temp->take_off_time[3], temp->take_off_time[4],
+                    temp->landing_time[0], temp->landing_time[1], temp->landing_time[2],
+                    temp->landing_time[3], temp->landing_time[4]);
+                    
+            SendMessage(hlist, LB_ADDSTRING, 0, (LPARAM)buffer);
+
+            temp = temp->next;
+        }
     }
-}
 
-     //   210, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_SEARCH_PLANE, NULL, NULL);
+        //   210, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_SEARCH_PLANE, NULL, NULL);
 
 
 

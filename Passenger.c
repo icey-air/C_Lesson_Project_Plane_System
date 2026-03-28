@@ -11,7 +11,11 @@ struct passenger
 };
 
 
-
+/*@breif    添加同行乘客 
+* @param    窗口句柄 
+* @param	当前账户指针
+* @return	乘客链表头指针orNULL
+*/
 struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
 {
     if (Now_Account == NULL) {
@@ -70,7 +74,11 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
             Add_Passenger(hwnd, Now_Account);
         }
     }
-
+/*@breif    列举乘客 
+* @param    窗口句柄 
+* @param	当前账户指针
+* @return   无	
+*/
     void List_Passenger(HWND hwnd,struct tourist* Now_Account)
     {
         if (Now_Account == NULL)
@@ -95,7 +103,11 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
         }
     }
 
-
+/*@breif    查找乘客
+* @param    窗口句柄 
+* @param	当前账户指针
+* @return   找到的同行乘客指针orNULL
+*/
   struct passenger* Find_Passenger(HWND hwnd,struct tourist* Now_Account)
 {
     if (Now_Account == NULL)
@@ -126,6 +138,11 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
     return NULL; 
 }
 
+/*@breif    删除同行乘客
+* @param    窗口句柄 
+* @param	当前账户指针
+* @return   无
+*/
     void Cancel_Passenger(HWND hwnd,struct tourist* Now_Account)
     {
         if (Now_Account == NULL)

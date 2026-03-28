@@ -21,7 +21,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 	char Password2[21];
 	int id;
 	int stage=0;//while×´Ì¬£¬·ÀÖ¹ËÀ»ú
-	char Account[20] = "", Password[20] = "", phone[20] = "",Identity_Card[20]="",Password_Compare[20];
+	char Account[20] = "", Password[20] = "", phone[12] = "",Identity_Card[20]="",Password_Compare[20];
 	
 	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
 	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
