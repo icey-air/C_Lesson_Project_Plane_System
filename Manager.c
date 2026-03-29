@@ -15,8 +15,7 @@ void Manager_Login(HWND hwnd)
     GetDlgItemText(hwnd, ID_EDIT_PASSWORD, password, 20);
     
     if(strcmp(username, MANAGER_ACCOUNT) == 0 && strcmp(password, MANAGER_PASSWORD) == 0)
-    {
-        MessageBox(hwnd, "管理员登录成功", "提示", MB_OK);
+    { 
         ShowAdminWindow(hwnd);
     }
     else

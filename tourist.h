@@ -17,6 +17,8 @@ struct tourist* Find_Tourist_Account(struct tourist* head,char Account[11]);
 struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[12]);
 void Change_Password(struct tourist*Now_Account);
 void Change_Phone_Number(struct tourist*Now_Account);
+
+void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account);
 //游客结构体
 typedef struct tourist
 {  		int id;
@@ -29,7 +31,7 @@ typedef struct tourist
 	int Airfare_Cost;//开销
 
 	struct Ticket*Ticket_List;
-	
+	struct passenger*Passenger_List;
 	struct tourist *next;
 }tourist;
 

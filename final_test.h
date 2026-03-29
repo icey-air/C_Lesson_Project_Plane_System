@@ -8,6 +8,9 @@
 #include "tourist.h"
 #include "Ticket.h"
 #include "Manager.h"
+#include "Sound.h"
+#include "Passenger.h"
+
 /*========================  ˝æ›Ω·ππ∂®“Â ========================*/
 
 /*======================== ≥£¡ø∂®“Â ========================*/
@@ -25,4 +28,7 @@ extern int g_userType;                  // ”√ªß¿‡–Õ£∫0-Œ¥µ«¬º£¨1-π‹¿Ì‘±£¨2-∆’Õ®”
  */
 void Init_Test_Data(void);
 BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len);
+void Chang_Account_Function(int wmId,HWND hwnd);
+void User_Button_Function(int wmId,HWND hwnd);
+void Login_Logout_Rejister(int wmId,HWND hwnd);
 #endif

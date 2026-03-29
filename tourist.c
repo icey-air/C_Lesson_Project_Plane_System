@@ -15,19 +15,22 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 {
 		
 	struct tourist* HEAD,* p1, * p2;//Ğ¡ĞÄ£¬Õâ¸öÖ¸ÕëÊÇÒ°Ö¸Õë
+	int i=0;
 	char name[20];
 	char Password1[21];
 	char Password2[21];
 	int id;
 	int stage=0;//while×´Ì¬£¬·ÀÖ¹ËÀ»ú
-	char Account[20] = "", Password[20] = "", phone[20] = "",Identity_Card[20]="";
+	char Account[20] = "", Password[20] = "", phone[12] = "",Identity_Card[20]="",Password_Compare[20];
 	
 	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
 	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
 	GetDlgItemText(hwnd, ID_EDIT_PHONE, phone, 20);
 	GetDlgItemText(hwnd, ID_EDIT_NAME, name, 20);
 	GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
-	
+	GetDlgItemText(hwnd, ID_EDIT_PASSWORD_2, Password_Compare, 20);
+
+
 	if(strlen(Account)==0||strlen(Password)==0||strlen(name)==0||strlen(Identity_Card)==0)
 	{
 		MessageBox(hwnd, "ÊäÈë¿ò²»¿ÉÎª¿Õ", "ÌáÊ¾", MB_OK);
@@ -37,6 +40,51 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 	{
 
 	}
+	if(strcmp(Password,Password_Compare)!=0)
+	{
+		MessageBox(hwnd, "Á½´ÎÃÜÂë²»Ò»ÖÂ", "ÌáÊ¾", MB_OK);
+		return head;
+	}
+	for (int i = 0; i < 17; i++)
+	{
+		if(isdigit(Identity_Card[i])==0)
+		{
+			MessageBox(hwnd, "Éí·İÖ¤ÊäÈë´íÎó", "ÌáÊ¾", MB_OK);
+			return head;
+		}
+	}
+	if(strlen(phone)<11) 
+	{
+	MessageBox(hwnd, "ÊÖ»úºÅÊäÈë´íÎó", "ÌáÊ¾", MB_OK);
+	return head;
+	}
+	if(isdigit(Identity_Card[17])||Identity_Card[17]=='x'||Identity_Card[17]=='X')
+	{}
+	else 	
+	{
+		MessageBox(hwnd, "Éí·İÖ¤ÊäÈë´íÎó", "ÌáÊ¾", MB_OK);
+		return head;
+	}
+	while(name[i]!='\0')
+	{
+	if(isalnum(name[i])||isspace(name[i])||ispunct(name[i])) 
+	{
+	MessageBox(hwnd, "Ãû×Ö´íÎó", "ÌáÊ¾", MB_OK);
+	return head;
+	}
+	i++;
+	}
+	i=0;//µ¥´¿¼ì²âÓÃ£¬²»·ûºÏ´úÂë¹æ·¶µ«²»Ïë¸Ä
+	while(Password[i]!='\0')
+	{
+		if(isspace(Password[i])||ispunct(Password[i])) 
+		{
+		MessageBox(hwnd, "ÃÜÂëÓĞ·Ç·¨×Ö·û", "ÌáÊ¾", MB_OK);
+		return head;
+		}
+		i++;
+	}
+
 
 	if(head!=NULL)//²»ÊÇµÚÒ»¸ö×¢²áÕË»§
 	{
@@ -51,6 +99,9 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 				return head;					
 			}
 			//Á½´ÎÃÜÂë
+
+		
+
 		
 		while(p2->next!=NULL)
 		{
@@ -63,7 +114,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 		strcpy(p1->phone_number,phone);
 		strcpy(p1->name,name);
 		strcpy(p1->identity_card,Identity_Card);
-
+		p1->Airfare_Cost=0;
 		p1->Ticket_List=NULL;
 
 
@@ -88,6 +139,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓĞbug,¿ÕµÄÒ²ÄÜ×
 		strcpy(p1->name,name);
 		strcpy(p1->identity_card,Identity_Card);
 		p1->Ticket_List=NULL;
+		p1->Airfare_Cost=0;
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);
 		SaveAllTourists(head);
