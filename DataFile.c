@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
+
+//@brief 保存航班数据到文件
+//@param head 航班信息链表头指针
+//@return 0成功，-1失败
 int SavePlaneData(Plane_information* head)
 {
     FILE*fp=fopen(PLANE_DATA_FILE,"wb");
@@ -45,6 +49,10 @@ int SavePlaneData(Plane_information* head)
     return 0;
 }
 
+
+//@brief 加载航班数据
+//@param head 航班信息链表头指针地址
+//@return 0成功，-1失败
 int LoadPlaneData(Plane_information **head)
 {
     FILE* fp=fopen(PLANE_DATA_FILE,"rb");
@@ -100,7 +108,7 @@ fread(newplane->destination, sizeof(char), 20, fp);
     return 0;
 }
 
-// 辅助函数：根据航班号查找航班
+
 static Plane_information* FindPlaneById(Plane_information* head, char* id)
 {
     Plane_information* p = head;
