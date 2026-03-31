@@ -12,11 +12,13 @@ struct tourist* Loging_Account(HWND hwnd,struct tourist*head);
 void List_Tourist(struct tourist* head);
 struct tourist* Remove_Tourist(struct tourist*head,int id);
 int Change_tourist(HWND hwnd,int wmId,struct tourist*Now_Account);
-void Change_Information_Comfirm(HWND hwnd,int Change_What,struct tourist* Now_Account);
+void Change_Information_Comfirm(HWND hwnd, int Change_What, struct tourist *Now_Account);
+void NewFunction(HWND hwnd, char Phone[20]);
 struct tourist* Find_Tourist_Account(struct tourist* head,char Account[11]);
 struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[12]);
-void Change_Password(struct tourist*Now_Account);
-void Change_Phone_Number(struct tourist*Now_Account);
+void Change_Password(HWND hwnd,struct tourist*Now_Account);
+void Change_Account(HWND hwnd,struct tourist*Now_Account);
+void Change_Phone_Number(HWND hwnd,struct tourist*Now_Account);
 
 void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account);
 //游客结构体
