@@ -307,10 +307,10 @@ void User_Button_Function(int wmId,HWND hwnd)
         Cancel_Ticket_Reservation(hwnd,Now_Account);
         List_Ticket_Reservation(hwnd, Now_Account);
     }
-    else if(wmId == ID_BUTTON_LIST_BOOK)//列出预定
+    else if(wmId == ID_BUTTON_SHOW_INFOR)//
     {
         Play_Button_Sound();
-        List_Ticket_Reservation(hwnd, Now_Account);
+        Show_Account_statistics_Windows(hwnd, Now_Account);
     }
     else if(wmId==ID_BUTTON_ADD_PASSENGERS)
     {
@@ -338,7 +338,18 @@ void User_Button_Function(int wmId,HWND hwnd)
             RefreshPlaneList(hwnd);
         }        
     }
-
+     else if(wmId==ID_BUTTON_SHOW_INFOR)
+    {
+        Play_Button_Sound();
+        Show_Account_statistics_Windows(hwnd, Now_Account);
+    }
+    else if(wmId==ID_BUTTON_STATIC_BACK)
+    {
+        Play_Button_Sound();
+        ShowUserWindow(hwnd);
+        List_Ticket_Reservation(hwnd, Now_Account);
+    }
+ 
 }
 
 void Login_Logout_Rejister(int wmId,HWND hwnd)
@@ -383,5 +394,5 @@ void Login_Logout_Rejister(int wmId,HWND hwnd)
                 SetWindowText(hwnd, "航班管理系统 - 请登录");
                 ShowLoginWindow(hwnd);
             }
- 
+           
 }

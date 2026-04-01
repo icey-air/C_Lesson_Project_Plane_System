@@ -93,8 +93,8 @@ void ShowUserWindow(HWND hwnd)
     CreateWindow("BUTTON", "取消预定", WS_CHILD | WS_VISIBLE,
                  390, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_CANCEL_BOOK, NULL, NULL);
     
-    CreateWindow("BUTTON", "我的预定", WS_CHILD | WS_VISIBLE,
-                 480, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_LIST_BOOK, NULL, NULL);
+    CreateWindow("BUTTON", "统计信息", WS_CHILD | WS_VISIBLE,
+                 480, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_SHOW_INFOR , NULL, NULL);
 
     CreateWindow("BUTTON", "修改信息", WS_CHILD | WS_VISIBLE,
                  570, 20, 80, 25, hwnd, (HMENU)ID_BUTTON_CHANGE_INFO, NULL, NULL);
@@ -282,7 +282,6 @@ void Show_Rejister_Window(HWND hwnd)
 
     CreateWindow("BUTTON", "取消注册", WS_CHILD | WS_VISIBLE,
                  360, 460, 80, 30, hwnd, (HMENU)ID_BUTTON_REGISTER_CANCLE, NULL, NULL);
-
 }
 
 
@@ -478,4 +477,36 @@ void Show_Background(HWND hwnd)
     //SendMessage下次有空再研究
     SendMessage(g_hPic, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)g_hBmp);
         
+}
+
+
+
+void Show_Account_statistics_Windows(HWND hwnd,struct tourist* Now_Account)
+{
+	    // 清除所有现有控件
+    HWND hChild = GetWindow(hwnd, GW_CHILD);
+    while(hChild != NULL)
+    {
+        HWND hNext = GetWindow(hChild, GW_HWNDNEXT);
+        if(hChild!=g_hPic)
+        {
+        DestroyWindow(hChild);
+        }
+        hChild = hNext;
+    }
+    Show_Background(hwnd);
+    CreateWindow("STATIC", "账户统计信息:", WS_CHILD | WS_VISIBLE,
+                 300, 200, 100, 25, hwnd, NULL, NULL, NULL);
+    CreateWindow("STATIC", "总开销:", WS_CHILD | WS_VISIBLE,
+                 300, 240, 50, 25, hwnd, NULL, NULL, NULL);
+    char Airfare_Cost[20];
+    sprintf(Airfare_Cost, "%d", Now_Account->Airfare_Cost);
+    
+    
+    CreateWindow("STATIC", Airfare_Cost, WS_CHILD | WS_VISIBLE,
+                 360, 240, 150, 25, hwnd, NULL, NULL, NULL);
+    CreateWindow("BUTTON", "返回", WS_CHILD | WS_VISIBLE,
+                 360, 400, 80, 30, hwnd, (HMENU)ID_BUTTON_STATIC_BACK, NULL, NULL);
+    
+
 }
