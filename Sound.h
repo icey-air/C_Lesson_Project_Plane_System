@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <windows.h>
-#pragma comment(lib, "winmm.lib")//链接外部库,gcc编译无法正常运行
+#pragma comment(lib, "winmm.lib")//链接外部库,gcc编译无法正常运行,  gcc -g *.c -o final_test -l winmm
 
 void Play_Button_Sound();
 

@@ -18,5 +18,6 @@ void Add_Passengers(HWND hwnd,struct tourist* Now_Account);
 void List_Passenger(HWND hwnd,struct tourist* Now_Account);
 struct passenger* Find_Passenger(HWND hwnd,struct tourist* Now_Account);
 void Cancel_Passenger(HWND hwnd,struct tourist* Now_Account);
+void Add_Passengers_Confirm(HWND hwnd, struct tourist* account);
 
 #endif
