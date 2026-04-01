@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include <string.h>
 #include "tourist.h"
-
+#include "DataFile.h"
 void ShowLoginWindow(HWND hwnd);
 
 /*@brief	´´ÔìÓÎ¿Í
@@ -53,7 +53,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 			return head;
 		}
 	}
-	if(strlen(phone)<11) 
+	if(strlen(phone)!=11) 
 	{
 	MessageBox(hwnd, "ÊÖ»úºÅÊäÈë´íÎó", "ÌáÊ¾", MB_OK);
 	return head;
@@ -120,7 +120,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);	
-		Tourist_File_Save(head);
+		SaveAllTourists(head);
 		ShowLoginWindow(hwnd);
 		return head;
 	}
@@ -142,7 +142,7 @@ struct tourist* Register_Tourist(HWND hwnd,struct tourist*head)//ÓÐbug,¿ÕµÄÒ²ÄÜ×
 		p1->Airfare_Cost=0;
 
 		MessageBox(hwnd, "×¢²á³É¹¦", "ÌáÊ¾", MB_OK);
-		Tourist_File_Save(head);
+		SaveAllTourists(head);
 		ShowLoginWindow(hwnd);
 		return head;
 	}	
@@ -282,68 +282,51 @@ int Change_tourist(HWND hwnd,int wmId,struct tourist*Now_Account)
 			return 0;
 	}
 
-
-
-	
-	// GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-    // GetDlgItemText(hwnd, ID_EDIT_PHONE, Account, 20);
-	// GetDlgItemText(hwnd, ID_EDIT_NAME, Password, 20);
-	// GetDlgItemText(hwnd, ID_EDIT_IDENTIEY_CARD, Identity_Card, 20);
-
 }
 
+
+/*@brief	È·ÈÏÐÞ¸ÄÓÎ¿ÍÐÅÏ¢
+* @param	windows¾ä±ú
+* @param	ÐÞ¸ÄÁËÊ²Ã´£¨ÕË»§£¬ÃÜÂë£¬µç»°£©ÓÃÊý×Ö±íÊ¾	
+* @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
+* @return	ÎÞ
+*/
 void Change_Information_Comfirm(HWND hwnd,int Change_What,struct tourist* Now_Account)
 {
 	char Account[20]="",Password[20]="",Phone[20]="";
+	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+	GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+
+
 	switch (Change_What)
 	{
 	case 1:
-			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
-			strcpy(Now_Account->Account,Account);
-			Show_Account_Information_Change_Window(hwnd);
-		break;
+			Change_Account(hwnd,Now_Account);	
+			break;
 	case 3:
-			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-			strcpy(Now_Account->password,Password);
-			Show_Account_Information_Change_Window(hwnd);
+			Change_Password(hwnd,Now_Account);
 			break;
 	case 5:
-			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
-			strcpy(Now_Account->phone_number,Phone);
-			Show_Account_Information_Change_Window(hwnd);
+			
+			Change_Phone_Number(hwnd,Now_Account);
 			break;
 	case 4:
-			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
-			strcpy(Now_Account->Account,Account);
-			
-			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-			strcpy(Now_Account->password,Password);
-			Show_Account_Information_Change_Window(hwnd);
+			Change_Account(hwnd,Now_Account);
+			Change_Password(hwnd,Now_Account);
 			break;
-	case 6:	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
-			strcpy(Now_Account->Account,Account);
-			
-			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
-			strcpy(Now_Account->phone_number,Phone);
-			Show_Account_Information_Change_Window(hwnd);
+	case 6:	
+			Change_Account(hwnd,Now_Account);
+			Change_Phone_Number(hwnd,Now_Account);
 			break;
 	case 8:
-			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-			strcpy(Now_Account->password,Password);
-
-			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
-			strcpy(Now_Account->phone_number,Phone);
-			Show_Account_Information_Change_Window(hwnd);
+			Change_Phone_Number(hwnd,Now_Account);
+			Change_Password(hwnd,Now_Account);
 			break;
 	case 9:
-			GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
-			strcpy(Now_Account->Account,Account);
-			
-			GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-			strcpy(Now_Account->password,Password);
-			GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
-			strcpy(Now_Account->phone_number,Phone);
-			Show_Account_Information_Change_Window(hwnd);
+			Change_Phone_Number(hwnd,Now_Account);
+			Change_Password(hwnd,Now_Account);
+			Change_Account(hwnd,Now_Account);
 			break;
 	default:
 		printf("bug");
@@ -352,6 +335,88 @@ void Change_Information_Comfirm(HWND hwnd,int Change_What,struct tourist* Now_Ac
 }
 
 
+/*@brief	È·ÈÏÐÞ¸ÄÓÎ¿ÍÐÅÏ¢
+* @param	windows¾ä±ú
+* @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
+* @return	ÎÞ
+*/
+void Change_Phone_Number(HWND hwnd,struct tourist*Now_Account)
+{
+	char Phone[20];
+	GetDlgItemText(hwnd, ID_EDIT_PHONE, Phone, 20);
+	if(strlen(Phone)!=11) 
+	{
+		MessageBox(hwnd, "ÊÖ»úºÅÊäÈë´íÎó", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	else if(strcmp(Phone,Now_Account->phone_number)!=0&&Find_Tourist_PhoneNumber(Now_Account,Phone)!=NULL)
+	{
+		MessageBox(hwnd, "ÊÖ»úºÅÒÑ´æÔÚ", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	else
+	{
+	strcpy(Now_Account->phone_number,Phone);
+	Show_Account_Information_Change_Window(hwnd);
+	}
+}
+
+
+/*@brief	È·ÈÏÐÞ¸ÄÓÎ¿ÍÃÜÂë
+* @param	windows¾ä±ú
+* @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
+* @return	ÎÞ
+*/
+void Change_Password(HWND hwnd,struct tourist*Now_Account)
+{
+	char Password[20];
+	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
+	if(strlen(Password)==0)
+	{
+		MessageBox(hwnd, "ÊäÈë¿ò²»¿ÉÎª¿Õ", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	while(isspace(Password[0])||ispunct(Password[0])) 
+	{
+		MessageBox(hwnd, "ÃÜÂëÓÐ·Ç·¨×Ö·û", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	strcpy(Now_Account->password,Password);
+	Show_Account_Information_Change_Window(hwnd);
+}
+
+
+
+/*@brief	È·ÈÏÐÞ¸ÄÓÎ¿Í
+* @param	windows¾ä±ú
+* @param	µ±Ç°ÓÎ¿Í½á¹¹ÌåµØÖ·
+* @return	ÎÞ
+*/
+void Change_Account(HWND hwnd,struct tourist*Now_Account)
+{
+	char Account[20];
+	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
+	if(strlen(Account)==0)
+	{
+		MessageBox(hwnd, "ÊäÈë¿ò²»¿ÉÎª¿Õ", "ÌáÊ¾", MB_OK);
+		return;
+	}	
+	while(isspace(Account[0])||ispunct(Account[0])) 
+	{
+		MessageBox(hwnd, "ÕË»§ÓÐ·Ç·¨×Ö·û", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	if(strcmp(Account,Now_Account->Account)!=0&&Find_Tourist_Account(Now_Account,Account)!=NULL)
+	{
+		MessageBox(hwnd, "ÕË»§ÒÑ´æÔÚ", "ÌáÊ¾", MB_OK);
+		return;
+	}
+	else
+	{
+	strcpy(Now_Account->Account,Account);
+	Show_Account_Information_Change_Window(hwnd);
+	}
+}	
 
 
 
@@ -419,6 +484,5 @@ struct tourist* Find_Tourist_PhoneNumber(struct tourist* head,char Phone_Number[
 		return NULL;
 	}
 }	
-
 
 

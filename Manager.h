@@ -11,6 +11,8 @@ extern Plane_information* g_head;  // 航班信息链表头指针
 void Manager_Login(HWND hwnd);
 Plane_information* Manager_Delete_Plane(HWND hwnd,Plane_information*head);
 
-
+void ShowUpdatePlaneDialog(HWND hwnd);
+LRESULT CALLBACK UpdatePlaneDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+Plane_information* FindPlaneById(Plane_information* head, const char* id);
 
 #endif

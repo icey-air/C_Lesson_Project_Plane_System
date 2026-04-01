@@ -11,6 +11,8 @@
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                 "-I", "C:/OpenSSL-Win64/include",     // OpenSSL 头文件路径    课设加入的别的项目不需要
+                "-L", "C:/OpenSSL-Win64/lib",         // OpenSSL 库文件路径     课设加入的别的项目不需要
                 ""
             ],
             "options": {
