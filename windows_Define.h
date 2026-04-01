@@ -98,7 +98,9 @@
 #define ID_BUTTON_FILTER_PLANE         5022
 ///白轩宇的添加结束/////////
 #define ID_BUTTON_ADD_PASSENGERS 6002    //添加同行乘客按钮ID
-
+#define ID_EDIT_ADD_PASSENGER_NAME 6003  //添加同行乘客姓名输入框
+#define ID_EDIT_ADD_PASSENGER_PHONE 6004  //添加同行乘客电话号码输入框
+#define ID_EDIT_ADD_PASSENGER_ID 6005  //添加同行乘客身份证输入
 #define ID_BUTTON_SETTING           6001    //设置按钮
 
 

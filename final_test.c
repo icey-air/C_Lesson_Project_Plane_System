@@ -399,6 +399,7 @@ void Chang_Account_Function(int wmId,HWND hwnd)
                 ShowUserWindow(hwnd);
                 Change_What=0;
             }
+
 }
 
 
@@ -450,52 +451,49 @@ void User_Button_Function(int wmId,HWND hwnd)
                     RefreshPlaneList(hwnd);
                 }        
             }
+            else if(wmId == ID_BUTTON_ADD_CONFIRM)
+            {
+                Play_Button_Sound();
+                Add_Passengers_Confirm(hwnd, Now_Account);
+            }
+            else if(wmId == ID_BUTTON_ADD_CANCLE)
+            {
+                Play_Button_Sound();
+                ShowUserWindow(hwnd);
+            }
   
 }
 
 
-void Add_New_Passengers_Function(int wmId,HWND hwnd)
+void Add_New_Passengers_Function(int wmId, HWND hwnd) 
 {
-    if(wmId == ID_BUTTON_ADD_PASSENGERS)
+    switch (wmId) 
     {
-        Play_Button_Sound();
-        Add_Passengers(hwnd,Now_Account);
-    }
-     else if(wmId==ID_EDIT_PASSENGER_NAME)
-            {   
-                Play_Button_Sound();
-                if(Add_What==0||Add_What==2||Add_What==4||Add_What==6)
-                {                
-                    Add_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-            else if(wmId==ID_EDIT_PASSENGER_PHONE)
-            {  
-                Play_Button_Sound();
-                 if(Add_What==0||Add_What==1||Add_What==3||Add_What==4)
-                {
-                Add_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-             else if(wmId==ID_EDIT_PASSENGER_ID)
-            {
-                Play_Button_Sound();
-                if(Add_What==0||Add_What==1||Add_What==5||Add_What==6)
-                {
-                Add_What+=Change_tourist(hwnd,wmId,Now_Account);
-                }
-            }
-   else if(wmId == ID_BUTTON_ADD_CONFIRM)
-    {
-        Play_Button_Sound();
-        Add_Passengers_Comfirm(hwnd,Add_What,Now_Account);
-        Add_What=0;
-    }
-    else if(wmId == ID_BUTTON_ADD_CANCLE)
-    {
-        Play_Button_Sound();
-        ShowUserWindow(hwnd);
-        Add_What=0;
-    }
+        case ID_BUTTON_ADD_PASSENGERS:
+            // 清空编辑框，准备添加新乘客
+            Play_Button_Sound();
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_NAME, "");
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_PHONE, "");
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, "");
+            SetFocus(GetDlgItem(hwnd, ID_EDIT_ADD_PASSENGER_NAME));
+            break;
 
+        case ID_BUTTON_ADD_CONFIRM:
+            Play_Button_Sound();
+            Add_Passengers_Confirm(hwnd, Now_Account);
+            break;
+
+        case ID_BUTTON_ADD_CANCLE:
+            Play_Button_Sound();
+            // 取消添加：清空编辑框并返回主界面
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_NAME, "");
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_PHONE, "");
+            SetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, "");
+            ShowUserWindow(hwnd);
+            break;
+
+        default:
+            // 忽略其他消息（如编辑框的 EN_CHANGE 消息）
+            break;
+    }
 }

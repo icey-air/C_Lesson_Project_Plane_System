@@ -26,11 +26,11 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
     }
 
     MessageBox(hwnd, "请输入乘客姓名：", "提示", MB_OK);
-    GetDlgItemText(hwnd, ID_EDIT_PASSENGER_NAME, new_passenger->name, 20);
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_NAME, new_passenger->name, 20);
     MessageBox(hwnd, "请输入乘客电话号码：", "提示", MB_OK);
-    GetDlgItemText(hwnd, ID_EDIT_PASSENGER_PHONE, new_passenger->phone_number, 12);
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_PHONE, new_passenger->phone_number, 12);
     MessageBox(hwnd, "请输入乘客身份证号：", "提示", MB_OK);
-    GetDlgItemText(hwnd, ID_EDIT_PASSENGER_ID, new_passenger->identity_card, 19);
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, new_passenger->identity_card, 19);
     new_passenger->plane = NULL;
     new_passenger->next = NULL;
 
@@ -107,7 +107,7 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
     struct passenger* p1 = Now_Account->Passenger_List;
     char identity_card[19];
     MessageBox(hwnd, "请输入乘客的身份证号：", "提示", MB_OK);
-    GetDlgItemText(hwnd, ID_EDIT_PASSENGER_ID, identity_card, 19);
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, identity_card, 19);
     while (getchar() != '\n');
 
     while (p1 != NULL)
@@ -138,7 +138,7 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
         struct passenger* prev = NULL;
         char identity_card[19];
         MessageBox(hwnd, "请输入要取消的乘客身份证号：", "提示", MB_OK);
-        GetDlgItemText(hwnd, ID_EDIT_PASSENGER_ID, identity_card, 19);
+        GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, identity_card, 19);
         while (getchar() != '\n');
 
         while (p1 != NULL)
@@ -163,25 +163,56 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
         MessageBox(hwnd, "未找到乘客信息！", "提示", MB_OK);
     }
 
-    void Add_Passengers_Comfirm(HWND hwnd,int Add_What,struct tourist* Now_Account)
-{
-	char name[20]="",Password[20]="",Phone[20]="";
-	switch (Add_What)
-	{
-    case 1:
-            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_NAME, name, 20);
-            strcpy(Now_Account->Passenger_List->name,name);
-            break;
-    case 2:
-            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_PHONE, Phone, 20);   
-            strcpy(Now_Account->Passenger_List->phone_number,Phone);
-            break;
-    case 3:            
-            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_ID, Password, 20);
-            strcpy(Now_Account->Passenger_List->identity_card,Password);
-            break;          
-	default:
-		printf("bug");
-		break;
-	}
+    void Add_Passengers_Confirm(HWND hwnd, struct tourist* account) {
+    if (account == NULL) 
+    {
+        MessageBox(hwnd, "游客账户无效！", "错误", MB_OK);
+        return;
+    }
+
+    char name[20] = {0};
+    char phone[12] = {0};
+    char id[19] = {0};
+
+    // 从编辑框获取输入（控件 ID 需与窗口创建时一致）
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_NAME, name, sizeof(name));
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_PHONE, phone, sizeof(phone));
+    GetDlgItemText(hwnd, ID_EDIT_ADD_PASSENGER_ID, id, sizeof(id));
+
+    // 简单验证：姓名不能为空
+    if (name[0] == '\0')
+    {
+        MessageBox(hwnd, "请填写乘客姓名！", "提示", MB_OK);
+        return;
+    }
+
+    // 创建新乘客节点
+    struct passenger* new_passenger = (struct passenger*)malloc(sizeof(struct passenger));
+    if (new_passenger == NULL) 
+    {
+        MessageBox(hwnd, "内存不足，添加失败！", "错误", MB_OK);
+        return;
+    }
+
+    // 填充数据
+    strcpy(new_passenger->name, name);
+    strcpy(new_passenger->phone_number, phone);
+    strcpy(new_passenger->identity_card, id);
+    new_passenger->plane = NULL;
+    new_passenger->next = NULL;
+
+    // 添加到链表
+    if (account->Passenger_List == NULL)
+    {
+        account->Passenger_List = new_passenger;
+    } 
+    else
+    {
+        struct passenger* current = account->Passenger_List;
+        while (current->next != NULL)
+            current = current->next;
+        current->next = new_passenger;
+    }
+
+    MessageBox(hwnd, "乘客添加成功！", "提示", MB_OK);
 }
