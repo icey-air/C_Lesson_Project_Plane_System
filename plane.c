@@ -356,7 +356,7 @@ struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head)
         MessageBox(hwnd, "航班信息为空", "提示", MB_OK);	
     }
 
-    while(p->next!=NULL)
+    while(p!=NULL)
     {
         if(strcmp(p->id,id)==0)
         {
@@ -365,17 +365,8 @@ struct Plane_information* Find_Plane_ID(HWND hwnd,Plane_information*head)
         }
         p=p->next;
     }
-
-    if(strcmp(p->id,id)==0)
-    {
-        MessageBox(hwnd, "已找到相应航班", "提示", MB_OK);	
-        return p;
-    }
-    else
-    {
-        MessageBox(hwnd, "未找到相应航班", "提示", MB_OK);	
-        return NULL;
-    }
+    MessageBox(hwnd, "未找到相应航班", "提示", MB_OK);
+    return NULL;
 }
 
 /*@breif	根据起始点查找航班
@@ -530,8 +521,10 @@ struct Plane_information* Find_Plane_Takeoff_Date(HWND hwnd,Plane_information*he
 }
 
 
-
-
+//@breif 综合查找航班
+//@param windows窗口句柄
+//@param 航班信息结构体头指针
+//@return 找到的航班结构体指针orNULL
 struct Plane_information* Find_Plane(HWND hwnd,int wmId,Plane_information*head)
 {
     Plane_information* result_head,*result_head1,*result_head2;

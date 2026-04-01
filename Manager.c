@@ -24,7 +24,10 @@ void Manager_Login(HWND hwnd)
     }
 }
 
-
+//@brief    管理员界面按钮功能封装
+//@param    windows句柄
+//@param    航班信息结构体头指针
+//@return   头指针
 Plane_information* Manager_Delete_Plane(HWND hwnd,Plane_information*head)//多次一举的函数，不过相比直接用Delete_Plane函数，这个函数多了全局头指针的传参和刷新界面
 {
     head=Delete_Plane(hwnd,head);
@@ -91,10 +94,12 @@ BOOL InputError(HWND hwnd, char* prompt, char* result, int max_len)
 
 
 
-/////白轩宇的添加/////
-// 在 Manager.c 中添加以下代码
-
-/* 添加航班对话框的窗口过程函数 */
+//@brief 显示更新航班对话框
+//@param
+//@param
+//@param
+//@param
+//@return 
 LRESULT CALLBACK AddPlaneDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -408,6 +413,9 @@ CreateWindow("BUTTON", "取消", WS_CHILD | WS_VISIBLE,
 
 /**
  * @brief 根据航班号查找航班
+ * @param head 航班信息链表头指针
+ * @param id 航班号
+ * @return 找到的航班结构体指针，未找到返回NULL
  */
 Plane_information* FindPlaneById(Plane_information* head, const char* id)
 {
@@ -423,6 +431,11 @@ Plane_information* FindPlaneById(Plane_information* head, const char* id)
 
 /**
  * @brief 修改航班对话框的窗口过程函数
+ * @param hDlg 对话框句柄
+ * @param 
+ * @param 
+ * @param 
+ * @return 
  */
 LRESULT CALLBACK UpdatePlaneDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -595,6 +608,7 @@ LRESULT CALLBACK UpdatePlaneDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM 
 /**
  * @brief 显示修改航班对话框
  * @param hwnd 父窗口句柄
+ * @return 无
  */
 void ShowUpdatePlaneDialog(HWND hwnd)
 {
@@ -759,8 +773,3 @@ void ShowUpdatePlaneDialog(HWND hwnd)
     SendMessage(hDlg, WM_INITDIALOG, 0, (LPARAM)targetPlane);
 }
 
-
-
-
-
-///白轩宇的添加结束/////
