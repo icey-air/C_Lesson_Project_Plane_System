@@ -21,7 +21,7 @@
 #define ID_BUTTON_SHOW_PLANE      1007  // 显示航班按钮ID
 #define ID_BUTTON_BOOK_TICKET     1008  // 预定机票按钮ID
 #define ID_BUTTON_CANCEL_BOOK     1009  // 取消预定按钮ID
-#define ID_BUTTON_LIST_BOOK       1010  // 列出预定按钮ID
+#define ID_BUTTON_SHOW_INFOR      1010  // 展示统计信息按钮ID
 #define ID_BUTTON_LOGOUT          1011  // 登出按钮ID
 #define ID_BUTTON_BACK            1012  // 返回按钮ID
 #define ID_BUTTON_CONFIRM_ADD     1013  // 确认添加按钮ID
@@ -33,7 +33,7 @@
 #define ID_BUTTON_REGISTER_CANCLE 1019  // 注册取消按钮
 #define ID_BUTTON_CHANGE_INFO_COMFIRM 1020    //用户修改信息确认ID
 #define ID_BUTTON_CHANGE_INFO_CANCLE  1021    //用户修改信息取消ID
- #define ID_BUTTON_CHANGE_Account      1022    
+#define ID_BUTTON_CHANGE_Account      1022    
 #define ID_BUTTON_CHANGE_Password     1023
 #define ID_BUTTON_CHANGE_Phone        1024
 #define ID_BUTTON_CHANGE_NAME         1025
@@ -41,7 +41,7 @@
 #define ID_EDIT_CHANGE_Password     1027
 #define ID_EDIT_CHANGE_Phone        1028
 #define ID_EDIT_CHANGE_NAME         1029
-
+#define ID_BUTTON_STATIC_BACK              1030 //统计信息的返回按钮ID
 
 
 #define ID_EDIT_ACCOUNT          2001  // 账户输入框ID
@@ -140,6 +140,7 @@ void Add_New_Passengers_Window(HWND hwnd);void ShowLoginWindow(HWND hwnd);
 void ShowLoginWindow(HWND hwnd);
 void Show_Background(HWND hwnd);
 extern struct tourist*Now_Account;
+void Show_Account_statistics_Windows(HWND hwnd,struct tourist* Now_Account);
 extern HBITMAP g_hBmp;
 extern HWND g_hPic;
 #endif

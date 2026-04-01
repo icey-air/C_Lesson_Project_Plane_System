@@ -19,11 +19,18 @@ void Book_Ticket(HWND hwnd,struct tourist*Now_Account,struct Plane_information*h
         if(MessageBox(hwnd, "是否要预定id为航班的机票", "确认", MB_YESNO) == IDYES)//需要缓冲区字符串
         {
 
-            Add_Ticket(hwnd, Now_Account, Book_Plane);
-            Now_Account->Airfare_Cost+=Book_Plane->prize;//价格在这加的
-            MessageBox(hwnd, "已预定id为:的航班", "提示", MB_OK);
-            printf("已预定航班%s的机票\n",Book_Plane->id);
-        }      
+           int result = Add_Ticket(hwnd, Now_Account, Book_Plane);
+            if(result == 1)
+              {
+                Now_Account->Airfare_Cost+=Book_Plane->prize;//价格在这加的
+                Book_Plane->rest_seat--;
+                printf("已预定航班%s的机票\n",Book_Plane->id);
+             }    
+             else if(result == 0)//对于买多张票的代码暂时没写，等同行乘客的代码编写完毕再考虑
+             {
+                MessageBox(hwnd, "预定失败", "提示", MB_OK);
+             }
+        }  
     }
      RefreshPlaneList(hwnd);
 }
@@ -62,12 +69,14 @@ void Cancel_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
             {   
                 Now_Account->Ticket_List=Now_Account->Ticket_List->next;
                 Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
+                Ticket_Delete->Plane_Ticket->rest_seat++;
                 free(Ticket_Delete);
             }
             else//否则是中间
             {
                 Ticket_Forward->next=Ticket_Delete->next;
                 Now_Account->Airfare_Cost-=Ticket_Delete->Plane_Ticket->prize;//减去票里面的飞机的价格
+                Ticket_Delete->Plane_Ticket->rest_seat++;
                 free(Ticket_Delete);
             }
             MessageBox(hwnd, "已取消预定", "提示", MB_OK);
@@ -140,7 +149,7 @@ void List_Ticket_Reservation(HWND hwnd,struct tourist*Now_Account)
 * @param	要预定的航班结构体指针
 * @return	无
 */
-void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plane)
+int Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plane)
 {
     struct Ticket *Ticket1;
     Ticket1=(struct Ticket*)malloc(Ticket_LEN);
@@ -150,7 +159,7 @@ void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plan
         Now_Account->Ticket_List=Ticket1;
         Now_Account->Ticket_List->Plane_Ticket=Book_Plane;
         Now_Account->Ticket_List->next=NULL;
-        return;
+        return 1;
     }
     else
     {
@@ -161,7 +170,7 @@ void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plan
            if(Find_Ticket(Now_Account,Book_Plane)!=NULL)
             {
                 MessageBox(hwnd, "您已预定过该航班的机票", "提示", MB_OK);
-                return;
+                return 0;
             }
             p1=p1->next;
         }
@@ -169,15 +178,15 @@ void Add_Ticket(HWND hwnd,struct tourist*Now_Account,Plane_information*Book_Plan
         if(Find_Ticket(Now_Account,Book_Plane)!=NULL)
             {
                 MessageBox(hwnd, "您已预定过该航班的机票", "提示", MB_OK);
-                return;
+                return 0;
             }
         
         
         Ticket1->Plane_Ticket=Book_Plane;
         Ticket1->next=NULL;
         p1->next=Ticket1;
-        MessageBox(hwnd, "已添加预定", "提示", MB_OK);
-        return;
+
+        return 1;
     }
    
 }
