@@ -161,7 +161,7 @@ struct tourist* Loging_Account(HWND hwnd,struct tourist*head)
 	char Password[21];
 	GetDlgItemText(hwnd, ID_EDIT_ACCOUNT, Account, 20);
 	GetDlgItemText(hwnd, ID_EDIT_PASSWORD, Password, 20);
-
+	
 	struct tourist*p;
 	p=head;
 

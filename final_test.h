@@ -9,6 +9,8 @@
 #include "Ticket.h"
 #include "Manager.h"
 #include "Sound.h"
+#include "Passenger.h"
+#include "windows_Define.h"
 
 
 /*======================== 数据结构定义 ========================*/
@@ -30,5 +32,6 @@ void Init_Test_Data(void);
 BOOL InputBox(HWND hwnd, char* prompt, char* result, int max_len);
 void Chang_Account_Function(int wmId,HWND hwnd);
 void User_Button_Function(int wmId,HWND hwnd);
+void Add_New_Passengers_Function(int wmId,HWND hwnd);
 
 #endif

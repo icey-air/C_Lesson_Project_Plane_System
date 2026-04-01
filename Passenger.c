@@ -162,3 +162,26 @@ struct passenger* Add_Passenger(HWND hwnd,struct tourist* Now_Account)
         }
         MessageBox(hwnd, "未找到乘客信息！", "提示", MB_OK);
     }
+
+    void Add_Passengers_Comfirm(HWND hwnd,int Add_What,struct tourist* Now_Account)
+{
+	char name[20]="",Password[20]="",Phone[20]="";
+	switch (Add_What)
+	{
+    case 1:
+            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_NAME, name, 20);
+            strcpy(Now_Account->Passenger_List->name,name);
+            break;
+    case 2:
+            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_PHONE, Phone, 20);   
+            strcpy(Now_Account->Passenger_List->phone_number,Phone);
+            break;
+    case 3:            
+            GetDlgItemText(hwnd, ID_EDIT_PASSENGER_ID, Password, 20);
+            strcpy(Now_Account->Passenger_List->identity_card,Password);
+            break;          
+	default:
+		printf("bug");
+		break;
+	}
+}
